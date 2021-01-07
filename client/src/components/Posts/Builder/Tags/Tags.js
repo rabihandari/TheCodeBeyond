@@ -16,7 +16,9 @@ const Tags = ({postData, setPostData}) => {
         'Express',
         'Android Studio',
         'Java',
-        'MongoDB'
+        'MongoDB', 
+        'React.js', 
+        'Vue.js'
     ]);
     const [anchorEl, setAnchorEl] = useState(null);
     const anchorRef = useRef();

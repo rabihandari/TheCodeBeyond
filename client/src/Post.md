@@ -20,4 +20,3 @@ const app = () => {
 
 As a conclusion, this is how you use **useState()** hook in your React App.
 
-This is another branch 
