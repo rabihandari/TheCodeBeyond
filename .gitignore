@@ -1,1 +1,8 @@
+# Node Mudules
 node_modules
+
+# Log Files
+*.log
+
+# macOS Files
+.DS_Store

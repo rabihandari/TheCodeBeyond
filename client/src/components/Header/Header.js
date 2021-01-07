@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Container, AppBar, Typography, Grid, Button, Divider, Paper, Popper, Grow, MenuList, MenuItem } from '@material-ui/core';
 import { Search, KeyboardArrowDown } from '@material-ui/icons';
 
 import useStyles from './styles';
 import SocialMedia from '../Shared/SocialMedia/SocialMedia';
+import LinearIndeterminate from '../LinearIndeterminate/LinearIndeterminate';
 
 const Header = (props) => {
     const classes = useStyles();
+    const isLoading = useSelector((state) => state.loadingIndeterminate);
+    
 
     const [anchorEl, setAnchorEl] = useState(null);
     const anchorRef = useRef();
@@ -102,6 +106,9 @@ const Header = (props) => {
                     </Grid>
 
                 </Container>
+
+                {isLoading && <LinearIndeterminate />}
+
             </AppBar>
         </header>
     );

@@ -30,4 +30,8 @@ export default makeStyles((theme) => ({
         ].join(","),
         
     },
+    tags: {
+        color: '#0054a5',
+        fontSize: '14px',
+    }
 }));

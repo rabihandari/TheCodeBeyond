@@ -1,13 +1,14 @@
 import React from 'react';
 import { Container, Typography } from '@material-ui/core'
 
-import Header from '../../components/Header/Header';
+import useStyles from './styles';
 
 const CreatePost = () => {
+    const classes = useStyles();
+
     return(
         <div>
-            <Header />
-            <Container>
+            <Container className={classes.container}>
                 <Typography variant='h3' component="p">Contact Us</Typography>
             </Container>
         </div>

@@ -2,12 +2,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     
-  paper: {
-    padding: theme.spacing(2),
+  container: {
+    padding: '80px 0px',
     margin: '40px 0px',
   },
   title: {
     fontWeight: 'bold',
+    fontFamily: 'MetropolisBold',
   },
   form: {
     display: 'block',
@@ -17,7 +18,6 @@ export default makeStyles((theme) => ({
     marginTop: '20px',
   },
   fileInput: {
-    marginTop: '20px',
   },
   buttonSubmit: {
     marginTop: '20px',

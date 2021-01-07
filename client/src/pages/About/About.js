@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Typography } from '@material-ui/core'
-
-import Header from '../../components/Header/Header';
+import useStyles from './styles';
 
 const About = () => {
+    const classes = useStyles();
+
     return(
         <div>
-            <Header />
-            <Container>
+            <Container className={classes.container}>
                 <Typography variant='h3'>About Us</Typography>
             </Container>
         </div>

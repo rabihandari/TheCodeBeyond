@@ -1,15 +1,20 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
 
-import Header from '../../components/Header/Header';
 import Posts from '../../components/Posts/posts';
+import PopularPosts from '../../components/PopularPosts/PopularPosts';
+import Tags from '../../components/Tags/Tags';
+import useStyles from './styles';
 
-const Home = () => {
+const Home = (props) => {
+    const classes = useStyles();
+
     return(
         <div style={{ overflow: 'hidden'}}>
-            <Header />
-            <Container>
-                <Posts />
+            <Container className={classes.container}>
+                <Posts {...props}/>
+                <PopularPosts />
+                <Tags {...props}/>
             </Container>
         </div>
     );
