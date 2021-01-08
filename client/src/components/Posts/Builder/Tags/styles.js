@@ -14,6 +14,9 @@ export default makeStyles((theme) => ({
       marginBottom: '10px',
       transition: '1s',
     },
+    addIcon: {
+      transition:  '0.3s ease all',
+    },
     button: {
         margin: '20px 0px',
     },

@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { Chip, Grid, Button, Popper, Grow, MenuList, MenuItem, Paper, ClickAwayListener } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Chip, Grid, Grow } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 import useStyles from './styles';
 
 const Tags = ({postData, setPostData}) => {
     const classes = useStyles();
+    const [listOpened, setListOpened] = useState(false);
     const [tagList, setTagList] = useState([
         'Swift',
         'SwiftUI',
@@ -16,22 +17,15 @@ const Tags = ({postData, setPostData}) => {
         'Express',
         'Android Studio',
         'Java',
-        'MongoDB'
+        'MongoDB', 
+        'React.js', 
+        'Vue.js'
     ]);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const anchorRef = useRef();
-
-    const openList = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
-
-    const closeList = () => {
-        setAnchorEl(null);
-    }
 
     const handleSelect = (tagToAdd) => () => {
         setPostData({...postData, tags: [...postData.tags, tagToAdd]});
         setTagList(tagList.filter((tag) => tag !== tagToAdd));
+        setListOpened(false);
     }
 
     const handleDelete = (tagToDelete) => () => {
@@ -39,7 +33,9 @@ const Tags = ({postData, setPostData}) => {
         setTagList([...tagList, tagToDelete]);
     };
 
-    const open = Boolean(anchorEl);
+    const toggleList = () => {
+        setListOpened(!listOpened);
+    }
 
     return (
         <Grid container direction="row" alignItems="center" justify="space-between">
@@ -52,22 +48,15 @@ const Tags = ({postData, setPostData}) => {
                             </Grow>
                         </li>
                     )}
+                    <Chip label="Add Tag" deleteIcon={<Add className={classes.addIcon} style={ listOpened ? { transform: 'rotate(45deg)' } : {}}/>} onDelete={toggleList} onClick={toggleList} variant="outlined" color="primary" className={classes.chip}/>
+                    {listOpened && tagList.map((tag) => 
+                        <li key={tag}>
+                            <Grow in >
+                                <Chip label={tag} deleteIcon={<Add/>} onDelete={handleSelect(tag)} onClick={handleSelect(tag)} variant="outlined" className={classes.chip}/>
+                            </Grow>
+                        </li>
+                    )}
                 </ul>
-            </Grid>
-            
-            <Grid item>
-                <ClickAwayListener onClickAway={closeList}>
-                    <Button variant="outlined" color="primary" size="small" className={classes.button} onClick={openList} ref={anchorRef} startIcon={<Add />} >Add Tag</Button>
-                </ClickAwayListener>
-                <Popper open={open} transition disablePortal anchorEl={anchorRef.current}>
-                    <Grow in style={{ transformOrigin: '0 0 0'}}>
-                        <Paper className={classes.list}>
-                            <MenuList>
-                                {tagList.map((tag) => <MenuItem key={tag} className={classes.listItem} onClick={handleSelect(tag)}>{tag}</MenuItem>)}
-                            </MenuList>
-                        </Paper>
-                    </Grow>
-                </Popper>
             </Grid>
         </Grid>
     );

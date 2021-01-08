@@ -10,6 +10,46 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
     fontFamily: 'MetropolisBold',
   },
+  mdTitle: {
+    fontFamily: 'librebasker ville',
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  mdHeaderContent: {
+    fontFamily: 'MetropolisMedium',
+    textAlign: 'center',
+    marginTop: "10px",
+    fontSize: '12px',
+  },
+  mdMediaHolderSmall: {
+    height: '300px',
+    marginTop: "40px",
+    [theme.breakpoints.down('md')]: {
+      height: '200px',
+    },
+  },
+  mdMediaHolderLarge: {
+    height: '500px',
+    marginTop: "40px",
+    [theme.breakpoints.down('md')]: {
+      height: '200px',
+    },
+  },
+  mdMedia: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    height: '100%',
+    width: 'auto',
+    display: 'block',
+  },
+  mdDescription: {
+    fontFamily: 'MetropolisRegular',
+    textAlign: 'center',
+    marginTop: "20px",
+  },
+  mdBody: {
+    marginTop: "40px",
+  },
   form: {
     display: 'block',
     position: 'relative',
@@ -20,11 +60,8 @@ export default makeStyles((theme) => ({
   fileInput: {
   },
   buttonSubmit: {
-    marginTop: '20px',
+    marginTop: '30px',
+    marginRight: '10px',
     textTransform: 'none',
-    backgroundColor: 'black',
-    '&:hover': {
-        backgroundColor: 'grey',
-    },
   },
 }));
