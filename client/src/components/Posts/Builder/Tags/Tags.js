@@ -61,7 +61,7 @@ const Tags = ({postData, setPostData}) => {
                 <ClickAwayListener onClickAway={closeList}>
                     <Button variant="outlined" color="primary" size="small" className={classes.button} onClick={openList} ref={anchorRef} startIcon={<Add />} >Add Tag</Button>
                 </ClickAwayListener>
-                <Popper open={open} transition disablePortal anchorEl={anchorRef.current}>
+                <Popper open={open} transition anchorEl={anchorRef.current}>
                     <Grow in style={{ transformOrigin: '0 0 0'}}>
                         <Paper className={classes.list}>
                             <MenuList>

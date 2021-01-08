@@ -31,6 +31,9 @@ export default makeStyles((theme) => ({
     textAlign: 'center',
     marginTop: "20px",
   },
+  mdBody: {
+    marginTop: "40px",
+  },
   form: {
     display: 'block',
     position: 'relative',
@@ -42,10 +45,7 @@ export default makeStyles((theme) => ({
   },
   buttonSubmit: {
     marginTop: '20px',
+    marginRight: '10px',
     textTransform: 'none',
-    backgroundColor: 'black',
-    '&:hover': {
-        backgroundColor: 'grey',
-    },
   },
 }));
