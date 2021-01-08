@@ -6,22 +6,28 @@ import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Typography, TextField, Button, Grid, CardMedia, Tooltip, IconButton } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import Help from '@material-ui/icons/Help';
+import Edit from '@material-ui/icons/Edit';
 import Filebase from 'react-file-base64';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import moment from 'moment';
 
 import useStyles from './styles';
 import { createPost } from '../../../actions/posts';
 import Tags from './Tags/Tags';
 
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 const Builder = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const mdSection = useRef();
-    const [postData, setPostData] = useState({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer'], createdAt: Date.now()});
+    const [postData, setPostData] = useState({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
     const [preview, setPreview] = useState(true);
     const [fullPreview, setFullPreview] = useState(false);
+    const [alertShown, setAlertShown] = React.useState(false);
     const [titleError, setTitleError] = useState(false);
 
     const renderers = {
@@ -38,7 +44,10 @@ const Builder = () => {
             return;
         }
         
-        dispatch(createPost(postData));
+        dispatch(createPost(postData)).then(() => {
+            setAlertShown(true)
+            setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+        });
 
     }
 
@@ -65,6 +74,14 @@ const Builder = () => {
         setFullPreview(!fullPreview);
     }
 
+    const closeAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setAlertShown(false);
+      };
+
     return(
         <div className={classes.container}>
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -88,8 +105,10 @@ const Builder = () => {
                 {(preview || fullPreview) &&
                 <Grid item xs={12} md={fullPreview ? 12 : 6} style={ !fullPreview ? { maxHeight: '500px', overflow: 'auto'} : {}} ref={mdSection}>
                     <Typography variant="h3" className={classes.mdTitle}>{postData.title.length === 0 ? "Your Title" : postData.title}</Typography>
-                    <Typography variant="body2" className={classes.mdHeaderContent}>{moment(postData.createdAt).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
-                    {postData.imageFile !== "" && <CardMedia image={postData.imageFile} className={classes.mdMedia}></CardMedia>}
+                    <Typography variant="body2" className={classes.mdHeaderContent}>{moment(Date.now()).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
+                    {postData.imageFile !== "" && 
+                        <div className={fullPreview ? classes.mdMediaHolderLarge : classes.mdMediaHolderSmall}><CardMedia image={postData.imageFile} className={classes.mdMedia}/></div>
+                    }
                     <Typography variant="body1" className={classes.mdDescription}>{postData.description}</Typography>
                     <ReactMarkdown renderers={renderers} children={postData.body} className={classes.mdBody} />
                 </Grid>
@@ -97,8 +116,15 @@ const Builder = () => {
                 <Grid item md={12}>
                     <Tags postData={postData} setPostData={setPostData}/>
                     <div className={classes.fileInput}><Filebase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, imageFile: base64})} /></div>
-                    <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={<Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
+                    <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={fullPreview ? <Edit/> : <Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
                     <Button className={classes.buttonSubmit} type="submit" variant="contained" color="secondary">Add Post</Button>
+                </Grid>
+                <Grid item>
+                    <Snackbar open={alertShown} autoHideDuration={6000} onClose={closeAlert}>
+                        <Alert onClose={closeAlert} severity="success">
+                            Your post has been successfully uploaded!
+                        </Alert>
+                    </Snackbar>
                 </Grid>
             </Grid>
             </form>

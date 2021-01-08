@@ -21,10 +21,26 @@ export default makeStyles((theme) => ({
     marginTop: "10px",
     fontSize: '12px',
   },
-  mdMedia: {
-    width: '100%',
+  mdMediaHolderSmall: {
     height: '300px',
     marginTop: "40px",
+    [theme.breakpoints.down('md')]: {
+      height: '200px',
+    },
+  },
+  mdMediaHolderLarge: {
+    height: '500px',
+    marginTop: "40px",
+    [theme.breakpoints.down('md')]: {
+      height: '200px',
+    },
+  },
+  mdMedia: {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    height: '100%',
+    width: 'auto',
+    display: 'block',
   },
   mdDescription: {
     fontFamily: 'MetropolisRegular',
@@ -44,7 +60,7 @@ export default makeStyles((theme) => ({
   fileInput: {
   },
   buttonSubmit: {
-    marginTop: '20px',
+    marginTop: '30px',
     marginRight: '10px',
     textTransform: 'none',
   },
