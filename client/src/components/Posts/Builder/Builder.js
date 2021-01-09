@@ -93,8 +93,8 @@ const Builder = () => {
                         <Typography variant="h4" className={classes.title}>New post</Typography>
                         </Grid>
                         <Grid item>
-                        <Tooltip title="Toggle Preview"><IconButton color="secondary" onClick={() => {setPreview(!preview)}}><Visibility /></IconButton></Tooltip>
-                        <Tooltip title="Markdown Help"><IconButton color="secondary" onClick={() => {window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}}><Help /></IconButton></Tooltip>
+                            <Tooltip title="Toggle Preview"><IconButton color="secondary" onClick={() => {setPreview(!preview)}}><Visibility /></IconButton></Tooltip>
+                            <Tooltip title="Markdown Help"><IconButton color="secondary" onClick={() => {window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}}><Help /></IconButton></Tooltip>
                         </Grid>
                     </Grid>
                     <TextField error={titleError} helperText={titleError && "Please enter a title"} className={classes.textInput} fullWidth name="title" label="Title" variant="outlined" onChange={handleChange} value={postData.title}/>
@@ -103,7 +103,7 @@ const Builder = () => {
                 </Grid>
                 }
                 {(preview || fullPreview) &&
-                <Grid item xs={12} md={fullPreview ? 12 : 6} style={ !fullPreview ? { maxHeight: '500px', overflow: 'auto'} : {}} ref={mdSection}>
+                <Grid item xs={12} md={fullPreview ? 12 : 6} style={ !fullPreview ? { maxHeight: '500px', overflow: 'auto'} : {minHeight: '500px'}} ref={mdSection}>
                     <Typography variant="h3" className={classes.mdTitle}>{postData.title.length === 0 ? "Your Title" : postData.title}</Typography>
                     <Typography variant="body2" className={classes.mdHeaderContent}>{moment(Date.now()).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
                     {postData.imageFile !== "" && 

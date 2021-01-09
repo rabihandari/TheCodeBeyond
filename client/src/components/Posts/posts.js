@@ -21,9 +21,8 @@ const Posts = (props) => {
 
     const goBack = () => {
         // Reset Tags, page number, and posts 
-        props.setSelectedTags([]);
         props.setPage(1);
-        props.fetchPosts(0);
+        props.fetchPosts(0, "", []);
     }
     const handleChange = (event, value) => {
         props.setPage(value);

@@ -1,15 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { Grid, Chip, Typography } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 
 import useStyles from './styles';
-import { getPosts } from '../../actions/posts';
 
 const Tags = (props) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const isFirstRender = useRef(true);
 
     const tags = [
         'Swift',
@@ -19,7 +15,7 @@ const Tags = (props) => {
         'Python',
         'Node.js',
         'Express',
-        'Android Studio',
+        'Android',
         'Java',
         'MongoDB',
         'Angular', 
@@ -31,20 +27,16 @@ const Tags = (props) => {
 
     const handleClick = (tag) => () => {
         if (props.selectedTags.includes(tag)){
-            props.setSelectedTags(props.selectedTags.filter((item) => tag !== item));
+            let newTags = props.selectedTags.filter((item) => tag !== item);
+            props.setSelectedTags(newTags);
+            props.fetchPosts(0, undefined, newTags);
         }else {
-            props.setSelectedTags([...props.selectedTags, tag]);
+            let newTags = [...props.selectedTags, tag];
+            props.setSelectedTags(newTags);
+            props.fetchPosts(0, undefined, newTags);
         }
         props.setPage(1);
     };
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-        dispatch(getPosts(0, {"tags": props.selectedTags} ));
-    }, [props.selectedTags, dispatch]);
 
 
     return(

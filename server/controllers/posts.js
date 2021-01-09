@@ -7,13 +7,35 @@ export const getPosts = async (req, res) => {
     const postsPerPage = 7;
 
     try {
-        let filterQuery = {};
-        if(filter.tags){
-            if (filter.tags.length > 0){
-                filterQuery.tags = { $all: filter.tags }; 
+
+        // Adding Keyword filter
+        let keywordQuery = {};
+        if(filter.keyword){
+            if(filter.keyword.length > 0){
+                keywordQuery = {
+                   $or: [
+                       {title: { $regex: filter.keyword, $options: 'i'}},
+                       {description: { $regex: filter.keyword, $options: 'i'}}
+                   ]
+                };
             }
         }
 
+        // Adding tag filter
+        let tagsQuery = {};
+        if(filter.tags){
+            if (filter.tags.length > 0){
+                tagsQuery = {tags: { $all: filter.tags }}; 
+            }
+        }
+
+        // Merging filters
+        let filterQuery = {
+            $and: [
+                keywordQuery,
+                tagsQuery
+            ]
+        };
         const postsNumber = await Post.find(filterQuery).countDocuments();
         const posts = await Post
             .find(filterQuery)
@@ -49,3 +71,13 @@ export const createPost = async (req, res) => {
     }
 };
 
+
+export const getTitles = async (req, res) => {
+    try {
+        const names = await Post.find({}, 'title');
+
+        res.status(200).json(names);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};

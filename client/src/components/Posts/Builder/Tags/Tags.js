@@ -15,7 +15,7 @@ const Tags = ({postData, setPostData}) => {
         'Python',
         'Node',
         'Express',
-        'Android Studio',
+        'Android',
         'Java',
         'MongoDB', 
         'React.js', 
