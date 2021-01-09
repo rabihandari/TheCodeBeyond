@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Container, AppBar, Typography, Grid, Button, Divider, Paper, Popper, Grow, MenuList, MenuItem } from '@material-ui/core';
-import { Search, KeyboardArrowDown } from '@material-ui/icons';
+import { Container, AppBar, Typography, Grid, Divider, Paper, Popper, Grow, MenuList, MenuItem } from '@material-ui/core';
+import { KeyboardArrowDown } from '@material-ui/icons';
 
 import useStyles from './styles';
 import SocialMedia from '../Shared/SocialMedia/SocialMedia';
 import LinearIndeterminate from '../LinearIndeterminate/LinearIndeterminate';
+import SearchBar from './SearchBar/SearchBar';
 
 const Header = (props) => {
     const classes = useStyles();
@@ -16,19 +17,16 @@ const Header = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const anchorRef = useRef();
 
-    const openSearch = () => {
-        console.log("message");
-    };
-
     const openList = (event) => {
         setAnchorEl(event.currentTarget);
-    }
+    };
 
     const closeList = (event) => {
         setAnchorEl(null);
-    }
+    };
  
     const open = Boolean(anchorEl);
+
 
     return(
         <header>
@@ -43,19 +41,8 @@ const Header = (props) => {
                         <Grid item xs={12} md={4}>
                             <Typography variant="h4" className={classes.title}>The Code Beyond</Typography>
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Grid container direction="row" justify="flex-end" alignItems="center">
-                                <Button className={classes.searchButton} onClick={ openSearch }>
-                                    <Grid container direction="row" alignItems="center" spacing={3}>
-                                        <Grid item xs={6}> 
-                                            <Typography variant="body2">Search</Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Search style={{ marginTop: '5px'}}/>
-                                        </Grid>
-                                    </Grid>
-                                </Button>
-                            </Grid>
+                        <Grid item xs={12} md={4} style={{ textAlign: 'right' }}>
+                            <SearchBar {...props}/>
                         </Grid>
                     </Grid>
 
@@ -106,6 +93,7 @@ const Header = (props) => {
                     </Grid>
 
                 </Container>
+
 
                 {isLoading && <LinearIndeterminate />}
 

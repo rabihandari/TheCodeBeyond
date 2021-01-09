@@ -20,14 +20,14 @@ export default makeStyles((theme) => ({
         position: 'relative',
         [theme.breakpoints.down('md')]: {
             textAlign: 'center',
-          },
+        },
     },
     divider: {
         maxWidth: '200px',
         backgroundColor: "rgba(255,255,255,.2)",
         [theme.breakpoints.down('md')]: {
             maxWidth: '100%',
-          },
+        },
     },
     
     description: {
@@ -40,7 +40,7 @@ export default makeStyles((theme) => ({
         margin: 'auto',
         [theme.breakpoints.down('md')]: {
             textAlign: 'center',
-          },
+        },
     },
     form: {
         width: '100%',
@@ -67,6 +67,9 @@ export default makeStyles((theme) => ({
         textDecoration: 'none',
         fontFamily: 'MetropolisRegular',
         outline: 'none',
+        [theme.breakpoints.down('md')]: {
+            width: '80%',
+        },
     },
     submit: {
         position: 'absolute',

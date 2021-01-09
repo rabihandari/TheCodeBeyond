@@ -22,6 +22,7 @@ const theme = createMuiTheme({
 const App = () => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
+    const [selectedTitle, setSelectedTitle] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
@@ -29,14 +30,16 @@ const App = () => {
         dispatch(getPopularPosts());
     }, [dispatch]);
 
-    const fetchPosts = (page) => {
-        dispatch(getPosts(page, {"tags": selectedTags}));
+    const fetchPosts = (page, keyword=selectedTitle, tags=selectedTags) => {
+        dispatch(getPosts(page, {"keyword": keyword, "tags": tags}));
+        setSelectedTitle(keyword);
+        setSelectedTags(tags);
     }
     
     return(
         <Router>
             <MuiThemeProvider theme={theme}>
-                <Header />
+                <Header fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Route path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>} exact/>
                 <Route path="/about" component={About} />
                 <Route path="/contact" component={Contact} />

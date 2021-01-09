@@ -30,6 +30,7 @@ export default makeStyles(() => ({
         borderStyle: 'none',
     },
     navBar: {
+        width: '100%', 
         padding: '10px',
         margin: '0px'
     },
