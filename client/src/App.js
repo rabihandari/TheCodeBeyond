@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -7,9 +7,11 @@ import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import CreatePost from './pages/CreatePost/CreatePost';
+import Post from './pages/Post/Post';
 import { getPopularPosts, getPosts } from './actions/posts';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import ScrollToTop from './components/Shared/ScrollToTop';
 
 const theme = createMuiTheme({
     palette: {
@@ -39,11 +41,16 @@ const App = () => {
     return(
         <Router>
             <MuiThemeProvider theme={theme}>
+                <ScrollToTop/>
                 <Header fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
-                <Route path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>} exact/>
-                <Route path="/about" component={About} />
-                <Route path="/contact" component={Contact} />
-                <Route path="/createPost" component={CreatePost} />
+                <Switch>
+                    <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>}/>
+                    <Route exact path="/about" component={About} />
+                    <Route exact path="/contact" component={Contact} />
+                    <Route exact path="/createPost" component={CreatePost} />
+                    <Route exact path="/:id/:title" render={(props) => <Post {...props} />} />
+                    <Route component={Contact} />
+                </Switch>
                 <Footer />
             </MuiThemeProvider>
         </Router>

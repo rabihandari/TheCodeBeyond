@@ -6,3 +6,4 @@ export const fetchPosts = (page, filter) => axios.post(`${url}/posts/page${page}
 export const createPost = (newPost) => axios.post(`${url}/posts/createPost`, newPost);
 export const fetchPopularPosts = () => axios.get(`${url}/posts/popular`);
 export const fetchTitles = () => axios.get(`${url}/posts/titles`);
+export const fetchPost = (id) => axios.get(`${url}/posts/${id}`)

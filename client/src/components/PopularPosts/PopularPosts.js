@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
 
@@ -15,7 +16,9 @@ const PopularPosts = () => {
             <Grid container direction="row" alignItems="center" justify="space-between" className={classes.title}>
                 {popularPosts.map((popularPost) => 
                     <Grid item key={popularPost._id} xs={12} md={6} lg={4}>
-                        <PopularPost post={popularPost}/>
+                        <Link to={`/${popularPost._id}/${popularPost.title}`} style={{ textDecoration: 'none', color: '#000000FF' }}>
+                            <PopularPost post={popularPost}/>
+                        </Link>
                     </Grid>
                 )}
             </Grid>

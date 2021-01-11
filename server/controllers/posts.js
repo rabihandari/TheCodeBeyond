@@ -38,7 +38,7 @@ export const getPosts = async (req, res) => {
         };
         const postsNumber = await Post.find(filterQuery).countDocuments();
         const posts = await Post
-            .find(filterQuery)
+            .find(filterQuery, 'title description tags createdAt imageFile')
             .skip(page * postsPerPage)
             .limit(postsPerPage);
         
@@ -50,7 +50,7 @@ export const getPosts = async (req, res) => {
 
 export const getPopularPosts = async (req, res) => {
     try {
-        const posts = await Post.find().sort({ likeCount: -1 }).limit(3);
+        const posts = await Post.find({}, 'title creator createdAt imageFile').sort({ likeCount: -1 }).limit(3);
 
         res.status(200).json(posts);
     } catch (error) {
@@ -79,5 +79,23 @@ export const getTitles = async (req, res) => {
         res.status(200).json(names);
     } catch (error) {
         res.status(404).json({ message: error.message });
+    }
+};
+
+
+export const getPost = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        Post.findOne({ _id: id}).exec((err, post) => {
+            if (post) {
+                res.status(200).json({ post: post });
+            }else {
+                res.status(404).json({ error: err });
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
