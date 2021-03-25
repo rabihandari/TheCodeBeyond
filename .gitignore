@@ -5,7 +5,7 @@ node_modules
 *.log
 
 # macOS Files
-.DS_Store
+._.DS_Store
 
 # eslint cache
 .eslintcache

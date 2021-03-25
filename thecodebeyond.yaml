@@ -1,0 +1,32 @@
+version: '3'
+services:
+  frontend:
+    image: thecodebeyondbackend.azurecr.io/frontend:1.5
+    ports:
+      - 3000:3000
+  backend:
+    image: thecodebeyondbackend.azurecr.io/backend:1.6
+    ports:
+      - 5000:5000
+    environment:
+      LOCAL_DATABASE_URL: mongodb://thecodebeyond:EatMyRaze_123@mongodb
+      SECRET_OR_KEY: KG6\DCM2XY#*DSnu-P-ga6As\_5FQ/32P&y8Thy9aFV]RS^_[
+  mongodb:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: thecodebeyond
+      MONGO_INITDB_ROOT_PASSWORD: EatMyRaze_123
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    ports:
+     - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: thecodebeyond
+      ME_CONFIG_MONGODB_ADMINPASSWORD: EatMyRaze_123
+      ME_CONFIG_MONGODB_SERVER: mongodb
+
+volumes:
+  mongo-data:
+    driver: local

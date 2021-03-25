@@ -63,8 +63,9 @@ export const login = async (req, res) => {
                     };
 
                     // Sign JWT
-                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: 31556926 }, (err, token) => {
-                        res.status(200).json({ success: true, token: "Bearer " + token })
+                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: 60 }, (err, token) => {
+                        res.cookie('jwt', token)
+                        res.status(200).json({ success: true, token: "JWT " + token })
                     });
                 }else{
                     return res.status(400).json({ passwordincorrect: "Password is incorrect" });

@@ -4,8 +4,15 @@ import { SECRET_OR_KEY } from '../config/config.js';
 
 const { ExtractJwt } = passportJwt;
 const { Strategy } = passportJwt;
+
+const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) token = req.cookies['jwt']
+    return token;
+} 
+
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = SECRET_OR_KEY;
 
 export default (passport) => {
@@ -20,3 +27,5 @@ export default (passport) => {
             .catch(err => console.log(err));
     }));
 }
+
+

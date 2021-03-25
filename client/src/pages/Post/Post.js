@@ -37,7 +37,7 @@ const Post = (props) => {
     }, [props, history, dispatch]);
 
     return(
-        <Container>
+        <Container className={classes.mainContainer}>
             {post && 
                 <div className={classes.postContainer}>
                     <Typography variant="h2" className={classes.mdTitle}>{post.title}</Typography>

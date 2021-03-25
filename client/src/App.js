@@ -4,13 +4,12 @@ import { useDispatch } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import Home from './pages/Home/Home';
-import About from './pages/About/About';
-import Contact from './pages/Contact/Contact';
 import CreatePost from './pages/CreatePost/CreatePost';
 import Post from './pages/Post/Post';
 import { getPopularPosts, getPosts } from './actions/posts';
-import Header from './components/Header/Header';
+import HeaderV2 from './components/HeaderV2/HeaderV2';
 import Footer from './components/Footer/Footer';
+import Login from './pages/Login/Login'
 import ScrollToTop from './components/Shared/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -36,20 +35,19 @@ const App = () => {
         dispatch(getPosts(page, {"keyword": keyword, "tags": tags}));
         setSelectedTitle(keyword);
         setSelectedTags(tags);
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
     
     return(
         <Router>
             <MuiThemeProvider theme={theme}>
                 <ScrollToTop/>
-                <Header fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
+                <HeaderV2 fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Switch>
                     <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>}/>
-                    <Route exact path="/about" component={About} />
-                    <Route exact path="/contact" component={Contact} />
                     <Route exact path="/createPost" component={CreatePost} />
                     <Route exact path="/:id/:title" render={(props) => <Post {...props} />} />
-                    <Route component={Contact} />
+                    <Route exact path="/login" component={Login} />
                 </Switch>
                 <Footer />
             </MuiThemeProvider>

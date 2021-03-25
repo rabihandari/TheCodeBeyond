@@ -3,7 +3,7 @@ import { CustomIndeterminate } from './styles';
 
 const LinearIndeterminate = () => {
     return(
-        <CustomIndeterminate  />
+        <CustomIndeterminate />
     );
 }
 

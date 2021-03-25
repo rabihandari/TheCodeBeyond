@@ -24,6 +24,7 @@ const Posts = (props) => {
         props.setPage(1);
         props.fetchPosts(0, "", []);
     }
+    
     const handleChange = (event, value) => {
         props.setPage(value);
         props.fetchPosts(value - 1);
