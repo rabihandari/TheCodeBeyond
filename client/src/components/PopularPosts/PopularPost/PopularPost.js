@@ -29,7 +29,7 @@ const PopularPost = ({post}) => {
                                 <Typography component="p" className={classes.contentTitle} style={ hovered ? { color: 'blue' } : null }>{post.title}</Typography>
                             </Grid>
                             <Grid item>
-                                <Typography component="p" className={classes.contentCreator}>By {post.creator} on {moment(post.createdAt).format('LL')}</Typography>
+                                <Typography component="p" className={classes.contentCreator}>By {post.name} on {moment(post.createdAt).format('LL')}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>

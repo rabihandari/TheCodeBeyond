@@ -1,10 +1,20 @@
 import axios from 'axios';
 
-const url = process.env.REACT_APP_HOST_URL || "http://localhost:5000";
+const API = axios.create({ baseURL: process.env.REACT_APP_HOST_URL || "http://localhost:5000" });
 
-export const fetchPosts = (page, filter) => axios.post(`${url}/posts/page${page}`, filter);
-export const createPost = (newPost) => axios.post(`${url}/posts/createPost`, newPost);
-export const fetchPopularPosts = () => axios.get(`${url}/posts/popular`);
-export const fetchTitles = () => axios.get(`${url}/posts/titles`);
-export const fetchPost = (id) => axios.get(`${url}/posts/${id}`)
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem('profile')) {
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+  }
 
+  return req;
+});
+
+export const fetchPosts = (page, filter) => API.post(`/posts/page${page}`, filter);
+export const createPost = (newPost) => API.post(`/posts/createPost`, newPost);
+export const fetchPopularPosts = () => API.get(`/posts/popular`);
+export const fetchTitles = () => API.get(`/posts/titles`);
+export const fetchPost = (id) => API.get(`/posts/${id}`)
+
+export const signIn = (formData) =>  API.post(`/users/login`, formData);
+export const signUp = (formData) =>  API.post(`/users/register`, formData);

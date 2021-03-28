@@ -50,7 +50,7 @@ export const getPosts = async (req, res) => {
 
 export const getPopularPosts = async (req, res) => {
     try {
-        const posts = await Post.find({}, 'title creator createdAt imageFile').sort({ likeCount: -1 }).limit(3);
+        const posts = await Post.find({}, 'title name createdAt imageFile').sort({ likes: -1 }).limit(3);
 
         res.status(200).json(posts);
     } catch (error) {
@@ -60,14 +60,15 @@ export const getPopularPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    
-    const newPost = new Post(post);
+
+    const newPost = new Post({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
+
     try {
         await newPost.save();
 
         res.status(201).json(newPost);
     } catch (error) {
-        res.status(409).json({ error: error.message });
+        res.status(409).json({ message: error.message });
     }
 };
 

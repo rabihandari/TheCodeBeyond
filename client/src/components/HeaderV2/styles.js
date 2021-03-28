@@ -19,6 +19,7 @@ export default makeStyles((theme) => ({
         fontWeight: "900",
     },
     rightContainer: {
+        alignItems: 'center',
         display: 'flex',
         flexDirection: 'row-reverse',
     },
@@ -26,8 +27,19 @@ export default makeStyles((theme) => ({
         textTransform: 'none',
     },
     signupButton: {
+        fontWeight: '300',
         textTransform: 'none',
         marginLeft: '10px',
         minInlineSize: 'max-content',
+    },
+    addPostButton: {
+        fontSize: '12px',
+        lineHeight: '25px',
+        marginLeft: '10px',
+        whiteSpace: 'nowrap',
+        textAlign: 'center',
+        fontFamily: 'MetropolisRegular',
+        textTransform: 'none',
+
     }
 }));

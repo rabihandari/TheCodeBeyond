@@ -30,6 +30,7 @@ const Builder = () => {
     const [alertShown, setAlertShown] = React.useState(false);
     const [titleError, setTitleError] = useState(false);
 
+    const user = JSON.parse(localStorage.getItem('profile'));
     const renderers = {
         code:({language,value})=>{
             return <SyntaxHighlighter style={dracula} language={language} children={value || "" } />
@@ -44,7 +45,7 @@ const Builder = () => {
             return;
         }
         
-        dispatch(createPost(postData)).then(() => {
+        dispatch(createPost({ ...postData, name: user?.result?.name })).then(() => {
             setAlertShown(true)
             setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
         });

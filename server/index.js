@@ -2,25 +2,20 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import passport from 'passport';
 import cookieParser  from 'cookie-parser';
 import { DATABASE_URL } from './config/config.js';
 
-import configurePassport from './config/passport.js';
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
 
 const app = express();
 
 // Configure middlewares
-app.use(passport.initialize());
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-// Configure passport
-configurePassport(passport);
 
 // Configure routes
 app.use('/posts', postRoutes);

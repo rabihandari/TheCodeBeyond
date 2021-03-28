@@ -7,9 +7,11 @@ import Home from './pages/Home/Home';
 import CreatePost from './pages/CreatePost/CreatePost';
 import Post from './pages/Post/Post';
 import { getPopularPosts, getPosts } from './actions/posts';
+import { oAuthLogin } from './actions/auth';
 import HeaderV2 from './components/HeaderV2/HeaderV2';
 import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
 import ScrollToTop from './components/Shared/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -27,6 +29,7 @@ const App = () => {
     const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
+        dispatch(oAuthLogin(getUser()));
         dispatch(getPosts(0));
         dispatch(getPopularPosts());
     }, [dispatch]);
@@ -36,6 +39,10 @@ const App = () => {
         setSelectedTitle(keyword);
         setSelectedTags(tags);
         window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    const getUser = () => {
+        return JSON.parse(localStorage.getItem('profile'));
     }
     
     return(
@@ -48,6 +55,7 @@ const App = () => {
                     <Route exact path="/createPost" component={CreatePost} />
                     <Route exact path="/:id/:title" render={(props) => <Post {...props} />} />
                     <Route exact path="/login" component={Login} />
+                    <Route exact path="/register" component={Register} />
                 </Switch>
                 <Footer />
             </MuiThemeProvider>

@@ -20,23 +20,18 @@ export default makeStyles((theme) => ({
     signin: {
     },
     inputField: {
-        marginTop: '20px',
+        marginTop: '0px',
         
     },
     loginButton: {
         height: '50px',
     },
-    divider: {
-        padding: '5px',
-        marginTop: '20px',
-        textAlign: 'center',
-    },
     googleLogin: {
         width: '100%!important',
         marginBottom: '50px',
     },
-    createAccount: {
-        marginTop: '20px',
+    termsBox: {
+        fontSize: '13px',
     },
     error: {
         marginTop: '5px',
