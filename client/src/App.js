@@ -12,6 +12,7 @@ import HeaderV2 from './components/HeaderV2/HeaderV2';
 import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
+import RegisterSuccess from './pages/Register/Success/Success'
 import ScrollToTop from './components/Shared/ScrollToTop';
 
 const theme = createMuiTheme({
@@ -52,10 +53,11 @@ const App = () => {
                 <HeaderV2 fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Switch>
                     <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>}/>
-                    <Route exact path="/createPost" component={CreatePost} />
-                    <Route exact path="/:id/:title" render={(props) => <Post {...props} />} />
-                    <Route exact path="/login" component={Login} />
+                    <Route path="/createPost" component={CreatePost} />
                     <Route exact path="/register" component={Register} />
+                    <Route path="/register/success" component={RegisterSuccess} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/:id/:title" render={(props) => <Post {...props} />} />
                 </Switch>
                 <Footer />
             </MuiThemeProvider>

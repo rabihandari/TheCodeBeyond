@@ -18,6 +18,7 @@ const Login = () => {
     const [errors, setErrors] = useState(initialErrors);
     const [loading, setLoading] = useState(false);
 
+
     const goToSignIn = () => {
         history.push('/login');
     }
@@ -52,7 +53,7 @@ const Login = () => {
 
         // Create Account...
         signUp(form).then(res => {
-            history.push('/login');
+            history.push('/register/success');
         }).catch(error => {
             setErrors({ firstName: '', lastName: '', email: '', password: '', ...error.response.data });
             setLoading(false);

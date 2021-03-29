@@ -50,7 +50,7 @@ export const getPosts = async (req, res) => {
 
 export const getPopularPosts = async (req, res) => {
     try {
-        const posts = await Post.find({}, 'title name createdAt imageFile').sort({ likes: -1 }).limit(3);
+        const posts = await Post.find({}, 'title name createdAt imageFile').sort({ likes: -1 }).limit(6);
 
         res.status(200).json(posts);
     } catch (error) {
