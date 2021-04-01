@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
-import { Container, Grid, Typography, Button, Link, Snackbar } from '@material-ui/core';
+import { Typography, Container, Grid, Button, Snackbar, TextField } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert'
-import { useHistory, useParams } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
-import greenTick from '../../../images/green-tick.png';
+import keys from '../../../images/keys.png';
+import { emailError } from '../validator';
 import { resendActivation } from '../../../api';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+}
 
-const Success = () => {
+const TokenExpired = () => {
     const classes = useStyles();
     const history = useHistory();
     const [successful, setSuccessful] = useState(true);
     const [message, setMessage] = useState('');
     const [open, setOpen] = useState(false);
-    let { email } = useParams();
-
-    const goToLogin = () => {
-        history.push('/login');
-    }
+    const [email, setEmail] = useState('');
 
     const resend = () => {
+        let error = emailError(email);
+        setMessage('');
+        
+        if (error.length > 0){
+            setMessage(emailError(email));
+            return;
+        }
+
         resendActivation(email).then(res => {
-            setMessage('');
             setSuccessful(true);
             setOpen(true);
         }).catch(error => {
-            if(error.response.status === 429){
-                setMessage("You cannot send more emails. Please wait at least 5 minutes to send another email");
-            }
+            setMessage(error.response.data.message);
             setSuccessful(false);
             setOpen(true);
         });
@@ -43,26 +45,31 @@ const Success = () => {
         }
     
         setOpen(false);
-      };
+    };
 
-    return (
+    const cancel = () => {
+        history.push('/login');
+    }
+
+    return(
         <Container className={classes.container}>
             <Grid container justify="center" align="center">
                 <Grid item xs={12}>
-                    <img className={classes.tickIcon} src={greenTick} alt="Success" height="100" width="100"/>
+                    <img className={classes.keysIcon} src={keys} alt="Token Expired" height="140" />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography className={classes.message1} variant="h5">Your account has been successfully registered!</Typography>
+                    <Typography className={classes.message1} variant="h5">Sorry, your token has expired!</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography className={classes.message2} variant="body1">Thank you for registering</Typography>
+                    <Typography className={classes.message3} variant="body2">We'll need reauthenticate your account. Please fill in with your email to receive another confirmation link </Typography>
+                    <Typography className={classes.errorText} variant="caption">{message}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography className={classes.message3} variant="body2">Check you inbox and spam folders in your email for activation link. Did not receive an email <Link className={classes.link} onClick={resend} color="primary">resend activaiton email</Link></Typography>
-                    <Typography style={{ color: 'red' }} variant="caption">{message}</Typography>
+                    <TextField className={classes.input} error={false} variant="outlined" name="email" label="Email Address" size="medium" onChange={(e)=> setEmail(e.target.value)} />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button className={classes.login} onClick={goToLogin} variant="contained" color="primary">Log in</Button>
+                    <Button className={classes.cbutton} onClick={cancel} variant="outlined" color="secondary">Cancel</Button>
+                    <Button className={classes.cbutton} onClick={resend} variant="contained" color="primary">Resend Activation</Button>
                 </Grid>
             </Grid>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
@@ -74,4 +81,4 @@ const Success = () => {
     );
 }
 
-export default Success;
+export default TokenExpired;

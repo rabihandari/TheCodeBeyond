@@ -6,6 +6,7 @@ export default makeStyles((theme) => ({
         height: '34px',
         width: '34px',
         cursor: 'pointer',
+        backgroundColor: 'blue'
     },
     dropDownHeader: {
         margin: '0px',
@@ -14,6 +15,7 @@ export default makeStyles((theme) => ({
     headerPicture: {
         height: '34px',
         width: '34px',
+        backgroundColor: 'blue'
     },
     menuItem: {
         fontSize: '14px',

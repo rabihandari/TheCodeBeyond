@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Grid, TextField, Typography, Button } from '@material-ui/core';
+import { Container, Grid, TextField, Typography, Button, Link } from '@material-ui/core';
 import GoogleButton from 'react-google-button'
 import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
@@ -23,6 +23,10 @@ const Login = () => {
 
     const goToRegister = () => {
         history.push('/register');
+    }
+
+    const goToForgetPassword = () => {
+        history.push('/login/forget-password');
     }
 
     const googleSuccess = async (res) => {
@@ -84,6 +88,9 @@ const Login = () => {
                     </Grid>
                     <Grid item xs={12} className={classes.inputField}>
                         <TextField error={errors.password.length !== 0} fullWidth variant="outlined" name="password" label="Password" type="password" onChange={handleChange}  />
+                    </Grid>
+                    <Grid item xs={12} className={classes.forgetPassword}>
+                        <Link className={classes.forgetPasswordText} onClick={goToForgetPassword}>Forgot password?</Link>
                     </Grid>
                     <Grid item xs={12} className={classes.inputField}>
                         <Button fullWidth type="submit" variant="contained" color="primary" size="large" className={classes.loginButton}>{loading ? "Logging In..." : "Log In"}</Button>

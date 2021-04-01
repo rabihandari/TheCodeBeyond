@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
     title: {
         alignSelf: 'center',
         color: '#373435',
-        marginLeft: '20px',
+        marginLeft: '10px',
         fontWeight: "900",
     },
     rightContainer: {

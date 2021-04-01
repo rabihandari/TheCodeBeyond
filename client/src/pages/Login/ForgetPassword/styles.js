@@ -2,29 +2,35 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     container: {
-        padding: '140px 20px',
-        marginBottom: '60px',
+        padding: '100px 20px',
+        maxWidth: '650px',
         [theme.breakpoints.down('md')]: {
             padding: '40px 20px',
         },
     },
-    tickIcon: {
+    keysIcon: {
         padding: '20px 0',
+    },
+    input: {
+        width: '80%',
+        marginTop: '20px',
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+        },
+    },
+    errorText: {
+        color: 'red',
+        marginTop: '10px'
     },
     message1: {
         padding: '20px 0',
-        fontWeight: '300'
-    },
-    message2: {
-        padding: '10px 0',
     },
     message3: {
-        width: '50%',
         padding: '10px 0',
         fontWeight: '300'
     },
-    login: {
-        margin: '20px 0',
+    cbutton: {
+        margin: '20px 5px',
         textTransform: 'none'
     },
     link: {

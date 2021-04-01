@@ -1,11 +1,19 @@
+export const emailError = (email) => {
+    if (email.length === 0){
+        return "Please fill in the email address";
+    }else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.toLowerCase())){
+        return "Please type a valid email address";
+    }else{
+        return "";
+    }
+}
+
 const validation = (form) =>  {
     let errors = {};
-
+    
     // Email Address
-    if (form.email.length === 0){
-        errors.email = "Please fill in the email address";
-    }else if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(form.email.toLowerCase())){
-        errors.email = "Please type a valid email address";
+    if (emailError(form.email).length > 0){
+        errors.email = emailError(form.email);
     }
 
     // Password

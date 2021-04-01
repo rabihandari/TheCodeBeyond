@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 export const getPosts = async (req, res) => {
     const filter = req.body;
     const page = req.params.page;
-    const postsPerPage = 7;
+    const postsPerPage = 8;
 
     try {
 

@@ -13,14 +13,13 @@ export default makeStyles((theme) => ({
     },
     message1: {
         padding: '20px 0',
-        fontWeight: '300'
+        fontWeight: '400'
     },
     message2: {
         padding: '10px 0',
     },
     message3: {
         width: '50%',
-        padding: '10px 0',
         fontWeight: '300'
     },
     login: {

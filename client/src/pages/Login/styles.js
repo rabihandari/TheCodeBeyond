@@ -38,6 +38,15 @@ export default makeStyles((theme) => ({
     createAccount: {
         marginTop: '20px',
     },
+    forgetPassword: {
+        marginTop: '10px',
+        textAlign: 'right'
+    },
+    forgetPasswordText: {
+        fontSize: '13px',
+        cursor: 'pointer',
+        fontFamily: 'MetropolisRegular'
+    },
     error: {
         marginTop: '5px',
         color: 'red',

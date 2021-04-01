@@ -53,7 +53,9 @@ const Login = () => {
 
         // Create Account...
         signUp(form).then(res => {
-            history.push('/register/success');
+            const { email } = res.data.result;
+
+            history.push(`/register/success/${email}`);
         }).catch(error => {
             setErrors({ firstName: '', lastName: '', email: '', password: '', ...error.response.data });
             setLoading(false);
