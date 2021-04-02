@@ -21,3 +21,5 @@ export const signUp = (formData) =>  API.post(`/users/register`, formData);
 export const resendActivation = (email) =>  API.get(`/users/resendActivation/${email}`);
 export const requestPasswordReset = (email) =>  API.get(`/users/requestPasswordReset/${email}`);
 export const resetPassword = (passwordData) =>  API.post(`/users/resetPassword`, passwordData);
+
+export const getPublishedPosts = () => API.get('/posts/publishedPosts');

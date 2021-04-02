@@ -76,7 +76,7 @@ export const login = async (req, res) => {
                     };
 
                     // Sign JWT
-                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1h' }, (err, token) => {
+                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '5d' }, (err, token) => {
                         res.status(200).json({ result: user, token: token })
                     });
                 }else{

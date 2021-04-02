@@ -45,7 +45,7 @@ const Builder = () => {
             return;
         }
         
-        dispatch(createPost({ ...postData, name: user?.result?.name })).then(() => {
+        dispatch(createPost({ ...postData, name: user?.result?.name, creator: user?.result?.id })).then(() => {
             setAlertShown(true)
             setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
         });
@@ -118,7 +118,7 @@ const Builder = () => {
                     <Tags postData={postData} setPostData={setPostData}/>
                     <div className={classes.fileInput}><Filebase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, imageFile: base64})} /></div>
                     <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={fullPreview ? <Edit/> : <Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
-                    <Button className={classes.buttonSubmit} type="submit" variant="contained" color="secondary">Add Post</Button>
+                    <Button className={classes.buttonSubmit} type="submit" variant="contained" color="primary">Add Post</Button>
                 </Grid>
                 <Grid item>
                     <Snackbar open={alertShown} autoHideDuration={6000} onClose={closeAlert}>

@@ -100,3 +100,14 @@ export const getPost = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getPublishedPosts = async (req, res) => {
+    let id = req.userId;
+
+    try {
+        const posts = await Post.find({ creator: id }, 'title description createdAt');
+        res.status(200).json({ posts: posts });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
