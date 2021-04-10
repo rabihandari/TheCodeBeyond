@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     container: {
-        padding: '20px 40px',
+        padding: '30px 40px',
     },
     leftContainer: {
         display: 'flex',

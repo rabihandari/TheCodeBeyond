@@ -11,7 +11,7 @@ const Post = ({post, cindex}) => {
 
     return(
         <Grow in timeout={(cindex + 1) * 500}>
-            <Card className={classes.card}>
+            <Card className={classes.card} elevation={4}>
                 <Link to={url} style={{ textDecoration: 'none', color: '#000000FF' }}>
                     <CardActionArea>
                         {post.imageFile !== "" && <CardMedia className={classes.media} image={post.imageFile} title={post.title}/>}

@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
         height: '69px',
     },
     content: {
-        padding: '0px 20px',
+        padding: '0px 10px',
     },
     contentTitle: {
         fontSize: '16px',

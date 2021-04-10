@@ -5,42 +5,38 @@ export default makeStyles((theme) => ({
     minHeight: '1000px',
   },
   postContainer: {
-    maxWidth: '800px',
+    maxWidth: '680px',
     padding: '80px 24px',
     display: 'block',
     margin: 'auto',
-  },
-  mdTitle: {
-    fontFamily: 'librebasker ville',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  mdHeaderContent: {
-    fontFamily: 'MetropolisMedium',
-    textAlign: 'center',
-    marginTop: "20px",
-    fontSize: '14px',
+    [theme.breakpoints.down('xs')]: {
+      padding: '40px 24px',
+    },
   },
   mdMediaHolder: {
     height: '480px',
-    marginTop: "60px",
-    [theme.breakpoints.down('md')]: {
+    marginTop: "40px",
+    [theme.breakpoints.down('xs')]: {
       height: '200px',
     },
   },
   mdMedia: {
     height: '100%',
-    width: 'auto',
     display: 'block',
-    background: 'center  no-repeat',
-  },
-  mdDescription: {
-    fontFamily: 'MetropolisBold',
-    textAlign: 'center',
-    marginTop: "40px",
-    
   },
   mdBody: {
     marginTop: "60px",
   },
+  leftContainer: {
+    position: 'fixed',
+    top: '40%',
+    left: '15%',
+  },
+  divider: {
+    padding: '40px',
+    textAlign: 'center',
+    [theme.breakpoints.down('xs')]: {
+      padding: '20px',
+    },
+  }
 }));

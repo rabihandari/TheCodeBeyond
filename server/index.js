@@ -2,7 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import cookieParser  from 'cookie-parser';
+import cookieParser from 'cookie-parser';
+import delay from './middlewares/delay.js';
 import { DATABASE_URL } from './config/config.js';
 
 import postRoutes from './routes/posts.js';
@@ -10,19 +11,23 @@ import userRoutes from './routes/users.js';
 
 const app = express();
 
+
 // Configure middlewares
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+app.use(delay);
 
 
 // Configure routes
+app.use('/uploads', express.static('uploads'));
 app.use('/posts', postRoutes);
 app.use('/users', userRoutes);
 
 // Connect to the database
-const CONNECTION_URL =  process.env.LOCAL_DATABASE_URL || DATABASE_URL;
+// const CONNECTION_URL =  process.env.LOCAL_DATABASE_URL || DATABASE_URL;
+const CONNECTION_URL =  'mongodb://localhost:27017/thecodebeyond';
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })

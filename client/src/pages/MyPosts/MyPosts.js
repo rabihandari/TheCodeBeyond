@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux';
 
 import { StyledTab, StyledTabs, useStyles } from './styles';
 import PublishedPosts from '../../components/PublishedPosts/PublishedPosts';
-import { getPublishedPosts } from '../../api';
+import PublishedResponses from '../../components/PublishedResponses/PublishedResponses';
+import { getPublishedPosts, getPublishedResponses } from '../../api';
 import * as actionTypes from '../../actions/actionTypes';
 
 const MyPosts = () => {
@@ -14,29 +15,11 @@ const MyPosts = () => {
     const history = useHistory();
     const [value, setValue] = useState(0);
     const [publishedPosts, setPublishedPosts] = useState([]);
+    const [publishedResponses, setPublishedResponses] = useState([]);
+    const [isLoading, setLoading] = useState(false);
 
     const handleChange = (event, newValue) => {
-        dispatch({ type: actionTypes.LOADING_START });
-        switch (newValue) {
-            case 1:
-                setValue(newValue);
-                dispatch({ type: actionTypes.LOADING_END });
-                break;
-            case 2:
-                setValue(newValue);
-                dispatch({ type: actionTypes.LOADING_END });
-                break;
-            default:
-                getPublishedPosts().then(res => {
-                    setPublishedPosts(res.data.posts);
-                    setValue(newValue);
-                    dispatch({ type: actionTypes.LOADING_END });
-                }).catch(error => {
-                    console.log(error);
-                });
-                break;
-        }
-        
+        setValue(newValue);
     };
 
     const goToAddPost = () => {
@@ -44,12 +27,36 @@ const MyPosts = () => {
     }
 
     useEffect(() => {
-        getPublishedPosts().then(res => {
-            setPublishedPosts(res.data.posts);
-        }).catch(error => {
-            console.log(error);
+        setLoading(true);
+        dispatch({ type: actionTypes.LOADING_START });
+
+        const promise1 = new Promise((resolve, reject) => {
+            getPublishedPosts().then(res => {
+                setPublishedPosts(res.data.posts);
+                resolve();
+            }).catch(error => {
+                reject(error);
+            });
         });
-    }, []);
+
+        const promise2 = new Promise((resolve, reject) => {
+            getPublishedResponses().then(res => {
+                setPublishedResponses(res.data.responses);
+                resolve();
+            }).catch(error => {
+                reject(error);
+            });
+        });
+
+        Promise.all([promise1, promise2]).then(() => {
+            dispatch({ type: actionTypes.LOADING_END });
+            setLoading(false);
+        }).catch(errors => {
+            console.log(errors);
+            setLoading(false);
+        });
+        
+    }, [dispatch]);
 
     return(
         <Container className={classes.container}>
@@ -60,7 +67,7 @@ const MyPosts = () => {
                 <Grid item md={6}>
                     <Grid container spacing={2} direction="row-reverse">
                         <Grid item>
-                            <Button className={classes.button} variant="outlined" color="primary" onClick={goToAddPost}>Create</Button>
+                            <Button className={classes.button} variant="outlined" color="primary" onClick={goToAddPost}>Create a post</Button>
                         </Grid>
                         <Grid item>
                             <Button className={classes.button} variant="outlined" color="secondary">Settings</Button>
@@ -74,7 +81,7 @@ const MyPosts = () => {
                 <StyledTab label="Responses" />
             </StyledTabs>
             {value === 0 && 
-                <PublishedPosts posts={publishedPosts}/>
+                <PublishedPosts posts={publishedPosts} isLoading={isLoading}/>
             }
             
             {value === 1 && 
@@ -82,7 +89,7 @@ const MyPosts = () => {
             }
             
             {value === 2 && 
-                <div></div>
+                <PublishedResponses responses={publishedResponses} isLoading={isLoading}/>
             }
         </Container>
     );

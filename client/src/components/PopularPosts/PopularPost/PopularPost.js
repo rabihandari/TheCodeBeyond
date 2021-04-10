@@ -20,10 +20,10 @@ const PopularPost = ({post}) => {
         <Grid container className={classes.container}>
             <CardActionArea onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                 <Grid container direction="row" alignItems="stretch">
-                    <Grid item xs={3} md={2}>
+                    <Grid item xs={3} xl={3}>
                         {post.imageFile !== "" && <CardMedia image={post.imageFile} className={classes.media}></CardMedia>}
                     </Grid>
-                    <Grid item className={classes.content} xs={9} md={10}>
+                    <Grid item className={classes.content} xs={9}  xl={9}>
                         <Grid container direction="column" justify="space-evenly" alignItems="flex-start" style={{ height: '100%' }}>
                             <Grid item>
                                 <Typography component="p" className={classes.contentTitle} style={ hovered ? { color: 'blue' } : null }>{post.title}</Typography>

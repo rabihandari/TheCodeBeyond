@@ -6,6 +6,7 @@ import TokenExpiredError from 'jsonwebtoken/lib/TokenExpiredError.js';
 import RegisterValidate from '../validation/register.js';
 import LoginValidate from '../validation/login.js';
 import PasswordValidate from '../validation/passwordReset.js';
+import mongoose from 'mongoose';
 
 import { BACKEND_HOST, FRONTEND_HOST, SECRET_OR_KEY, EMAIL_SECRET, PASSWORD_SECRET } from '../config/config.js';
 import { sendMail } from '../config/nodemailer.js';
@@ -39,7 +40,7 @@ export const register = async (req, res) => {
                             const payload = {
                                 id: user.id,
                             };
-                            jwt.sign(payload, EMAIL_SECRET, { expiresIn: '5' }, (err, token) => {
+                            jwt.sign(payload, EMAIL_SECRET, { expiresIn: '1d' }, (err, token) => {
                                 sendMail("Account Verification", req.body.email, `${BACKEND_HOST}/users/activation/${token}`, 'templates/accountActivation.html');
                                 res.status(201).json({ success: true, result: user }) 
                             });
@@ -49,6 +50,47 @@ export const register = async (req, res) => {
             });
         }
     });
+}
+
+
+export const registerOAuth = async (req, res) => {
+    const { email, name, token, googleId, profilePicture } = req.body;
+
+    try {
+        const user = await User.findOne({ email: email });
+
+        // Check if user exists
+        if(user){
+            res.status(201).json({ message: 'User exists!' });
+        }else{
+            
+            // Hashing the password
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(token, salt, (err, hash) => {
+                    if (err) throw err;
+                    let password = hash;
+                    const newUser = new User({
+                        _id: mongoose.Types.ObjectId(googleId + 'abc'),
+                        name: name,
+                        email: email,
+                        password: password,
+                        profilePicture: profilePicture,
+                        confirmed: true
+                    });
+                    newUser.save().then(user => {
+                        res.status(201).json({ message: 'User Created!' });
+                    }).catch(error => {
+                        res.status(405).json({ message: error.message });
+                    });
+                });
+            });
+
+            
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: 'Something wend wrong!' });
+    }
 }
 
 export const login = async (req, res) => {

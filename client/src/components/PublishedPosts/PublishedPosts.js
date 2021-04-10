@@ -14,9 +14,11 @@ const PublishedPosts = ( props ) => {
             {posts.length > 0 ?
                 posts
             :
+            (!props.isLoading &&
                 <div>
-                    <Typography variant="h6">No posts to show</Typography>
+                    <Typography variant="body1" className={classes.nothingYet}>You have not publish any post yet!</Typography>
                 </div>
+            )
             }
         </Grid>
     );

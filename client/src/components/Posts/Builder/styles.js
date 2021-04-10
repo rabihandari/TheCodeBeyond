@@ -5,6 +5,10 @@ export default makeStyles((theme) => ({
   container: {
     padding: '80px 0px',
     margin: '40px 0px',
+    
+    [theme.breakpoints.down('md')]: {
+      padding: '20px 0px',
+    },
   },
   title: {
     fontWeight: 'bold',

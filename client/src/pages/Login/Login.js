@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import useStyles from "./styles";
 import { oAuthLogin, signin } from '../../actions/auth';
+import { signUpOAuth } from '../../api';
 import LoginValidation from './validator';
 import logo from "../../images/logo.png";
 
@@ -36,7 +37,20 @@ const Login = () => {
         try {
             dispatch(oAuthLogin({result, token}));
 
-            history.push('/');
+            let oAuthData = {
+                token: token,
+                googleId: result.googleId,
+                name: result.name,
+                email: result.email,
+                profilePicture: result.imageUrl,
+            };
+
+            signUpOAuth(oAuthData).then(() => {
+                history.push('/');
+            }).catch(error => {
+                console.log(error);
+            });
+
         } catch (error) {
             
         }

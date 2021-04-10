@@ -14,6 +14,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    profilePicture: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -21,6 +24,17 @@ const userSchema = mongoose.Schema({
     confirmed: {
         type: Boolean,
         default: false
+    },
+    responses: {
+        type: [{
+            postId: String,
+            commentId: String
+        }],
+        default: []
+    },
+    blockedUsers: {
+        type: [String],
+        default: []
     }
 });
 

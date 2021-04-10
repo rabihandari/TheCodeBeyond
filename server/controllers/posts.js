@@ -1,5 +1,5 @@
 import Post from '../models/post.js';
-import mongoose from 'mongoose';
+import User from '../models/user.js';
 
 export const getPosts = async (req, res) => {
     const filter = req.body;
@@ -48,6 +48,7 @@ export const getPosts = async (req, res) => {
     }
 };
 
+
 export const getPopularPosts = async (req, res) => {
     try {
         const posts = await Post.find({}, 'title name createdAt imageFile').sort({ likes: -1 }).limit(6);
@@ -58,10 +59,18 @@ export const getPopularPosts = async (req, res) => {
     }
 }
 
+
 export const createPost = async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
     const post = req.body;
 
-    const newPost = new Post({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
+    const newPost = new Post({ 
+        ...post,
+        tags: JSON.parse(post.tags), 
+        imageFile: url + '/uploads/posts/' + req.file.filename, 
+        creator: req.userId, 
+        createdAt: new Date().toISOString() 
+    })
 
     try {
         await newPost.save();
@@ -88,18 +97,25 @@ export const getPost = async (req, res) => {
     const id = req.params.id;
 
     try {
-        Post.findOne({ _id: id}).exec((err, post) => {
+        Post.findOne({ _id: id}).exec(async(err, post) => {
             if (post) {
-                res.status(200).json({ post: post });
+                // Get Publisher
+                const user = await User.findOne({ _id: post.creator}, 'name email profilePicture');
+                if (!user){
+                    throw new Error("User not found!");
+                }
+
+                res.status(200).json({ post: post, user: user });
             }else {
-                res.status(404).json({ error: err });
+                res.status(404).json({ error: "Post not found!" });
             }
         });
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error });
     }
 };
+
 
 export const getPublishedPosts = async (req, res) => {
     let id = req.userId;
@@ -111,3 +127,65 @@ export const getPublishedPosts = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+export const getPublishedResponses = async (req, res) => {
+    let id = req.userId;
+
+    try {
+        let responses = [];
+
+        const user = await User.findById(id);
+        if(!user) {
+            throw new Error("User Not Found");
+        }
+
+        if(!user.responses) {
+            res.status(201).json({ responses: [] });
+            return;
+        }
+
+
+        for await (let response of user.responses){
+            let post = await Post.findById(response.postId);
+            let comment = post.comments.find(com => com._id == response.commentId);
+
+            responses.push({
+                postId: response.postId,
+                commentId: response.commentId,
+                title: comment.comment,
+                createdAt: comment.createdAt,
+            });
+            
+        }
+
+        res.status(200).json({ responses: responses });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+export const likePost = async (req, res) => {
+    const { id } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthorized" });
+    }
+    
+    const post = await Post.findById(id);
+
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (index === -1) {
+      post.likes.push(req.userId);
+    } else {
+      post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
+    Post.findByIdAndUpdate(id, post, { new: true }).then(() => {
+        res.status(201).json({ message: 'Success!' });
+    }).catch(error => {
+        res.status(500).json({ message: error.message });
+    });
+}
+

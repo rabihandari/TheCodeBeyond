@@ -33,6 +33,7 @@ const Profile = ({ name, email, imageUrl }) => {
                 break;
             case "Logout":
                 dispatch(logout());
+                history.push('/');
                     break;
             default:
                 break;

@@ -7,7 +7,6 @@ import { Typography, TextField, Button, Grid, CardMedia, Tooltip, IconButton } f
 import Visibility from '@material-ui/icons/Visibility';
 import Help from '@material-ui/icons/Help';
 import Edit from '@material-ui/icons/Edit';
-import Filebase from 'react-file-base64';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import moment from 'moment';
@@ -25,12 +24,14 @@ const Builder = () => {
     const dispatch = useDispatch();
     const mdSection = useRef();
     const [postData, setPostData] = useState({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+    const [postImage, setPostImage] = useState(null);
     const [preview, setPreview] = useState(true);
     const [fullPreview, setFullPreview] = useState(false);
     const [alertShown, setAlertShown] = React.useState(false);
     const [titleError, setTitleError] = useState(false);
 
     const user = JSON.parse(localStorage.getItem('profile'));
+
     const renderers = {
         code:({language,value})=>{
             return <SyntaxHighlighter style={dracula} language={language} children={value || "" } />
@@ -39,17 +40,31 @@ const Builder = () => {
   
     const handleSubmit = (event) => {
         event.preventDefault();
-
         if (postData.title === ""){
             setTitleError(true);
             return;
         }
+
+        const formData = new FormData();
+        formData.append('title', postData.title);
+        formData.append('description', postData.description);
+        formData.append('body', postData.body);
+        formData.append('tags', JSON.stringify(postData.tags));
+        formData.append('imageFile', postData.imageFile);
+        formData.append('creator', user?.result?.id);
+        formData.append('name', user?.result?.name);
         
-        dispatch(createPost({ ...postData, name: user?.result?.name, creator: user?.result?.id })).then(() => {
+        dispatch(createPost(formData)).then(() => {
             setAlertShown(true)
             setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
         });
 
+    }
+
+    const onFileChange = (e) => {
+        var file = e.target.files[0];
+        setPostData({ ...postData, imageFile: file });
+        setPostImage(URL.createObjectURL(file));
     }
 
     const handleChange = (event) => {
@@ -108,7 +123,9 @@ const Builder = () => {
                     <Typography variant="h3" className={classes.mdTitle}>{postData.title.length === 0 ? "Your Title" : postData.title}</Typography>
                     <Typography variant="body2" className={classes.mdHeaderContent}>{moment(Date.now()).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
                     {postData.imageFile !== "" && 
-                        <div className={fullPreview ? classes.mdMediaHolderLarge : classes.mdMediaHolderSmall}><CardMedia image={postData.imageFile} className={classes.mdMedia}/></div>
+                        <div className={fullPreview ? classes.mdMediaHolderLarge : classes.mdMediaHolderSmall}>
+                            <CardMedia image={postImage} className={classes.mdMedia}/>
+                        </div>
                     }
                     <Typography variant="body1" className={classes.mdDescription}>{postData.description}</Typography>
                     <ReactMarkdown renderers={renderers} children={postData.body} className={classes.mdBody} />
@@ -116,7 +133,9 @@ const Builder = () => {
                 }
                 <Grid item md={12}>
                     <Tags postData={postData} setPostData={setPostData}/>
-                    <div className={classes.fileInput}><Filebase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, imageFile: base64})} /></div>
+                    <div className={classes.fileInput}>
+                        <input type="file" onChange={onFileChange} />
+                    </div>
                     <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={fullPreview ? <Edit/> : <Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
                     <Button className={classes.buttonSubmit} type="submit" variant="contained" color="primary">Add Post</Button>
                 </Grid>
