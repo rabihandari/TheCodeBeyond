@@ -1,10 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Container, Grid, Typography, Button } from '@material-ui/core'; 
+import { Container, Grid, Typography, Button, IconButton, Tooltip } from '@material-ui/core'; 
 
 import useStyles from './styles';
 import logo from '../../images/logo.png';
+import SavedIcon from '../../images/icon-saved2.svg';
 import SearchBarV2 from './SearchBarV2/SearchBarV2';
 import LinearIndeterminate from '../LinearIndeterminate/LinearIndeterminate';
 import Profile from './Profile/Profile';
@@ -31,6 +32,10 @@ const HeaderV2 = (props) => {
         history.push('/createPost');
     }
 
+    const goToSavedPosts = () => {
+        history.push('/saved');
+    }
+
     return(
         <div>
             <Container className={classes.container}>
@@ -44,6 +49,11 @@ const HeaderV2 = (props) => {
                             <div className={classes.rightContainer}>
                                 <Profile name={user.authData.result.name} email={user.authData.result.email} imageUrl={user.authData.result.imageUrl} />
                                 <Button className={classes.addPostButton} variant="outlined" color="secondary" size="small" onClick={goToAddPost}>Add Post</Button>
+                                <IconButton size="small" onClick={goToSavedPosts} className={classes.savedButton}>
+                                    <Tooltip title="Saved">
+                                        <img src={SavedIcon} alt="Save"/>
+                                    </Tooltip>
+                                </IconButton>
                             </div>
                             :
                             <div className={classes.rightContainer}>

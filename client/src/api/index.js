@@ -10,11 +10,18 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+
 export const fetchPosts = (page, filter) => API.post(`/posts/page${page}`, filter);
 export const createPost = (newPost) => API.post(`/posts/createPost`, newPost);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const fetchPopularPosts = () => API.get(`/posts/popular`);
 export const fetchTitles = () => API.get(`/posts/titles`);
 export const fetchPost = (id) => API.get(`/posts/${id}`)
+export const savePost = (postData) => API.post('/posts/savePost', postData);
+export const fetchSavedPosts = (page) => API.get(`/posts/savedPosts/${page}`);
+export const reportPost = (postData) => API.post('/posts/reportPost', postData);
+export const reportAuthor = (authorData) => API.post('/posts/reportAuthor', authorData);
+export const blockAuthor = (authorData) => API.post('/posts/blockAuthor', authorData);
 
 export const signIn = (formData) =>  API.post(`/users/login`, formData);
 export const signUp = (formData) =>  API.post(`/users/register`, formData);

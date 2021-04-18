@@ -6,6 +6,8 @@ export const posts = (posts = [], action) => {
             return action.payload;
         case actionTypes.CREATE:
             return [...posts, action.payload];
+        case actionTypes.DELETE:
+            return posts.filter(post => post._id !== action.payload._id);
         default:
             return posts;
     }
@@ -24,6 +26,8 @@ export const popularPosts = (popularPosts = [], action) => {
     switch (action.type) {
         case actionTypes.FETCH_POPULAR:
             return action.payload;
+        case actionTypes.DELETE:
+            return popularPosts.filter(post => post._id !== action.payload._id);
         default:
             return popularPosts;
     }

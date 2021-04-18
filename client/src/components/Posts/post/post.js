@@ -26,7 +26,6 @@ const Post = ({post, cindex}) => {
                     </CardActionArea>
                 </Link>
             </Card>
-
         </Grow>
     );
 

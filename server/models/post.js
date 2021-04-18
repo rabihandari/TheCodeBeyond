@@ -11,6 +11,13 @@ const postSchema = mongoose.Schema({
     imageFile: String,
     likes: { type: [String], default: [] },
     comments: { type: [CommentSchema], default: [] },
+    reports: {
+        type: [{
+            reporter: String,
+            reason: String,
+        }],
+        default: [],
+    },
     createdAt: {
         type: Date,
         default: Date.now,

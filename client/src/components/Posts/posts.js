@@ -33,7 +33,7 @@ const Posts = (props) => {
     return(
         <Grid container alignItems="stretch" justify="center" className={classes.mainContainer}>
             {postColumns.map((_, index) => 
-                <Grid item key={index} xs={12} sm={6} md={3}>
+                <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                     <PostsColumn posts={postColumns[index]} cindex={index}/>
                 </Grid>
             )}
@@ -71,7 +71,7 @@ const PostsColumn = ({ posts, cindex}) => {
     );
 
     return(
-        <Grid container direction="column" justify="flex-start" alignItems="stretch" >
+        <Grid container direction="column" >
             {postCards}
         </Grid>
     );

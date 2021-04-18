@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
         margin: '20px',
     },
     media: {
-        paddingTop: '90.25%',
+        height: '250px',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     content: {

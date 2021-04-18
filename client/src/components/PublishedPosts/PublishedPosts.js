@@ -7,7 +7,7 @@ import useStyles from './styles';
 const PublishedPosts = ( props ) => {
     const classes = useStyles();
 
-    const posts = props.posts.map(post => <Post key={post.title} post={post} />);
+    const posts = props.posts.map(post => <Post key={post.createdAt + post.title} post={post} />);
 
     return(
         <Grid container direction="column" className={classes.container}>

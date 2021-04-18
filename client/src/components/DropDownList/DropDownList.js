@@ -47,7 +47,7 @@ const Header = ({ items, anchorRef, open, setOpen }) => {
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                             <div className={classes.dropDownList}>
                                 {items.map(item => (
-                                    <MenuItem key={item.key} className={classes.menuItem} onClick={handleClose}>
+                                    <MenuItem key={item.key} className={classes.menuItem} onClick={handleClose} disabled={item.key.includes('disabled')}>
                                         {item}
                                     </MenuItem>
                                 ))}

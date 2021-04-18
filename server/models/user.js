@@ -32,6 +32,17 @@ const userSchema = mongoose.Schema({
         }],
         default: []
     },
+    savedPosts: {
+        type: [String],
+        default: []
+    },
+    reports: {
+        type: [{
+            reporter: String,
+            reason: String,
+        }],
+        default: [],
+    },
     blockedUsers: {
         type: [String],
         default: []

@@ -220,10 +220,7 @@ export const editReply = async (req, res) => {
 export const reportComment = async (req, res) => {
     const { postId, commentId, reason, blockAuthor } = req.body;    
 
-    if (!req.userId){
-        res.status(403).json({ message: 'Unauthorized' });
-    }
-
+    
     try {
         const post = await Post.findById(postId);
         if (!post){

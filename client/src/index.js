@@ -11,7 +11,7 @@ import reducers from './reducers';
 dotenv.config();
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
-console.log("Connecting to server: " + process.env.REACT_APP_HOST_URL)
+console.log(`%c Connected to server: ${process.env.REACT_APP_HOST_URL}`, 'color: green');
 
 ReactDOM.render(
     <Provider store={store}>

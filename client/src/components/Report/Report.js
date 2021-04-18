@@ -89,7 +89,7 @@ const Report = ({ whatToReport, closeReport, callback }) => {
                     {!currentUser &&
                         <Grid container justify="center" style={{ marginTop: '40px' }}>
                             <Typography variant='caption' style={{ textAlign: 'center' }}>Please sign in to be able to report this {whatToReport}<br/>
-                                <Typography variant='caption' color="primary" style={{ curson: 'pointer' }} onClick={goToLogin}>Login to my account</Typography>
+                                <Typography variant='caption' color="primary" style={{ cursor: 'pointer' }} onClick={goToLogin}>Login to my account</Typography>
                             </Typography>
                         </Grid>
                     }

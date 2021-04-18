@@ -9,12 +9,14 @@ import { FacebookShareButton, TwitterShareButton, LinkedinShareButton } from 're
 
 import useStyles from './styles';
 import SaveIcon from '../../../images/icon-save.svg';
+import SavedIcon from '../../../images/icon-saved.svg';
 import ShareIcon from '../../../images/icon-share.svg';
 import CommentIcon from '../../../images/icon-comment.svg';
 import DropDownList from '../../../components/DropDownList/DropDownList';
+import Confirm from '../../../components/Confirm/Confirm';
 import { likePost as sendLike } from '../../../api';
 
-const Header = ({ post, openComments }) => {
+const Header = ({ post, openComments, saved, blocked, savePost, openReport, openReport2, openConfirmation, deletePost }) => {
     const classes = useStyles();
     const params = useParams();
     const history = useHistory();
@@ -23,6 +25,7 @@ const Header = ({ post, openComments }) => {
     const [likes, setLikes] = useState(post.likes);
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
     const currentUser = JSON.parse(localStorage.getItem("profile"));
     
@@ -52,14 +55,6 @@ const Header = ({ post, openComments }) => {
             }/>
         </div>,
     ];
-
-    const moreList = [
-        <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
-        <Typography key="Report this post" className={classes.menuItemText} variant='body2'>Report this post</Typography>,
-        <Typography key="Report this author" className={classes.menuItemText} variant='body2'>Report this author</Typography>,
-        <Typography key="Block this author" className={classes.menuItemText} variant='body2'>Block this author</Typography>
-    ];
-
 
     const likePost = () => {
         // Unlike...
@@ -119,22 +114,58 @@ const Header = ({ post, openComments }) => {
                         {open2 &&
                             <DropDownList items={shareList} open={open2} setOpen={setOpen2} anchorRef={anchorRef2}/>
                         }
-                        <IconButton size="small">
+                        <IconButton size="small" onClick={() => { savePost() }}>
                             <Tooltip title="Save">
-                                <img src={SaveIcon} alt="Save"/>
+                                {saved ? 
+                                    <img src={SavedIcon} alt="Save"/>
+                                :
+                                    <img src={SaveIcon} alt="Save"/>
+                                }
                             </Tooltip>
                         </IconButton>
                         <IconButton size="small" ref={anchorRef} onClick={() => setOpen((prevOpen) => !prevOpen)}>
                             <MoreHorizIcon style={{ color: 'black' }}/>
                         </IconButton>
                         {open &&
-                            <DropDownList items={moreList} open={open} setOpen={setOpen} anchorRef={anchorRef}/>
+                            <DropDownList items={getList()} open={open} setOpen={setOpen} anchorRef={anchorRef}/>
                         }
                     </Grid>
                 </Grid>
             </Grid>
+
+            {deleteConfirmation &&
+                <Confirm 
+                    action="Delete"
+                    title="Are you sure you want to delete your post"
+                    description="Are you sure you want to delete this post. You cannot undo the deletion after you hit the delete button"
+                    close={() => {setDeleteConfirmation(false)}}
+                    callback={deletePost}
+                />
+            }
         </Grid>
     );
+
+
+    function getList() {
+        if(currentUser && (currentUser?.result?._id === post.creator || currentUser?.result?.googleId + 'abc' === post.creator) ){
+            return [
+                <Typography key="Edit this post" className={classes.menuItemText} variant='body2'>Edit this post</Typography>,
+                <Typography key="Delete this post" className={classes.menuItemText} variant='body2' onClick={() => setDeleteConfirmation(true)}>Delete this post</Typography>,
+            ];
+        }else {
+            return [
+                <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
+                <Typography key="Report this post" className={classes.menuItemText} variant='body2' onClick={openReport}>Report this post</Typography>,
+                <Typography key="Report this author" className={classes.menuItemText} variant='body2' onClick={openReport2}>Report this author</Typography>,
+                <Typography key={"Block this author" + blocked && "- disabled" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
+            ];
+        }
+    
+    }
+
+
 }
 
 export default Header;
+
+

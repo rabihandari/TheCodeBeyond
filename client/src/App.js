@@ -16,6 +16,7 @@ import Register from './pages/Register/Register'
 import RegisterSuccess from './pages/Register/Success/Success'
 import ResetPasswordSuccess from './pages/Login/ResetPassword/Success/Success';
 import ResetPassword from './pages/Login/ResetPassword/ResetPassword';
+import SavedPosts from './pages/SavedPosts/SavedPosts';
 import MyPosts from './pages/MyPosts/MyPosts';
 import ScrollToTop from './components/Shared/ScrollToTop';
 
@@ -65,6 +66,7 @@ const App = () => {
                     <Route path="/login/forget-password" component={ForgetPassword} />
                     <Route path="/login/reset-password/success" component={ResetPasswordSuccess} />
                     <Route path="/login/reset-password/:email/:token" component={ResetPassword}/>
+                    <Route exact path="/saved" component={SavedPosts}/>
                     <Route path="/:id/:title" render={(props) => <Post {...props} />} />
                     <Route path="/my-posts" component={MyPosts} />
                 </Switch>

@@ -35,11 +35,10 @@ export default makeStyles((theme) => ({
     addPostButton: {
         fontSize: '12px',
         lineHeight: '25px',
-        marginLeft: '10px',
+        marginLeft: '20px',
         whiteSpace: 'nowrap',
         textAlign: 'center',
         fontFamily: 'MetropolisRegular',
         textTransform: 'none',
-
-    }
+    },
 }));

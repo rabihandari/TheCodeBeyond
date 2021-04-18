@@ -34,7 +34,7 @@ const SearchBarV2 = (props) => {
 
     return(
         <Grid container direction="row" justify="flex-end" alignItems="center">
-        <img className={classes.searchIcon} src={searchIcon} alt="search" onClick={() => setExpanded(!expanded)}/>
+            <img className={classes.searchIcon} src={searchIcon} alt="search" onClick={() => setExpanded(!expanded)}/>
             <Autocomplete 
                 classes={{
                     option: classes.option,
@@ -44,18 +44,17 @@ const SearchBarV2 = (props) => {
                 freeSolo
                 onChange={handleChange}
                 noOptionsText="No results"
-                openOnFocus
                 options={titles}
                 blurOnSelect={true}
                 filterOptions={filterOptions}
                 renderInput={(params) => (
-                    <div className={classes.searchHolder} ref={params.InputProps.ref}>
+                    <div className={classes.searchHolder} ref={params.InputProps.ref} >
                         <InputBase 
                             className={classes.searchInput} 
                             placeholder="Search" 
                             inputProps={params.inputProps}
                             onKeyDown={handleKeyDown}
-                            autoFocus 
+                            autoFocus={true}
                             style={{ width: (expanded ? '250px' : '0px') }} 
                         />
                     </div>

@@ -8,19 +8,23 @@ import readingTime from 'reading-time';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { FacebookShareButton, TwitterShareButton, LinkedinShareButton } from 'react-share';
 
-
 import useStyles from './styles';
 import SaveIcon from '../../../images/icon-save.svg';
+import SavedIcon from '../../../images/icon-saved.svg';
 import ShareIcon from '../../../images/icon-share.svg';
 import DropDownList from '../../../components/DropDownList/DropDownList';
+import Confirm from '../../../components/Confirm/Confirm';
 
-const Header = ({ user, post }) => {
+const Header = ({ user, post, saved, blocked, savePost, openReport, openReport2, openConfirmation, deletePost }) => {
     const classes = useStyles();
     const anchorRef = useRef(null);
     const anchorRef2 = useRef(null);
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [deleteConfirmation, setDeleteConfirmation] = useState(false);
     const matches = useMediaQuery(useTheme().breakpoints.up('sm'));
+
+    const currentUser = JSON.parse(localStorage.getItem("profile"));
     
     const shareList = [
         <div key="Facebook" className={classes.menuItemContainer}>
@@ -48,14 +52,6 @@ const Header = ({ user, post }) => {
             }/>
         </div>,
     ];
-
-    const moreList = [
-        <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
-        <Typography key="Report this post" className={classes.menuItemText} variant='body2'>Report this post</Typography>,
-        <Typography key="Report this author" className={classes.menuItemText} variant='body2'>Report this author</Typography>,
-        <Typography key="Block this author" className={classes.menuItemText} variant='body2'>Block this author</Typography>
-    ];
-
 
     return(
         <Grid container alignItems="center">
@@ -85,16 +81,21 @@ const Header = ({ user, post }) => {
                         {open2 &&
                             <DropDownList items={shareList} open={open2} setOpen={setOpen2} anchorRef={anchorRef2}/>
                         }
-                        <IconButton size="small">
+                        <IconButton size="small" onClick={() => { savePost() }}>
                             <Tooltip title="Save">
-                                <img src={SaveIcon} alt="Save"/>
+                                {saved ? 
+                                    <img src={SavedIcon} alt="Save"/>
+                                :
+                                
+                                    <img src={SaveIcon} alt="Save"/>
+                                }
                             </Tooltip>
                         </IconButton>
                         <IconButton size="small" ref={anchorRef} onClick={() => setOpen((prevOpen) => !prevOpen)}>
                             <MoreHorizIcon style={{ color: 'black' }}/>
                         </IconButton>
                         {open &&
-                            <DropDownList items={moreList} open={open} setOpen={setOpen} anchorRef={anchorRef}/>
+                            <DropDownList items={getList()} open={open} setOpen={setOpen} anchorRef={anchorRef}/>
                         }
                     </Grid>
                 </Grid>
@@ -103,8 +104,38 @@ const Header = ({ user, post }) => {
             <Grid item md={12}>
                 <Typography variant="body1" className={classes.mdDescription}>{post.description}</Typography>
             </Grid>
+
+            {deleteConfirmation &&
+                <Confirm 
+                    action="Delete"
+                    title="Are you sure you want to delete your post"
+                    description="Are you sure you want to delete this post. You cannot undo the deletion after you hit the delete button"
+                    close={() => {setDeleteConfirmation(false)}}
+                    callback={deletePost}
+                />
+            }
         </Grid>
     );
+
+    function getList() {
+        if(currentUser && (currentUser?.result?._id === post.creator || currentUser?.result?.googleId + 'abc' === post.creator) ){
+            return [
+                <Typography key="Edit this post" className={classes.menuItemText} variant='body2'>Edit this post</Typography>,
+                <Typography key="Delete this post" className={classes.menuItemText} variant='body2' onClick={() => setDeleteConfirmation(true)}>Delete this post</Typography>,
+            ];
+        }else {
+            return [
+                <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
+                <Typography key="Report this post" className={classes.menuItemText} variant='body2' onClick={openReport}>Report this post</Typography>,
+                <Typography key="Report this author" className={classes.menuItemText} variant='body2' onClick={openReport2}>Report this author</Typography>,
+                <Typography key={"Block this author" + blocked && "- disabled" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
+            ];
+        }
+    
+    }
+
+
+    
 }
 
 export default Header;
