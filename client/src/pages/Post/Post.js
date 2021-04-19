@@ -9,8 +9,9 @@ import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { fetchPost, savePost as reqSavePost, deletePost as removePost } from '../../api';
 import { useDispatch } from 'react-redux';
-import * as actionTypes from '../../actions/actionTypes';
 
+
+import * as actionTypes from '../../actions/actionTypes';
 import useStyles from './styles';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
@@ -156,7 +157,7 @@ const Post = (props) => {
                     title='Are you sure you want to block this author'
                     description="By blocking this author you will not be able view or search any post he/she creates. You can always unblock this user in your settings page" 
                     close={blockActions.closeConfirmation(setConfirmationOpen)} 
-                    callback={blockActions.blockAuthor(post.creator, setAlert, dispatch)}
+                    callback={blockActions.blockAuthor(post.creator, setAlert, dispatch, setBlocked)}
                 />
             }
             {alert.open && 

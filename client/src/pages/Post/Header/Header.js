@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {  Typography, Avatar, Grid, IconButton, Tooltip, ListItemIcon } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Facebook, Twitter, LinkedIn } from '@material-ui/icons';
@@ -17,6 +18,7 @@ import Confirm from '../../../components/Confirm/Confirm';
 
 const Header = ({ user, post, saved, blocked, savePost, openReport, openReport2, openConfirmation, deletePost }) => {
     const classes = useStyles();
+    const history = useHistory();
     const anchorRef = useRef(null);
     const anchorRef2 = useRef(null);
     const [open, setOpen] = useState(false);
@@ -25,6 +27,10 @@ const Header = ({ user, post, saved, blocked, savePost, openReport, openReport2,
     const matches = useMediaQuery(useTheme().breakpoints.up('sm'));
 
     const currentUser = JSON.parse(localStorage.getItem("profile"));
+
+    const editPost = () => {
+        history.push(`/edit/${post._id}`);
+    }
     
     const shareList = [
         <div key="Facebook" className={classes.menuItemContainer}>
@@ -120,7 +126,7 @@ const Header = ({ user, post, saved, blocked, savePost, openReport, openReport2,
     function getList() {
         if(currentUser && (currentUser?.result?._id === post.creator || currentUser?.result?.googleId + 'abc' === post.creator) ){
             return [
-                <Typography key="Edit this post" className={classes.menuItemText} variant='body2'>Edit this post</Typography>,
+                <Typography key="Edit this post" className={classes.menuItemText} variant='body2' onClick={editPost}>Edit this post</Typography>,
                 <Typography key="Delete this post" className={classes.menuItemText} variant='body2' onClick={() => setDeleteConfirmation(true)}>Delete this post</Typography>,
             ];
         }else {
@@ -128,7 +134,7 @@ const Header = ({ user, post, saved, blocked, savePost, openReport, openReport2,
                 <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
                 <Typography key="Report this post" className={classes.menuItemText} variant='body2' onClick={openReport}>Report this post</Typography>,
                 <Typography key="Report this author" className={classes.menuItemText} variant='body2' onClick={openReport2}>Report this author</Typography>,
-                <Typography key={"Block this author" + blocked && "- disabled" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
+                <Typography key={blocked ? "Block this author - disabled" : "Block this author" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
             ];
         }
     

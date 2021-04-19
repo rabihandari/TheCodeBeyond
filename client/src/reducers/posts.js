@@ -6,6 +6,8 @@ export const posts = (posts = [], action) => {
             return action.payload;
         case actionTypes.CREATE:
             return [...posts, action.payload];
+        case actionTypes.EDIT:
+            return [...posts.filter(post => post._id !== action.payload._id), action.payload];
         case actionTypes.DELETE:
             return posts.filter(post => post._id !== action.payload._id);
         default:

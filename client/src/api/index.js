@@ -13,6 +13,7 @@ API.interceptors.request.use((req) => {
 
 export const fetchPosts = (page, filter) => API.post(`/posts/page${page}`, filter);
 export const createPost = (newPost) => API.post(`/posts/createPost`, newPost);
+export const editPost = (newPost) => API.post(`/posts/editPost`, newPost);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const fetchPopularPosts = () => API.get(`/posts/popular`);
 export const fetchTitles = () => API.get(`/posts/titles`);

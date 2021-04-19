@@ -1,10 +1,11 @@
 import { blockAuthor as blockAuth } from '../../../api';
 import * as actionTypes from '../../../actions/actionTypes';
 
-export const blockAuthor = (creator, setAlert, dispatch) => () => {
+export const blockAuthor = (creator, setAlert, dispatch, setBlocked) => () => {
     dispatch({ type: actionTypes.LOADING_START });
     blockAuth({ creator: creator }).then((res) => {
         setAlert({ open: true, message: res.data.message, severity: 'success' });
+        setBlocked(true);
         dispatch({ type: actionTypes.LOADING_END });
     }).catch(error => {
         setAlert({ open: true, message: error.response.data.message, severity: 'error' });

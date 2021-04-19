@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -12,22 +13,25 @@ import MuiAlert from '@material-ui/lab/Alert';
 import moment from 'moment';
 
 import useStyles from './styles';
-import { createPost } from '../../../actions/posts';
+import { createPost, editPost } from '../../../actions/posts';
+import { fetchPost } from '../../../api';
 import Tags from './Tags/Tags';
+import * as actionTypes from '../../../actions/actionTypes';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-const Builder = () => {
+const Builder = ({ editing }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const params = useParams();
     const mdSection = useRef();
     const [postData, setPostData] = useState({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
     const [postImage, setPostImage] = useState(null);
     const [preview, setPreview] = useState(true);
     const [fullPreview, setFullPreview] = useState(false);
-    const [alertShown, setAlertShown] = React.useState(false);
+    const [alert, setAlert] = React.useState({ open: false, message: '', severity: 'success' });
     const [titleError, setTitleError] = useState(false);
 
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -44,20 +48,28 @@ const Builder = () => {
             setTitleError(true);
             return;
         }
-
         const formData = new FormData();
+        formData.append('id', postData._id);
         formData.append('title', postData.title);
         formData.append('description', postData.description);
         formData.append('body', postData.body);
         formData.append('tags', JSON.stringify(postData.tags));
         formData.append('imageFile', postData.imageFile);
-        formData.append('creator', user?.result?.id);
-        formData.append('name', user?.result?.name);
+        formData.append('creator', user.result.id || (user.result.googleId + 'abc'));
+        formData.append('name', user.result.name);
         
-        dispatch(createPost(formData)).then(() => {
-            setAlertShown(true)
-            setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
-        });
+        // Create or Edit post...
+        if(editing){
+            dispatch(editPost(formData)).then(() => {
+                setAlert({ open: true, message: 'Your post has been successfully updated!', severity: 'success' })
+                setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+            });
+        }else{
+            dispatch(createPost(formData)).then(() => {
+                setAlert({ open: true, message: 'Your post has been successfully uploaded!', severity: 'success' })
+                setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+            });
+        }
 
     }
 
@@ -95,58 +107,72 @@ const Builder = () => {
           return;
         }
     
-        setAlertShown(false);
+        setAlert({ open: false, message: '', severity: 'success' })
       };
+
+
+      useEffect(() => {
+          if(editing){
+            dispatch({ type: actionTypes.LOADING_START });
+            fetchPost(params.id).then((res) => {
+                setPostData(res.data.post);
+                dispatch({ type: actionTypes.LOADING_END });
+            }).catch(error => {
+                setAlert({ open: true, message: error.response.data.message, severity: 'error' });
+                dispatch({ type: actionTypes.LOADING_END });
+            });
+          }
+      }, [editing, dispatch, params]);
 
     return(
         <div className={classes.container}>
-        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
-            <Grid container direction="row" spacing={5}>
-                {!fullPreview &&
-                <Grid item xs={12} md={preview ? 6 : 12}>
-                    <Grid container direction="row" justify="space-between">
-                        <Grid item>
-                        <Typography variant="h4" className={classes.title}>New post</Typography>
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <Grid container direction="row" justify='center' spacing={5}>
+                    {!fullPreview &&
+                    <Grid item xs={12} md={preview ? 6 : 12}>
+                        <Grid container direction="row" justify="space-between">
+                            <Grid item>
+                            <Typography variant="h4" className={classes.title}>{editing ? "Edit" : "New"} post</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Tooltip title="Toggle Preview"><IconButton color="secondary" onClick={() => {setPreview(!preview)}}><Visibility /></IconButton></Tooltip>
+                                <Tooltip title="Markdown Help"><IconButton color="secondary" onClick={() => {window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}}><Help /></IconButton></Tooltip>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Tooltip title="Toggle Preview"><IconButton color="secondary" onClick={() => {setPreview(!preview)}}><Visibility /></IconButton></Tooltip>
-                            <Tooltip title="Markdown Help"><IconButton color="secondary" onClick={() => {window.open("https://www.markdownguide.org/basic-syntax/", "_blank")}}><Help /></IconButton></Tooltip>
-                        </Grid>
+                        <TextField error={titleError} helperText={titleError && "Please enter a title"} className={classes.textInput} fullWidth name="title" label="Title" variant="outlined" onChange={handleChange} value={postData.title}/>
+                        <TextField className={classes.textInput} fullWidth name="description" label="Description" variant="outlined" onChange={handleChange} value={postData.description}/>
+                        <TextField className={classes.textInput} fullWidth name="body" label="Body" variant="outlined" multiline rows={10} onChange={handleChange} value={postData.body}/>
                     </Grid>
-                    <TextField error={titleError} helperText={titleError && "Please enter a title"} className={classes.textInput} fullWidth name="title" label="Title" variant="outlined" onChange={handleChange} value={postData.title}/>
-                    <TextField className={classes.textInput} fullWidth name="description" label="Description" variant="outlined" onChange={handleChange} value={postData.description}/>
-                    <TextField className={classes.textInput} fullWidth name="body" label="Body" variant="outlined" multiline rows={10} onChange={handleChange} value={postData.body}/>
-                </Grid>
-                }
-                {(preview || fullPreview) &&
-                <Grid item xs={12} md={fullPreview ? 12 : 6} style={ !fullPreview ? { maxHeight: '500px', overflow: 'auto'} : {minHeight: '500px'}} ref={mdSection}>
-                    <Typography variant="h3" className={classes.mdTitle}>{postData.title.length === 0 ? "Your Title" : postData.title}</Typography>
-                    <Typography variant="body2" className={classes.mdHeaderContent}>{moment(Date.now()).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
-                    {postData.imageFile !== "" && 
-                        <div className={fullPreview ? classes.mdMediaHolderLarge : classes.mdMediaHolderSmall}>
-                            <CardMedia image={postImage} className={classes.mdMedia}/>
-                        </div>
                     }
-                    <Typography variant="body1" className={classes.mdDescription}>{postData.description}</Typography>
-                    <ReactMarkdown renderers={renderers} children={postData.body} className={classes.mdBody} />
+                    {(preview || fullPreview) &&
+                    <Grid item xs={12} md={fullPreview ? 12 : 6} style={ !fullPreview ? { maxHeight: '500px', overflow: 'auto'} : {minHeight: '500px', maxWidth: '700px'}} ref={mdSection}>
+                        <Typography variant="h3" className={classes.mdTitle}>{postData.title.length === 0 ? "Your Title" : postData.title}</Typography>
+                        <Typography variant="body2" className={classes.mdHeaderContent}>{moment(Date.now()).format('LL')} &nbsp; &nbsp; &nbsp; &nbsp; In {postData.tags.join(', ')}</Typography>
+                        {postData.imageFile !== "" && 
+                            <div className={fullPreview ? classes.mdMediaHolderLarge : classes.mdMediaHolderSmall}>
+                                <CardMedia image={postImage || postData.imageFile} className={classes.mdMedia}/>
+                            </div>
+                        }
+                        <Typography variant="body1" className={classes.mdDescription}>{postData.description}</Typography>
+                        <ReactMarkdown renderers={renderers} children={postData.body} className={classes.mdBody} />
+                    </Grid>
+                    }
+                    <Grid item md={12}>
+                        <Tags postData={postData} setPostData={setPostData}/>
+                        <div className={classes.fileInput}>
+                            <input type="file" onChange={onFileChange} />
+                        </div>
+                        <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={fullPreview ? <Edit/> : <Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
+                        <Button className={classes.buttonSubmit} type="submit" variant="contained" color="primary">{editing ? "Update" : "Add"} Post</Button>
+                    </Grid>
+                    <Grid item>
+                        <Snackbar open={alert.open} autoHideDuration={6000} onClose={closeAlert}>
+                            <Alert onClose={closeAlert} severity={alert.severity}>
+                                {alert.message}
+                            </Alert>
+                        </Snackbar>
+                    </Grid>
                 </Grid>
-                }
-                <Grid item md={12}>
-                    <Tags postData={postData} setPostData={setPostData}/>
-                    <div className={classes.fileInput}>
-                        <input type="file" onChange={onFileChange} />
-                    </div>
-                    <Button className={classes.buttonSubmit} variant="outlined" color="secondary" startIcon={fullPreview ? <Edit/> : <Visibility />} onClick={toggleFullPreview}>{fullPreview ? "Edit" : "Full Preview"}</Button>
-                    <Button className={classes.buttonSubmit} type="submit" variant="contained" color="primary">Add Post</Button>
-                </Grid>
-                <Grid item>
-                    <Snackbar open={alertShown} autoHideDuration={6000} onClose={closeAlert}>
-                        <Alert onClose={closeAlert} severity="success">
-                            Your post has been successfully uploaded!
-                        </Alert>
-                    </Snackbar>
-                </Grid>
-            </Grid>
             </form>
         </div>
           

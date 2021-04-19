@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {  Typography, Grid, IconButton, Tooltip, ListItemIcon } from '@material-ui/core';
+import {  Typography, Grid, IconButton, Tooltip, ListItemIcon, Chip } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router-dom';
 import { Facebook, Twitter, LinkedIn } from '@material-ui/icons';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -29,6 +29,10 @@ const Header = ({ post, openComments, saved, blocked, savePost, openReport, open
 
     const currentUser = JSON.parse(localStorage.getItem("profile"));
     
+    const editPost = () => {
+        history.push(`/edit/${post._id}`);
+    }
+
     const shareList = [
         <div key="Facebook" className={classes.menuItemContainer}>
             <ListItemIcon className={classes.socialMediaIcon}>
@@ -133,6 +137,19 @@ const Header = ({ post, openComments, saved, blocked, savePost, openReport, open
                 </Grid>
             </Grid>
 
+            <Grid item xs={12} md={12}>
+                <Grid container direction="row" className={classes.tagsContainer} spacing={2}>
+                    {post.tags.map((tag) => 
+                        <Grid item key={tag}>
+                            <Chip 
+                                className={classes.tag} 
+                                label={tag} 
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+            </Grid>
+
             {deleteConfirmation &&
                 <Confirm 
                     action="Delete"
@@ -149,7 +166,7 @@ const Header = ({ post, openComments, saved, blocked, savePost, openReport, open
     function getList() {
         if(currentUser && (currentUser?.result?._id === post.creator || currentUser?.result?.googleId + 'abc' === post.creator) ){
             return [
-                <Typography key="Edit this post" className={classes.menuItemText} variant='body2'>Edit this post</Typography>,
+                <Typography key="Edit this post" className={classes.menuItemText} variant='body2' onClick={editPost}>Edit this post</Typography>,
                 <Typography key="Delete this post" className={classes.menuItemText} variant='body2' onClick={() => setDeleteConfirmation(true)}>Delete this post</Typography>,
             ];
         }else {
@@ -157,7 +174,7 @@ const Header = ({ post, openComments, saved, blocked, savePost, openReport, open
                 <Typography key="Dismiss this post" className={classes.menuItemText} variant='body2'>Dismiss this post</Typography>,
                 <Typography key="Report this post" className={classes.menuItemText} variant='body2' onClick={openReport}>Report this post</Typography>,
                 <Typography key="Report this author" className={classes.menuItemText} variant='body2' onClick={openReport2}>Report this author</Typography>,
-                <Typography key={"Block this author" + blocked && "- disabled" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
+                <Typography key={blocked ? "Block this author - disabled" : "Block this author" } className={classes.menuItemText} variant='body2' onClick={openConfirmation}>Block this author</Typography>
             ];
         }
     

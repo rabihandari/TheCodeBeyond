@@ -27,6 +27,18 @@ export const createPost = (post) => async (dispatch) => {
     dispatch({ type: actionTypes.LOADING_END });
 }
 
+export const editPost = (post) => async (dispatch) => {
+    dispatch({ type: actionTypes.LOADING_START });
+    try {
+        const { data } = await api.editPost(post);
+
+        dispatch({ type: actionTypes.EDIT, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+    dispatch({ type: actionTypes.LOADING_END });
+}
+
 export const getPopularPosts = () => async (dispatch) => {
     try {
         const { data } = await api.fetchPopularPosts();

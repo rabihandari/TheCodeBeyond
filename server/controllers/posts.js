@@ -1,7 +1,7 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
 import mongoose from 'mongoose';
-import mongodb from 'mongodb';
+import fs from 'fs';
 
 export const getPosts = async (req, res) => {
     const filter = req.body;
@@ -87,6 +87,45 @@ export const createPost = async (req, res) => {
     }
 };
 
+
+export const editPost = async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
+    const userId = req.userId;
+    const post = req.body;
+
+    try {
+        // Check if the user is the owner...
+        if(userId != post.creator){
+            throw new Error("You cannot perform this action");
+        }
+
+        const oldPost = await Post.findById(post.id);
+        if(!oldPost){
+            throw new Error("Post not found!");
+        }
+
+        const newPost = { 
+            ...post,
+            tags: JSON.parse(post.tags), 
+            creator: req.userId, 
+            createdAt: new Date().toISOString(),
+         };
+
+        // Update Picture
+        if(req.file){
+            let oldImage = oldPost.imageFile.split('/').pop();
+            fs.unlinkSync(`${process.cwd()}/uploads/posts/${oldImage}`);
+            newPost.imageFile = url + '/uploads/posts/' + req.file.filename
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(post.id, newPost, { new: true });
+        res.status(201).json(updatedPost);
+        
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+
+}
 
 export const getTitles = async (req, res) => {
     try {
