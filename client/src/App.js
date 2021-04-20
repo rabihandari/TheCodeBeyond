@@ -33,15 +33,24 @@ const App = () => {
     const [page, setPage] = useState(1);
     const [selectedTitle, setSelectedTitle] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(oAuthLogin(getUser()));
-        dispatch(getPosts(0));
-        dispatch(getPopularPosts());
+        setLoading(true);
+        let p1 = dispatch(oAuthLogin(getUser()));
+        let p2 = dispatch(getPosts(0));
+        let p3 = dispatch(getPopularPosts());
+
+        Promise.all([p1, p2, p3]).then(() => {
+            setLoading(false);
+        });
     }, [dispatch]);
 
     const fetchPosts = (page, keyword=selectedTitle, tags=selectedTags) => {
-        dispatch(getPosts(page, {"keyword": keyword, "tags": tags}));
+        setLoading(true);
+        dispatch(getPosts(page, {"keyword": keyword, "tags": tags})).then(() => {
+            setLoading(false);
+        });
         setSelectedTitle(keyword);
         setSelectedTags(tags);
         window.scrollTo({top: 0, behavior: 'smooth'});
@@ -57,7 +66,7 @@ const App = () => {
                 <ScrollToTop/>
                 <HeaderV2 fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Switch>
-                    <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags}/>}/>
+                    <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags} selectedTitle={selectedTitle} isLoading={isLoading}/>}/>
                     <Route path="/createPost" render={(props) => <CreatePost {...props} editing={false}/>} />
                     <Route path="/edit/:id" render={(props) => <CreatePost {...props} editing={true} />} />
                     <Route exact path="/register" component={Register} />

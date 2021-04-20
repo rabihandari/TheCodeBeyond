@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, InputBase } from '@material-ui/core';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 
@@ -12,18 +12,30 @@ const filterOptions = createFilterOptions({
 
 const SearchBarV2 = (props) => {
     const classes = useStyles();
+    const searchInput = useRef(null);
+    const [keyword, setKeyword] = useState('');
     const [titles, setTitles] = useState([]);
     const [expanded, setExpanded] = useState(false);
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (e, newValue) => {
         if (newValue === null) return;
+        console.log("Clicked 1");
         props.fetchPosts(0, newValue, undefined);
+        setKeyword(keyword);
     }
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && event.target.value === ""){
-            props.fetchPosts(0, "", undefined);
+        if (event.key === 'Enter'){
+            props.fetchPosts(0, event.target.value, undefined);
         }
+        setKeyword(event.target.value);
+    }
+
+    const toggleSearchBar = () => {
+        if(searchInput){
+            !expanded ? searchInput.current.focus() : searchInput.current.blur();
+        }
+        setExpanded(!expanded)
     }
 
     useEffect(() => {
@@ -33,8 +45,8 @@ const SearchBarV2 = (props) => {
     }, []);
 
     return(
-        <Grid container direction="row" justify="flex-end" alignItems="center">
-            <img className={classes.searchIcon} src={searchIcon} alt="search" onClick={() => setExpanded(!expanded)}/>
+        <Grid container direction="row" justify="flex-end" alignItems="center" onBlur={() => {setExpanded(false)}} >
+            <img className={classes.searchIcon} src={searchIcon} alt="search" onClick={toggleSearchBar}/>
             <Autocomplete 
                 classes={{
                     option: classes.option,
@@ -43,18 +55,18 @@ const SearchBarV2 = (props) => {
                 }}
                 freeSolo
                 onChange={handleChange}
-                noOptionsText="No results"
                 options={titles}
-                blurOnSelect={true}
+                selectOnFocus={true}
                 filterOptions={filterOptions}
                 renderInput={(params) => (
                     <div className={classes.searchHolder} ref={params.InputProps.ref} >
                         <InputBase 
                             className={classes.searchInput} 
+                            inputRef={searchInput}
                             placeholder="Search" 
                             inputProps={params.inputProps}
+                            value={keyword}
                             onKeyDown={handleKeyDown}
-                            autoFocus={true}
                             style={{ width: (expanded ? '250px' : '0px') }} 
                         />
                     </div>

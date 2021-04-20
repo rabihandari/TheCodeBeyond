@@ -55,7 +55,7 @@ const Builder = ({ editing }) => {
         formData.append('body', postData.body);
         formData.append('tags', JSON.stringify(postData.tags));
         formData.append('imageFile', postData.imageFile);
-        formData.append('creator', user.result.id || (user.result.googleId + 'abc'));
+        formData.append('creator', postData.creator);
         formData.append('name', user.result.name);
         
         // Create or Edit post...
