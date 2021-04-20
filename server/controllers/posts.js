@@ -219,9 +219,9 @@ export const getPublishedResponses = async (req, res) => {
             return;
         }
 
-
         for await (let response of user.responses){
             let post = await Post.findById(response.postId);
+            if(!post) continue;
             let comment = post.comments.find(com => com._id == response.commentId);
 
             responses.push({
@@ -232,6 +232,7 @@ export const getPublishedResponses = async (req, res) => {
             });
             
         }
+        
 
         res.status(200).json({ responses: responses });
 
