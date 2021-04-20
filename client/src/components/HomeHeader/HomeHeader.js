@@ -15,7 +15,7 @@ const HomeHeader = ({ fetchPosts, searchKeyword, selectedTags }) => {
     return(
         <div style={{ overflow: 'hidden'}}>
             <Container className={classes.container}>
-                <Grid container alignItems={(selectedTags.length > 0 && searchKeyword.length > 0) ? "flex-start" : "center"}  style={ selectedTags.length > 0 ? { marginBottom: '40px' } : { marginBottom: '20px' }}>
+                <Grid container alignItems={(selectedTags.length > 0 && searchKeyword.length > 0) ? "flex-start" : "center"}  style={ selectedTags.length > 0 && searchKeyword.length > 0 ? { marginBottom: '40px' } : { marginBottom: '20px' }}>
                     <IconButton size="medium" onClick={handleBack}>
                         <ArrowBackIcon />
                     </IconButton>

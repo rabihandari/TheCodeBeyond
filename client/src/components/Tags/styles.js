@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
         padding: '40px 0px',
     },
     tagsContainer: {
-        padding: '40px 80px',
+        padding: '20px 80px',
     },
     title: {
         fontFamily: 'LibreBaskerville',

@@ -2,39 +2,53 @@ import { makeStyles } from '@material-ui/styles';
 
 export default makeStyles((theme) => ({
     container: {
-        marginBottom: '40px',
-        height: '69px',
-        maxWidth: '380px',
+        cursor: 'pointer',
+        padding: '0px 20px',
     },
-    media: {
-        width: '69px',
-        height: '69px',
+    postImage: {
+        width: '100px',
+        height: '100px',
+        borderRadius: '5px',
     },
-    content: {
-        padding: '0px 10px',
+    profilePicture: {
+        height: '20px',
+        width: '20px',
+        cursor: 'pointer',
+        backgroundColor: 'blue',
+        marginBottom: '10px',
+        fontSize: '11px'
     },
-    contentTitle: {
-        fontSize: '16px',
-        fontFamily: 'MetropolisBold',
+    postCreator: {
+        marginLeft: '10px',
+        marginBottom: '10px',
+        display: 'box',
+        fontFamily: 'MetropolisRegular',
+        maxWidth: '95%',
         lineHeight: '1.3125',
         overflow: 'hidden',
         lineClamp: '2',
-        maxWidth: '250px',
-        display: 'box',
         textOverflow: 'ellipsis',
         boxOrient: 'vertical',
-        marginBottom: '5px',
-        transition: '0.5s',
+        [theme.breakpoints.down('md')]: {
+            maxWidth: '100%',
+        },
     },
-    contentCreator: {
-        fontSize: '13px',
-        fontFamily: 'MetropolisRegular',
-        color: '#7f7f7f',
-        maxWidth: '250px',
-        overflow: 'hidden',
-        lineClamp: '1',
+    postTitle: {
+        fontFamily: 'MetropolisBold',
         display: 'box',
+        maxWidth: '95%',
+        marginBottom: '10px',
+        lineHeight: '1.3125',
+        overflow: 'hidden',
+        lineClamp: '2',
         textOverflow: 'ellipsis',
         boxOrient: 'vertical',
+        [theme.breakpoints.down('md')]: {
+            maxWidth: '100%',
+        },
+    },
+    postDate: {
+        color: 'grey',
+        fontFamily: 'MetropolisRegular',
     },
 }));

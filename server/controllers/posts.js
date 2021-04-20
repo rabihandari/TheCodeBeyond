@@ -6,7 +6,7 @@ import fs from 'fs';
 export const getPosts = async (req, res) => {
     const filter = req.body;
     const page = req.params.page;
-    const postsPerPage = 8;
+    const postsPerPage = 12;
 
     try {
 
@@ -53,9 +53,15 @@ export const getPosts = async (req, res) => {
 
 export const getPopularPosts = async (req, res) => {
     try {
-        const posts = await Post.find({}, 'title name createdAt imageFile').sort({ likes: -1 }).limit(6);
+        const posts = await Post.find({}, 'title name body createdAt imageFile tags creator').sort({ likes: -1 }).limit(6);
 
-        res.status(200).json(posts);
+        const data = [];
+        for await(let post of posts){
+            let user = await User.findById(post.creator, 'profilePicture');
+            data.push({ ...post._doc, profilePicture: user.profilePicture});
+        }
+
+        res.status(200).json(data);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

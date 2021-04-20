@@ -1,12 +1,18 @@
 import { makeStyles } from '@material-ui/styles';
 
 export default makeStyles((theme) => ({
-    container: {
-        padding: '40px 0px'
+    mainContainer: {
+        padding: '20px 0px'
+    },
+    titleContainer: {
+        padding: '30px 0px',
     },
     title: {
-        fontFamily: 'LibreBaskerville',
-        fontWeight: '700',
-        padding: '20px',
+        fontFamily: 'MetropolisRegular',
+        fontWeight: '600',
+        marginLeft: '10px',
+    },
+    postsContainer: {
+        padding: '20px 0px'
     }
 }));

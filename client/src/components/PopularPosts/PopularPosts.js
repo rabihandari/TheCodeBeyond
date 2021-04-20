@@ -1,24 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
 
 import useStyles from './styles';
 import PopularPost from './PopularPost/PopularPost';
+import TrendingIcon from '../../images/icon-trending.svg';
+import PopularIcon from '../../images/icon-popular.svg';
 
 const PopularPosts = () => {
     const popularPosts = useSelector((state) => state.popularPosts);
     const classes = useStyles();
 
+
     return(
-        <Grid container className={classes.container}>
-            <Typography variant="h4" className={classes.title}>Popular Posts</Typography>
-            <Grid container direction="row" alignItems="center" justify="space-between" className={classes.title}>
+        <Grid container className={classes.mainContainer}>
+            <Grid container className={classes.titleContainer} alignItems="center">
+                <img src={PopularIcon} alt="Trending" />
+                <Typography variant="body1" className={classes.title}>Popular on The Code Beyond</Typography>
+            </Grid>
+            <Grid container direction="row" alignItems="center" className={classes.postsContainer} spacing={5}>
                 {popularPosts.map((popularPost) => 
-                    <Grid item key={popularPost._id} xs={12} md={6} lg={3}>
-                        <Link to={`/${popularPost._id}/${popularPost.title}`} style={{ textDecoration: 'none', color: '#000000FF' }}>
-                            <PopularPost post={popularPost}/>
-                        </Link>
+                    <Grid item key={popularPost._id} xs={12} sm={6} lg={4}>
+                        <PopularPost post={popularPost}/>
                     </Grid>
                 )}
             </Grid>

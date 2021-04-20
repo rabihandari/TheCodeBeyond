@@ -21,6 +21,7 @@ import Report from '../../components/Report/Report';
 import Confirm from '../../components/Confirm/Confirm';
 import  * as reportActions from './actions/report';
 import  * as blockActions from './actions/block';
+import FooterV2 from '../../components/FooterV2/FooterV2';
 
 const renderers = {
     code:({language,value})=>{
@@ -42,6 +43,7 @@ const Post = (props) => {
     const [saved, setSaved] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const [commentsOpen, setCommentsOpen] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const postRef = useRef(null);
     const matches = useMediaQuery(useTheme().breakpoints.up('sm'));
     const [reportOpen, setReportOpen] = useState(false);
@@ -55,13 +57,16 @@ const Post = (props) => {
     useEffect(() => {
         dispatch({ type: actionTypes.LOADING_START });
         let id = props.match.params.id;
+        setLoading(true);
         fetchPost(id).then(({ data }) => {
             setPost(data.post);
             setUser(data.author);
             setSaved(data.saved);
             setBlocked(data.blocked);
             dispatch({ type: actionTypes.LOADING_END });
+            setLoading(false);
         }).catch(err => {
+            setLoading(false);
             history.push("/404");
         });
     }, [props, history, dispatch]);
@@ -116,58 +121,64 @@ const Post = (props) => {
     }
 
     return(
-        <Grid container className={classes.mainContainer} justify="space-evenly">
-            <Grid item sm={12} md={12}>
-                {(post && user) && 
-                    <div className={classes.postContainer} ref={postRef} style={!matches ? { width: window.screen.width - 48 } : {}}>
-                        <Header user={user} post={post} saved={saved} blocked={blocked} savePost={savePost} deletePost={deletePost} openReport={openReport} openReport2={openReport2} openConfirmation={openConfirmation}/>
-                        {post.imageFile !== "" && 
-                            <div className={classes.mdMediaHolder}><CardMedia image={post.imageFile} className={classes.mdMedia}/></div>
-                        }
-                        <ReactMarkdown renderers={renderers} children={post.body} className={classes.mdBody}/>
-                        <Typography className={classes.divider}>● ● ●</Typography>
-                        <Footer post={post} openComments={openComments} saved={saved} blocked={blocked} savePost={savePost} deletePost={deletePost} openReport={openReport} openReport2={openReport2} openConfirmation={openConfirmation}/>
-                    </div>
+        <div>
+            <Grid container className={classes.mainContainer} justify="space-evenly">
+                <Grid item sm={12} md={12}>
+                    {(post && user) && 
+                        <div className={classes.postContainer} ref={postRef} style={!matches ? { width: window.screen.width - 48 } : {}}>
+                            <Header user={user} post={post} saved={saved} blocked={blocked} savePost={savePost} deletePost={deletePost} openReport={openReport} openReport2={openReport2} openConfirmation={openConfirmation}/>
+                            {post.imageFile !== "" && 
+                                <div className={classes.mdMediaHolder}><CardMedia image={post.imageFile} className={classes.mdMedia}/></div>
+                            }
+                            <ReactMarkdown renderers={renderers} children={post.body} className={classes.mdBody}/>
+                            <Typography className={classes.divider}>● ● ●</Typography>
+                            <Footer post={post} openComments={openComments} saved={saved} blocked={blocked} savePost={savePost} deletePost={deletePost} openReport={openReport} openReport2={openReport2} openConfirmation={openConfirmation}/>
+                        </div>
+                    }
+                </Grid>
+                
+                {post && 
+                    <Comments 
+                        post={post} 
+                        setPost={setPost}
+                        commentsOpen={commentsOpen} 
+                        closeComments={closeComments} 
+                        anchor={matches ? 'right' : 'bottom'} 
+                    />
+                }
+
+                <Grid item xs={10} md={8}>
+                    
+                    {!isLoading && 
+                        <PopularPosts />
+                    }
+                </Grid>
+                
+                {reportOpen &&
+                    <Report whatToReport='Post' closeReport={reportActions.closeReport(setReportOpen)} callback={reportActions.reportPost(post._id, setAlert, dispatch)}/>
+                }
+                {reportOpen2 &&
+                    <Report whatToReport='Author' closeReport={reportActions.closeReport(setReportOpen2)} callback={reportActions.reportAuthor(post.creator, setAlert, dispatch)}/>
+                }
+                {confirmationOpen &&
+                    <Confirm 
+                        action='Block' 
+                        title='Are you sure you want to block this author'
+                        description="By blocking this author you will not be able view or search any post he/she creates. You can always unblock this user in your settings page" 
+                        close={blockActions.closeConfirmation(setConfirmationOpen)} 
+                        callback={blockActions.blockAuthor(post.creator, setAlert, dispatch, setBlocked)}
+                    />
+                }
+                {alert.open && 
+                    <Snackbar open={alert.open} autoHideDuration={3000} onClose={reportActions.handleClose(setAlert)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                        <Alert onClose={reportActions.handleClose(setAlert)} severity={alert.severity}>
+                            {alert.message}
+                        </Alert>
+                </Snackbar>
                 }
             </Grid>
-            
-            {post && 
-                <Comments 
-                    post={post} 
-                    setPost={setPost}
-                    commentsOpen={commentsOpen} 
-                    closeComments={closeComments} 
-                    anchor={matches ? 'right' : 'bottom'} 
-                />
-            }
-
-            <Grid item xs={10} md={8}>
-                <PopularPosts />
-            </Grid>
-            
-            {reportOpen &&
-                <Report whatToReport='Post' closeReport={reportActions.closeReport(setReportOpen)} callback={reportActions.reportPost(post._id, setAlert, dispatch)}/>
-            }
-            {reportOpen2 &&
-                <Report whatToReport='Author' closeReport={reportActions.closeReport(setReportOpen2)} callback={reportActions.reportAuthor(post.creator, setAlert, dispatch)}/>
-            }
-            {confirmationOpen &&
-                <Confirm 
-                    action='Block' 
-                    title='Are you sure you want to block this author'
-                    description="By blocking this author you will not be able view or search any post he/she creates. You can always unblock this user in your settings page" 
-                    close={blockActions.closeConfirmation(setConfirmationOpen)} 
-                    callback={blockActions.blockAuthor(post.creator, setAlert, dispatch, setBlocked)}
-                />
-            }
-            {alert.open && 
-                <Snackbar open={alert.open} autoHideDuration={3000} onClose={reportActions.handleClose(setAlert)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                    <Alert onClose={reportActions.handleClose(setAlert)} severity={alert.severity}>
-                        {alert.message}
-                    </Alert>
-              </Snackbar>
-            }
-        </Grid>
+            <FooterV2 />
+        </div>
     );
 }
 
