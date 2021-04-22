@@ -22,6 +22,7 @@ const getUser = async (req, res, next) => {
     next();
   } catch (error) {
       console.log("This is an annonymous request");
+      next();
   }
 };
 
