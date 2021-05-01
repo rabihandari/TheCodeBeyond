@@ -61,7 +61,7 @@ export const registerOAuth = async (req, res) => {
 
         // Check if user exists
         if(user){
-            res.status(201).json({ message: 'User exists!' });
+            res.status(201).json({ message: 'User exists!', user: user });
         }else{
             
             // Hashing the password
@@ -78,7 +78,7 @@ export const registerOAuth = async (req, res) => {
                         confirmed: true
                     });
                     newUser.save().then(user => {
-                        res.status(201).json({ message: 'User Created!' });
+                        res.status(201).json({ message: 'User Created!', user: user });
                     }).catch(error => {
                         res.status(405).json({ message: error.message });
                     });
@@ -105,7 +105,7 @@ export const login = async (req, res) => {
 
     // Check if user exists
     try {
-        User.findOne({ email: email }).then(user => {
+        User.findOne({ email: email }, 'createdAt email name password profilePicture confirmed bio').then(user => {
             bcrypt.compare(password, user.password).then(isMatch => {
                 if (isMatch) {
                     // Check if activated
@@ -117,9 +117,10 @@ export const login = async (req, res) => {
                         id: user.id,
                     };
 
+
                     // Sign JWT
                     jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '5d' }, (err, token) => {
-                        res.status(200).json({ result: user, token: token })
+                        res.status(200).json({ result: user, token: token });
                     });
                 }else{
                     res.status(400).json({ message: "Password is incorrect" });

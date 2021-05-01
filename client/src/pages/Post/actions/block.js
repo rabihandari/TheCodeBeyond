@@ -6,6 +6,7 @@ export const blockAuthor = (creator, setAlert, dispatch, setBlocked) => () => {
     blockAuth({ creator: creator }).then((res) => {
         setAlert({ open: true, message: res.data.message, severity: 'success' });
         setBlocked(true);
+        dispatch({ type: actionTypes.BLOCK, payload: { id: creator } });
         dispatch({ type: actionTypes.LOADING_END });
     }).catch(error => {
         setAlert({ open: true, message: error.response.data.message, severity: 'error' });

@@ -10,6 +10,13 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+API.interceptors.response.use(undefined, (error) => {
+  if (error.response.status === 406){
+    window.location = `/activate`
+  }
+  return Promise.reject(error);
+});
+
 
 export const fetchPosts = (page, filter) => API.post(`/posts/page${page}`, filter);
 export const createPost = (newPost) => API.post(`/posts/createPost`, newPost);
@@ -43,3 +50,15 @@ export const editComment = (commentData) => API.post('/posts/comments/editCommen
 export const editReply = (replyData) => API.post('/posts/comments/editReply', replyData);
 export const reportComment = (commentData) => API.post('/posts/comments/reportComment', commentData);
 export const reportReply = (replyData) => API.post('/posts/comments/reportReply', replyData);
+
+export const getUserSettings = () => API.get('/users/settings/');
+export const changeName = (userData) => API.post('/users/settings/changeName', userData);
+export const changeBio = (userData) => API.post('/users/settings/changeBio', userData);
+export const changeProfilePicture = (pictureData) => API.post('/users/settings/changeProfilePicture', pictureData);
+export const changeEmail = (emailData) => API.post('/users/settings/changeEmail', emailData);
+export const changePassword = (passwordData) => API.post('/users/settings/changePassword', passwordData);
+export const getBlockedUsers = (blockedUsersIds) => API.post('/users/settings/blocked', blockedUsersIds);
+export const unblockUser = (userData) => API.post('/users/settings/unblock', userData); 
+export const deactivateAccount = () => API.post('/users/settings/deactivateAccount'); 
+export const reactivateAccount = () => API.post('/users/settings/reactivateAccount'); 
+export const deleteAccount = () => API.post('/users/settings/deleteAccount'); 

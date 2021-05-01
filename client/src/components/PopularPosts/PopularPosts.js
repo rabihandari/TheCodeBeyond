@@ -4,7 +4,6 @@ import { Typography, Grid } from '@material-ui/core';
 
 import useStyles from './styles';
 import PopularPost from './PopularPost/PopularPost';
-import TrendingIcon from '../../images/icon-trending.svg';
 import PopularIcon from '../../images/icon-popular.svg';
 
 const PopularPosts = () => {

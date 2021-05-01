@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { Snackbar } from '@material-ui/core';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import Home from './pages/Home/Home';
 import CreatePost from './pages/CreatePost/CreatePost';
 import Post from './pages/Post/Post';
 import { getPopularPosts, getPosts } from './actions/posts';
 import { oAuthLogin } from './actions/auth';
+import { getSettings } from './actions/user';
+import * as actionTypes from './actions/actionTypes';
 import HeaderV2 from './components/HeaderV2/HeaderV2';
 import Login from './pages/Login/Login'
 import TokenExpired from './pages/Login/TokenExpired/TokenExpired';
@@ -18,7 +22,11 @@ import ResetPasswordSuccess from './pages/Login/ResetPassword/Success/Success';
 import ResetPassword from './pages/Login/ResetPassword/ResetPassword';
 import SavedPosts from './pages/SavedPosts/SavedPosts';
 import MyPosts from './pages/MyPosts/MyPosts';
+import Settings from './pages/Settings/Settings';
 import ScrollToTop from './components/Shared/ScrollToTop';
+import ChangePassword from './pages/ChangePassword/ChangePassword';
+import ChangePasswordSuccess from './pages/ChangePassword/Success/Success';
+import ActivateAccount from './pages/ActivateAccount/ActivateAccount';
 
 const theme = createMuiTheme({
     palette: {
@@ -28,21 +36,27 @@ const theme = createMuiTheme({
     },
 });
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const App = () => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [selectedTitle, setSelectedTitle] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const alert = useSelector(state => state.alert);
 
     useEffect(() => {
         setLoading(true);
         let p1 = dispatch(oAuthLogin(getUser()));
         let p2 = dispatch(getPosts(0));
         let p3 = dispatch(getPopularPosts());
+        let p4 = dispatch(getSettings());
 
-        Promise.all([p1, p2, p3]).then(() => {
-            setLoading(false);
+        Promise.all([p1, p2, p3, p4]).then(() => {
+            setLoading(false);  
         });
     }, [dispatch]);
 
@@ -77,9 +91,20 @@ const App = () => {
                     <Route path="/login/reset-password/success" component={ResetPasswordSuccess} />
                     <Route path="/login/reset-password/:email/:token" component={ResetPassword}/>
                     <Route exact path="/saved" component={SavedPosts}/>
-                    <Route path="/:id/:title" render={(props) => <Post {...props} />} />
                     <Route path="/my-posts" component={MyPosts} />
+                    <Route exact path="/settings" component={Settings} />
+                    <Route path="/settings/changePassword/success" component={ChangePasswordSuccess} />
+                    <Route path="/settings/changePassword/:email" component={ChangePassword} />
+                    <Route exact path="/activate" component={ActivateAccount} />
+                    <Route path="/:id/:title" render={(props) => <Post {...props} />} />
                 </Switch>
+                {!isLoading &&
+                    <Snackbar open={alert.open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                        <Alert onClose={() => dispatch({ type: actionTypes.HIDE_ALERT })} severity={alert.severity}>
+                            {alert.message}
+                        </Alert>
+                    </Snackbar>
+                }
             </MuiThemeProvider>
         </Router>
     );

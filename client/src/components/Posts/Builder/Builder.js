@@ -63,11 +63,19 @@ const Builder = ({ editing }) => {
             dispatch(editPost(formData)).then(() => {
                 setAlert({ open: true, message: 'Your post has been successfully updated!', severity: 'success' })
                 setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+            }).catch(error => {
+                if(error.response.status === 406){
+                    setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
+                } 
             });
         }else{
             dispatch(createPost(formData)).then(() => {
                 setAlert({ open: true, message: 'Your post has been successfully uploaded!', severity: 'success' })
                 setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
+            }).catch(error => {
+                if(error.response.status === 406){
+                    setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
+                } 
             });
         }
 

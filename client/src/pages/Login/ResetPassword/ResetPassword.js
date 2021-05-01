@@ -59,7 +59,6 @@ const ResetPassword = () => {
                             <Typography style={{ marginTop: '5px' }} variant="caption">for {params.email}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography className={classes.message3} variant="body2">We'll send you an email with a link to reset your password. Please fill in with your email. Make sure you check the spam folder if you didn't receive the message in your inbox</Typography>
                             <Typography className={classes.errorText} variant="caption">{message}</Typography>
                         </Grid>
                         <Grid item xs={12}>

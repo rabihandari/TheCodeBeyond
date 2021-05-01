@@ -31,6 +31,9 @@ const Profile = ({ name, email, imageUrl }) => {
             case "View Posts":
                 history.push('/my-posts');
                 break;
+            case "Settings":
+                history.push('/settings');
+                break;
             case "Logout":
                 dispatch(logout());
                 history.push('/');

@@ -7,7 +7,9 @@ import { useDispatch } from 'react-redux';
 
 import useStyles from "./styles";
 import { oAuthLogin, signin } from '../../actions/auth';
+import { getSettings } from '../../actions/user';
 import { signUpOAuth } from '../../api';
+import * as actionTypes from '../../actions/actionTypes';
 import LoginValidation from './validator';
 import logo from "../../images/logo.png";
 
@@ -35,7 +37,6 @@ const Login = () => {
         const token = res?.tokenId;
 
         try {
-            dispatch(oAuthLogin({result, token}));
 
             let oAuthData = {
                 token: token,
@@ -45,10 +46,18 @@ const Login = () => {
                 profilePicture: result.imageUrl,
             };
 
-            signUpOAuth(oAuthData).then(() => {
-                history.push('/');
+            dispatch({ type: actionTypes.LOADING_START });
+            signUpOAuth(oAuthData).then((res) => {
+                let p1 = dispatch(oAuthLogin({result: { ...result, profilePicture: result.imageUrl, bio: res.data.user.bio}, token}));
+                let p2 = dispatch(getSettings());
+                
+                Promise.all([p1, p2]).then(() => {
+                    dispatch({ type: actionTypes.LOADING_END });
+                    history.push('/');
+                });
             }).catch(error => {
                 console.log(error);
+                dispatch({ type: actionTypes.LOADING_END });
             });
 
         } catch (error) {
@@ -75,10 +84,14 @@ const Login = () => {
             return;
         }
 
-        // Sign In
-        dispatch(signin(form, setErrors, history)).then((() => {
+        // Sign In and get Settings
+
+        let p1 = dispatch(signin(form, setErrors, history));
+        let p2 = dispatch(getSettings());
+
+        Promise.all([p1, p2]).then(() => {
             setLoading(false);
-        }));
+        });
     };
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });

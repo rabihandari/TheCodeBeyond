@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 export const CustomIndeterminate = withStyles((theme) => ({
     root: {
-      height: 3,
+      height: 1,
       borderRadius: 10,
     },
     colorPrimary: {
@@ -12,6 +12,6 @@ export const CustomIndeterminate = withStyles((theme) => ({
     },
     bar: {
       borderRadius: 5,
-      backgroundColor: '#aeaeae',
+      backgroundColor: '#3f51b5',
     },
   }))(LinearProgress);

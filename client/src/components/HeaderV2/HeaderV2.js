@@ -47,7 +47,7 @@ const HeaderV2 = (props) => {
                     <Grid item md={6} className={classes.rightContainer}>
                         {user.authData?.result ? 
                             <div className={classes.rightContainer}>
-                                <Profile name={user.authData.result.name} email={user.authData.result.email} imageUrl={user.authData.result.imageUrl} />
+                                <Profile name={user.authData.result.name} email={user.authData.result.email} imageUrl={user.authData.result.profilePicture} />
                                 <Button className={classes.addPostButton} variant="outlined" color="secondary" size="small" onClick={goToAddPost}>Add Post</Button>
                                 <IconButton size="small" onClick={goToSavedPosts} className={classes.savedButton}>
                                     <Tooltip title="Saved">

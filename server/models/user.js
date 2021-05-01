@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: ""
     },
+    bio: {
+        type: String,
+        default: ""
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -47,6 +51,10 @@ const userSchema = mongoose.Schema({
     blockedUsers: {
         type: [String],
         default: []
+    },
+    deactivated: {
+        type: Boolean,
+        default: false
     }
 });
 

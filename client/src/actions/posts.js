@@ -23,6 +23,7 @@ export const createPost = (post) => async (dispatch) => {
         dispatch({ type: actionTypes.CREATE, payload: data });
     } catch (error) {
         console.log(error);
+        return Promise.reject();
     }
     dispatch({ type: actionTypes.LOADING_END });
 }

@@ -4,13 +4,14 @@ import { getPosts, createPost, getPopularPosts, getTitles, getPost, getPublished
 import commentRoutes from './comments.js';
 import auth from '../middlewares/auth.js';
 import getUser from '../middlewares/getUser.js';
+import confirmed from '../middlewares/confirmed.js';
 import { postStorage } from '../config/storage.js';
 
 const router = express.Router();
 
 router.use('/comments', commentRoutes);
-router.post('/page:page', getPosts);
-router.post('/createPost', auth, postStorage.single('imageFile'), createPost);
+router.post('/page:page', getUser, getPosts);
+router.post('/createPost', auth, confirmed, postStorage.single('imageFile'), createPost);
 router.post('/editPost', auth, postStorage.single('imageFile'), editPost);
 router.get('/popular', getPopularPosts);
 router.get('/titles', getTitles);

@@ -7,7 +7,15 @@ export const getPosts = async (req, res) => {
     const filter = req.body;
     const page = req.params.page;
     const postsPerPage = 12;
+    
+    const users = await User.find({ deactivated: true }, '_id');
+    let deactivatedIds = users.map(user => user._id);
 
+    let currentUser;
+    if(req.userId){
+        currentUser = await User.findById(req.userId, 'blockedUsers');
+    }
+    
     try {
 
         // Adding Keyword filter
@@ -27,22 +35,43 @@ export const getPosts = async (req, res) => {
         let tagsQuery = {};
         if(filter.tags){
             if (filter.tags.length > 0){
-                tagsQuery = {tags: { $all: filter.tags }}; 
+                tagsQuery = { tags: { $all: filter.tags } }; 
             }
+        }
+
+        // Deactivated accounts filter
+        let activatedQuery = {
+            creator: {
+                $nin: deactivatedIds,
+            }
+        };
+        
+        // Blocked accounts filter
+        let blockedQuery = {};
+        if (req.userId){
+            blockedQuery = {
+                creator: {
+                    $nin: currentUser.blockedUsers,
+                }
+            };
         }
 
         // Merging filters
         let filterQuery = {
             $and: [
                 keywordQuery,
-                tagsQuery
+                tagsQuery,
+                activatedQuery,
+                blockedQuery
             ]
         };
+
         const postsNumber = await Post.find(filterQuery).countDocuments();
         const posts = await Post
-            .find(filterQuery, 'title description tags createdAt imageFile')
+            .find(filterQuery, 'title description creator tags createdAt imageFile')
             .skip(page * postsPerPage)
             .limit(postsPerPage);
+
         
         res.status(200).json({posts: posts, pages: Math.ceil(postsNumber/postsPerPage)});
     } catch (error) {
