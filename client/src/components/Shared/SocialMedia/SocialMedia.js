@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, IconButton, Tooltip } from '@material-ui/core';
-import { Facebook, Instagram, Twitter, Pinterest } from '@material-ui/icons';
+import { Facebook, Instagram, Twitter, LinkedIn } from '@material-ui/icons';
 
 import useStyles from './styles';
 
@@ -10,7 +10,7 @@ const SocialMedia = () => {
     return(
         <Grid container>
             <Tooltip title="Facebook">
-                <IconButton aria-label="Facebook" color="primary" className={classes.socialMediaButton} component="a" href="https://www.facebook.com" target="_blank">
+                <IconButton aria-label="Facebook" color="primary" className={classes.socialMediaButton} component="a" href="https://www.facebook.com/rabih.andari.927/" target="_blank">
                     <Facebook/>
                 </IconButton>
             </Tooltip>
@@ -20,13 +20,13 @@ const SocialMedia = () => {
                 </IconButton>
             </Tooltip>
             <Tooltip title="Twitter">
-                <IconButton aria-label="Twitter" color="primary" className={classes.socialMediaButton} component="a" href="https://www.twitter.com" target="_blank">
+                <IconButton aria-label="Twitter" color="primary" className={classes.socialMediaButton} component="a" href="https://twitter.com/RabihAndari" target="_blank">
                     <Twitter/>
                 </IconButton>
             </Tooltip>
             <Tooltip title="Pinterest">
-                <IconButton aria-label="Pinterest" color="primary" className={classes.socialMediaButton} component="a" href="https://www.pinterest.com" target="_blank">
-                    <Pinterest/>
+                <IconButton aria-label="Linked In" color="primary" className={classes.socialMediaButton} component="a" href="https://www.linkedin.com/in/rabih-andari-368a71201/" target="_blank">
+                    <LinkedIn/>
                 </IconButton>
             </Tooltip>
         </Grid>
