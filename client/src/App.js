@@ -27,6 +27,7 @@ import ScrollToTop from './components/Shared/ScrollToTop';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
 import ChangePasswordSuccess from './pages/ChangePassword/Success/Success';
 import ActivateAccount from './pages/ActivateAccount/ActivateAccount';
+import Feedback from './pages/Feedback/Feedback';
 
 const theme = createMuiTheme({
     palette: {
@@ -96,6 +97,7 @@ const App = () => {
                     <Route path="/settings/changePassword/success" component={ChangePasswordSuccess} />
                     <Route path="/settings/changePassword/:email" component={ChangePassword} />
                     <Route exact path="/activate" component={ActivateAccount} />
+                    <Route path="/feedback/:email" component={Feedback}/>
                     <Route path="/:id/:title" render={(props) => <Post {...props} />} />
                 </Switch>
                 {!isLoading &&

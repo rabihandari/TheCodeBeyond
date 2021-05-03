@@ -30,6 +30,17 @@ export default makeStyles((theme) => ({
         },
     },
     
+    error: {
+        color: 'red',
+        fontFamily: 'MetropolisRegular',
+        display: 'block',
+        lineHeight: '2',
+        margin: 'auto',
+        [theme.breakpoints.down('md')]: {
+            textAlign: 'center',
+        },
+    },
+    
     description: {
         padding: '10px 0px',
         color: 'rgba(255,255,255,.4)',
@@ -47,15 +58,16 @@ export default makeStyles((theme) => ({
         position: 'relative',
     },
     emailHolder: {
+        marginTop: '20px',
         width: '100%',
         height: '58px',
         background: `url(${emailIcon}) 20px center no-repeat,rgba(0,0,0,.2)`,
         backgroundSize: '24px 16px,auto',
-        marginBottom: '1.8rem',
         color: 'rgba(255,255,255,.5)',
         bordeRadius: '3px',
         border: 'none',
     },
+
     emailInput: {
         width: '100%',
         height: '58px',

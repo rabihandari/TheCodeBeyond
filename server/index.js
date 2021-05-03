@@ -8,6 +8,7 @@ import { DATABASE_URL } from './config/config.js';
 
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
+import otherRoutes from './routes/others.js';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(delay);
 app.use('/uploads', express.static('uploads'));
 app.use('/posts', postRoutes);
 app.use('/users', userRoutes);
+app.use('/', otherRoutes);
 
 // Connect to the database
 // const CONNECTION_URL =  process.env.LOCAL_DATABASE_URL || DATABASE_URL;

@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import useStyles from './styles';
+import { useHistory } from 'react-router-dom';
 import { Grid, Typography, Divider } from '@material-ui/core';
 
-const NewsLetter = () => {
+import useStyles from './styles';
+
+
+const Feedback = () => {
     const classes = useStyles();
+    const history = useHistory();
     const [email, setEmail] = useState("");
+    const [invalid, setInvalid] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log("Subscribed");
+        if (email.length === 0){
+            setInvalid(true);
+            return;
+        }
+        
+        history.push(`/feedback/${email}`)
     } 
 
     const handleChange = (event) => {
@@ -18,10 +28,13 @@ const NewsLetter = () => {
 
     return(
         <Grid container direction="column" className={classes.container}>
-            <Typography variant="h4" className={classes.title}>Our NewsLetter</Typography>
+            <Typography variant="h4" className={classes.title}>Send Feedback</Typography>
             <Divider className={classes.divider}/>
-            <Grid item style={{ padding: '14px 0px' }}>
-                <Typography variant="h4" className={classes.description}>Sit vel delectus amet officiis repudiandae est voluptatem. Tempora maxime provident nisi et fuga et enim exercitationem ipsam. Culpa consequatur occaecati.</Typography>
+            <Grid item>
+                <Typography variant="h6" className={classes.description}>Have an idea for new features or want to say something? Type in your email to send us a feedback</Typography>
+                {invalid &&
+                    <Typography variant="caption" className={classes.error}>Please enter your email</Typography>
+                }
             </Grid>
             <Grid item>
                 <form noValidate autoComplete="off" onSubmit={handleSubmit} className={classes.form}>
@@ -35,4 +48,4 @@ const NewsLetter = () => {
     );
 }
 
-export default NewsLetter;
+export default Feedback;

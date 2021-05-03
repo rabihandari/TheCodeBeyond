@@ -5,7 +5,7 @@ import { Container, Grid } from '@material-ui/core';
 import QuickLinks from './QuickLinks/QuickLinks'; 
 import Social from './Social/Social'; 
 import Archives from './Archives/Archives'; 
-import NewsLetter from './NewsLetter/NewsLetter'; 
+import Feedback from './Feedback/Feedback'; 
 import CopyRight from './CopyRight/CopyRight';
 
 const Footer = () => {
@@ -33,7 +33,7 @@ const Footer = () => {
                     <Grid item xs={12} md={1}>
                     </Grid>
                     <Grid item xs={12} md={5}>
-                        <NewsLetter />
+                        <Feedback />
                     </Grid>
                     <Grid item xs={12}>
                         <CopyRight />

@@ -62,3 +62,5 @@ export const unblockUser = (userData) => API.post('/users/settings/unblock', use
 export const deactivateAccount = () => API.post('/users/settings/deactivateAccount'); 
 export const reactivateAccount = () => API.post('/users/settings/reactivateAccount'); 
 export const deleteAccount = () => API.post('/users/settings/deleteAccount'); 
+
+export const sendFeedback = (formData) => API.post('/sendFeedback', formData);
