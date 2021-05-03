@@ -5,6 +5,9 @@ import emailIcon from '../../../images/icon-mail.svg';
 export default makeStyles((theme) => ({
     container: {
         padding: '30px 60px',
+        maxWidth: '515px',
+        display: 'block',
+        margin: 'auto',
         [theme.breakpoints.down('md')]: {
             padding: '30px 10px',
           },

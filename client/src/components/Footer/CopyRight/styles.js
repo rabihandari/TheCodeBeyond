@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     container: {
-        padding: '30px',
+        // padding: '30px',
     },
     copyRight: {
         padding: '10px 0px',
