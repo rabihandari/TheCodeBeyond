@@ -34,8 +34,6 @@ const Footer = () => {
                         </Grid>
                     </Grid>
                     
-                    <Grid item xs={12} md={1}>
-                    </Grid>
                     <Grid item xs={12} md={5} style={{  width: "100%" }}>
                         <Feedback />
                     </Grid>

@@ -1,27 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Grid, InputBase } from '@material-ui/core';
-import { Autocomplete, createFilterOptions } from '@material-ui/lab';
+import React, { useState } from 'react';
+import { Paper, InputBase, IconButton, Divider, Grow } from '@material-ui/core';
 
 import useStyles from './styles';
-import { fetchTitles } from '../../../api/index';
-import searchIcon from '../../../images/icon-search.svg';
+import CloseIcon from '@material-ui/icons/Close';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 
-const filterOptions = createFilterOptions({
-    limit: 5,
-  });
 
-const SearchBarV2 = (props) => {
+const SearchBar = (props) => {
     const classes = useStyles();
-    const searchInput = useRef(null);
     const [keyword, setKeyword] = useState('');
-    const [titles, setTitles] = useState([]);
-    const [expanded, setExpanded] = useState(false);
 
-    const handleChange = (e, newValue) => {
-        if (newValue === null) return;
-        console.log("Clicked 1");
-        props.fetchPosts(0, newValue, undefined);
-        setKeyword(keyword);
+    const handleChange = (e) => {
+        setKeyword(e.target.value);
+    }
+
+    const handleClear = () => {
+        setKeyword('');
     }
 
     const handleKeyDown = (event) => {
@@ -31,50 +25,29 @@ const SearchBarV2 = (props) => {
         setKeyword(event.target.value);
     }
 
-    const toggleSearchBar = () => {
-        if(searchInput){
-            !expanded ? searchInput.current.focus() : searchInput.current.blur();
-        }
-        setExpanded(!expanded)
-    }
-
-    useEffect(() => {
-        fetchTitles().then(({ data }) => {
-            setTitles(data.map(item => item.title));
-        });
-    }, []);
-
     return(
-        <Grid container direction="row" justify="flex-end" alignItems="center" onBlur={() => {setExpanded(false)}} >
-            <img className={classes.searchIcon} src={searchIcon} alt="search" onClick={toggleSearchBar}/>
-            <Autocomplete 
-                classes={{
-                    option: classes.option,
-                    paper: classes.listBackground,
-                    noOptions: classes.noOption,
-                }}
-                freeSolo
-                onChange={handleChange}
-                options={titles}
-                selectOnFocus={true}
-                filterOptions={filterOptions}
-                renderInput={(params) => (
-                    <div className={classes.searchHolder} ref={params.InputProps.ref} >
-                        <InputBase 
-                            className={classes.searchInput} 
-                            inputRef={searchInput}
-                            placeholder="Search" 
-                            inputProps={params.inputProps}
-                            value={keyword}
-                            onKeyDown={handleKeyDown}
-                            style={{ width: (expanded ? '250px' : '0px') }} 
-                        />
-                    </div>
-                )}
-            />
-        </Grid>
+            <Grow in>
+                <Paper className={classes.root} onBlur={props.toggleSearch}>
+                    <IconButton className={classes.iconButton} onClick={props.toggleSearch}>
+                        <ArrowBack />
+                    </IconButton>
+                    <InputBase
+                        className={classes.input}
+                        placeholder="Search..."
+                        autoFocus
+                        onChange={handleChange}
+                        value={keyword}
+                        onKeyDown={handleKeyDown}
+                    />
+                    <IconButton className={classes.iconButton} onClick={handleClear}>
+                        <CloseIcon />
+                    </IconButton>
+                    <Divider className={classes.divider} orientation="vertical" />
+                </Paper>
+
+            </Grow>
     );
 
 }
 
-export default SearchBarV2;
+export default SearchBar;

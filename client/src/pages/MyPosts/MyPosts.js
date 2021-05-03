@@ -85,7 +85,10 @@ const MyPosts = () => {
             }
             
             {value === 1 && 
-                <div></div>
+                <div style={{ padding: '60px 0px' }}>
+                    <Typography variant="h5" className={classes.commingSoon}>Coming Soon!</Typography>
+                    <Typography variant="body2" className={classes.commingSoonDec}>This feature is still under construction. Stay tuned!</Typography>
+                </div>
             }
             
             {value === 2 && 

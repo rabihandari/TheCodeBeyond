@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
     container: {
         padding: '30px 40px',
+        [theme.breakpoints.down('md')]: {
+            padding: '15px 25px',
+        }
     },
     leftContainer: {
         display: 'flex',
@@ -11,6 +14,12 @@ export default makeStyles((theme) => ({
     logo: {
         height: '40px',
         width: '40px',
+    },
+    searchIcon: {
+        width: '24px',
+        height: '24px',
+        padding: '5px',
+        cursor: 'pointer',
     },
     title: {
         alignSelf: 'center',

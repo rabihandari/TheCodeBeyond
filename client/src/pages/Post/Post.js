@@ -27,7 +27,8 @@ const renderers = {
     code:({language,value})=>{
         return <SyntaxHighlighter style={dracula} language={language} children={value || "" } />
     },
-    paragraph: props => <p style={{ fontSize: '20px', lineHeight: '32px' }}>{props.children}</p>
+    paragraph: props => <p style={{ fontSize: '20px', lineHeight: '32px' }}>{props.children}</p>,
+    image: props => <img src={props.src} alt={props.alt} style={{ display: 'block', margin: 'auto' }} />,
 }
 
 function Alert(props) {

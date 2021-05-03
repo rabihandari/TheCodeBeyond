@@ -5,6 +5,9 @@ export default makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'top',
         padding: '50px 0px',
+        [theme.breakpoints.down('sm')]: {
+            padding: '0px 0px',
+        },
     },
     noResultTitle: {
         fontFamily: "MetropolisBold",

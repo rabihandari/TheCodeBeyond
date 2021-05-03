@@ -1,40 +1,21 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-    searchHolder: {
+    root: {
+        marginTop: '20px',
+        padding: '2px 4px',
         display: 'flex',
-        marginRight: '10px',
+        alignItems: 'center',
     },
-    searchIcon: {
-        width: '24px',
-        height: '24px',
-        padding: '5px',
-        cursor: 'pointer',
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1,
     },
-    searchInput: {
-        transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-        fontFamily: 'MetropolisRegular',
+    iconButton: {
+      padding: 10,
     },
-    option: {
-        fontSize: 14,
-        color: 'black',
-        fontFamily: 'MetropolisRegular',
-        padding: '10px 15px',
-        '& > span': {
-          marginRight: 10,
-          fontSize: 18,
-        },
-        '&[data-focus="true"]': {
-            backgroundColor: 'rgba(0,0,0,.2)',
-            borderColor: 'transparent',
-        },
+    divider: {
+      height: 28,
+      margin: 4,
     },
-    listBackground: {
-        backgroundColor: '#FFF',
-    },
-    noOption: {
-        fontSize: 14,
-        fontFamily: 'MetropolisRegular',
-        color: 'white',
-    }
 }));

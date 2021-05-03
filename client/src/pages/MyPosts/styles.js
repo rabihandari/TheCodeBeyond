@@ -31,6 +31,15 @@ export const StyledTabs = withStyles({
     container: {
         padding: '60px 0',
     },
+    commingSoon: {
+      fontFamily: 'MetropolisBold',
+      textAlign: 'center',
+    },
+    commingSoonDec: {
+      fontFamily: 'MetropolisRegular',
+      textAlign: 'center',
+      marginTop: '10px',
+    },
     header: {
         padding: '30px 20px'
     },
