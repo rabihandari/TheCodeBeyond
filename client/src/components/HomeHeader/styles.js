@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
         padding: '0px 40px',
         marginTop: '40px',
         [theme.breakpoints.down('md')]: {
-            padding: '0px 10px',
+            padding: '0px 20px',
         },
     },
     title: {

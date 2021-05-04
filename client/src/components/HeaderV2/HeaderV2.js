@@ -20,6 +20,7 @@ const HeaderV2 = (props) => {
     const isLoading = useSelector((state) => state.loadingIndeterminate);
     const user = useSelector((state) => state.auth);
     const [searchBar2, setSearchBar2] = useState(false);
+    const matches2 = useMediaQuery(useTheme().breakpoints.up('md'));
     const matches = useMediaQuery(useTheme().breakpoints.up('sm'));
 
     const goToHome = () => {
@@ -50,13 +51,13 @@ const HeaderV2 = (props) => {
         <div>
             <Container className={classes.container}>
                 <Grid container direction="row" alignItems="center">
-                    <Grid item xs={3} sm={4} className={classes.leftContainer} onClick={goToHome}>
+                    <Grid item xs={2} md={4} className={classes.leftContainer} onClick={goToHome}>
                         <img src={logo} alt="logo" className={classes.logo}/>
-                        {matches &&
+                        {matches2 &&
                         <Typography variant="h5" className={classes.title}>The Code Beyond</Typography>
                         }
                     </Grid>
-                    <Grid item xs={9} sm={8} className={classes.rightContainer}>
+                    <Grid item xs={10} md={8} className={classes.rightContainer}>
                         {user.authData?.result ? 
                             <div className={classes.rightContainer}>
                                 <Profile name={user.authData.result.name} email={user.authData.result.email} imageUrl={user.authData.result.profilePicture} />

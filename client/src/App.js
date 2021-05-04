@@ -28,6 +28,7 @@ import ChangePassword from './pages/ChangePassword/ChangePassword';
 import ChangePasswordSuccess from './pages/ChangePassword/Success/Success';
 import ActivateAccount from './pages/ActivateAccount/ActivateAccount';
 import Feedback from './pages/Feedback/Feedback';
+import PrivateRoute from './config/PrivateRoute/PrivateRoute';
 
 const theme = createMuiTheme({
     palette: {
@@ -82,8 +83,8 @@ const App = () => {
                 <HeaderV2 fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Switch>
                     <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags} selectedTitle={selectedTitle} isLoading={isLoading}/>}/>
-                    <Route path="/createPost" render={(props) => <CreatePost {...props} editing={false}/>} />
-                    <Route path="/edit/:id" render={(props) => <CreatePost {...props} editing={true} />} />
+                    <PrivateRoute path="/createPost" render={(props) => <CreatePost {...props} editing={false}/>} />
+                    <PrivateRoute path="/edit/:id" render={(props) => <CreatePost {...props} editing={true} />} />
                     <Route exact path="/register" component={Register} />
                     <Route path="/register/success/:email" component={RegisterSuccess} />
                     <Route exact path="/login" component={Login} />
@@ -91,11 +92,11 @@ const App = () => {
                     <Route path="/login/forget-password" component={ForgetPassword} />
                     <Route path="/login/reset-password/success" component={ResetPasswordSuccess} />
                     <Route path="/login/reset-password/:email/:token" component={ResetPassword}/>
-                    <Route exact path="/saved" component={SavedPosts}/>
-                    <Route path="/my-posts" component={MyPosts} />
-                    <Route exact path="/settings" component={Settings} />
-                    <Route path="/settings/changePassword/success" component={ChangePasswordSuccess} />
-                    <Route path="/settings/changePassword/:email" component={ChangePassword} />
+                    <PrivateRoute exact path="/saved" component={SavedPosts}/>
+                    <PrivateRoute path="/my-posts" component={MyPosts} />
+                    <PrivateRoute exact path="/settings" component={Settings} />
+                    <PrivateRoute path="/settings/changePassword/success" component={ChangePasswordSuccess} />
+                    <PrivateRoute path="/settings/changePassword/:email" component={ChangePassword} />
                     <Route exact path="/activate" component={ActivateAccount} />
                     <Route path="/feedback/:email" component={Feedback}/>
                     <Route path="/:id/:title" render={(props) => <Post {...props} />} />
