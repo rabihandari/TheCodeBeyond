@@ -83,7 +83,9 @@ export const changeProfilePicture = async (req, res) => {
         // Update Picture
         if(user.profilePicture){
             let oldImage = user.profilePicture.split('/').pop();
-            fs.unlinkSync(path.resolve(`${process.cwd()}/uploads/profile/${oldImage}`));
+            if(fs.existsSync(path.resolve(`${process.cwd()}/uploads/profile/${oldImage}`))){
+                fs.unlinkSync(path.resolve(`${process.cwd()}/uploads/profile/${oldImage}`));
+            }
         }
         
         user.profilePicture = url + '/uploads/profile/' + req.file.filename

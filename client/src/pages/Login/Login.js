@@ -34,12 +34,10 @@ const Login = () => {
 
     const googleSuccess = async (res) => {
         const result = res?.profileObj;
-        const token = res?.tokenId;
 
         try {
 
             let oAuthData = {
-                token: token,
                 googleId: result.googleId,
                 name: result.name,
                 email: result.email,
@@ -48,7 +46,7 @@ const Login = () => {
 
             dispatch({ type: actionTypes.LOADING_START });
             signUpOAuth(oAuthData).then((res) => {
-                let p1 = dispatch(oAuthLogin({result: { ...result, profilePicture: result.imageUrl, bio: res.data.user.bio}, token}));
+                let p1 = dispatch(oAuthLogin({result: { ...result, profilePicture: res.data.user.profilePicture || result.imageUrl, bio: res.data.user.bio}}));
                 let p2 = dispatch(getSettings());
                 
                 Promise.all([p1, p2]).then(() => {

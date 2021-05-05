@@ -83,8 +83,8 @@ const App = () => {
                 <HeaderV2 fetchPosts={fetchPosts} setSelectedTitle={setSelectedTitle}/>
                 <Switch>
                     <Route exact path="/" render={(props) => <Home {...props} fetchPosts={fetchPosts} page={page} setPage={setPage} selectedTags={selectedTags} setSelectedTags={setSelectedTags} selectedTitle={selectedTitle} isLoading={isLoading}/>}/>
-                    <PrivateRoute path="/createPost" render={(props) => <CreatePost {...props} editing={false}/>} />
-                    <PrivateRoute path="/edit/:id" render={(props) => <CreatePost {...props} editing={true} />} />
+                    <PrivateRoute path="/createPost" component={CreatePost} componentProps={{editing: false}} />
+                    <PrivateRoute path="/edit/:id" component={CreatePost} componentProps={{editing: true}} />
                     <Route exact path="/register" component={Register} />
                     <Route path="/register/success/:email" component={RegisterSuccess} />
                     <Route exact path="/login" component={Login} />

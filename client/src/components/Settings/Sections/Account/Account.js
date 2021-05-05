@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Grid, Button} from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'; 
+import Cookies from 'js-cookie';
 
 import useStyles from './styles';
 import ThanksPage from '../../../ThanksPage/ThanksPage';
@@ -21,7 +22,7 @@ const Account = ({ user, setAlert }) => {
     const [editing, setEditing] = useState([]);
 
     const helper = new Helper(profile, setProfile);
-    const isCustomAuth = JSON.parse(localStorage.getItem('profile'))?.token.length < 500;
+    const isCustomAuth = Cookies.get('authType') !== 'google';
 
     const handleChangePasswordButton = () => {
         history.push(`/settings/changePassword/${profile.email}`);

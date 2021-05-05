@@ -8,7 +8,7 @@ import LoginValidate from '../validation/login.js';
 import PasswordValidate from '../validation/passwordReset.js';
 import mongoose from 'mongoose';
 
-import { BACKEND_HOST, FRONTEND_HOST, SECRET_OR_KEY, EMAIL_SECRET, PASSWORD_SECRET } from '../config/config.js';
+import { BACKEND_HOST, FRONTEND_HOST, SECRET_OR_KEY, SECRET_OR_KEY2, EMAIL_SECRET, PASSWORD_SECRET } from '../config/config.js';
 import { sendMail } from '../config/nodemailer.js';
 
 export const register = async (req, res) => {
@@ -54,14 +54,25 @@ export const register = async (req, res) => {
 
 
 export const registerOAuth = async (req, res) => {
-    const { email, name, token, googleId, profilePicture } = req.body;
+    const { email, name, googleId, profilePicture } = req.body;
 
     try {
         const user = await User.findOne({ email: email });
+        let payload = {
+            id: googleId + 'abc',
+        };
 
         // Check if user exists
         if(user){
-            res.status(201).json({ message: 'User exists!', user: user });
+            // Sign JWT
+            jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
+                jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
+                    res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
+                    res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
+                    res.cookie('authType', 'google', { expired: false });
+                    res.status(201).json({ message: 'User exists!', user: user });
+                });
+            });
         }else{
             
             // Hashing the password
@@ -78,7 +89,15 @@ export const registerOAuth = async (req, res) => {
                         confirmed: true
                     });
                     newUser.save().then(user => {
-                        res.status(201).json({ message: 'User Created!', user: user });
+                        // Sign JWT
+                        jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
+                            jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
+                                res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
+                                res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
+                                res.cookie('authType', 'google', { expired: false });
+                                res.status(201).json({ message: 'User Created!', user: user });
+                            });
+                        });
                     }).catch(error => {
                         res.status(405).json({ message: error.message });
                     });
@@ -89,7 +108,8 @@ export const registerOAuth = async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).json({ message: 'Something wend wrong!' });
+        console.log(error.message);
+        res.status(500).json({ message: 'Something went wrong!' });
     }
 }
 
@@ -119,8 +139,13 @@ export const login = async (req, res) => {
 
 
                     // Sign JWT
-                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '5d' }, (err, token) => {
-                        res.status(200).json({ result: user, token: token });
+                    jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
+                        jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
+                            res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
+                            res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
+                            res.cookie('authType', 'email', { expired: false });
+                            res.status(200).json({ result: user});
+                        });
                     });
                 }else{
                     res.status(400).json({ message: "Password is incorrect" });
