@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
     
   container: {
-    padding: '80px 0px',
+    padding: '40px 0px',
     margin: '40px 0px',
     
     [theme.breakpoints.down('md')]: {

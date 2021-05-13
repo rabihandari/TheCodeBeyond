@@ -19,6 +19,14 @@ const FooterV2 = () => {
         history.push('/');
     }
 
+    const goToPrivacyPolicy = () => {
+        history.push('/privacy-policy');
+    }
+
+    const goToTermsAndConditions = () => {
+        history.push('/terms-conditions');
+    }
+
     const handleLoginout = () => {
         if(currentUser){
             dispatch(logout());
@@ -38,8 +46,8 @@ const FooterV2 = () => {
                     </Grid>
                 </Grid>
                 <Grid item>
-                    <Button variant="text" className={classes.item}>Terms</Button>
-                    <Button variant="text" className={classes.item}>Privacy</Button>
+                    <Button variant="text" className={classes.item} onClick={goToTermsAndConditions}>Terms</Button>
+                    <Button variant="text" className={classes.item} onClick={goToPrivacyPolicy}>Privacy</Button>
                     <Button variant="text" className={classes.item} onClick={handleLoginout}>{currentUser ? "Logout" : "Login"}</Button>
                 </Grid>
             </Grid>

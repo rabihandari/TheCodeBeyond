@@ -50,3 +50,13 @@ export const getPopularPosts = () => async (dispatch) => {
     }
 }
 
+export const getTrendingPosts = () => async (dispatch) => {
+    try {
+        const { data } = await api.fetchTrendingrPosts();
+
+        dispatch({ type: actionTypes.FETCH_TRENDING, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+

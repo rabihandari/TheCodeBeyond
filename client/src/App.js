@@ -8,7 +8,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Home from './pages/Home/Home';
 import CreatePost from './pages/CreatePost/CreatePost';
 import Post from './pages/Post/Post';
-import { getPopularPosts, getPosts } from './actions/posts';
+import { getPopularPosts, getPosts, getTrendingPosts } from './actions/posts';
 import { oAuthLogin } from './actions/auth';
 import { getSettings } from './actions/user';
 import * as actionTypes from './actions/actionTypes';
@@ -28,7 +28,12 @@ import ChangePassword from './pages/ChangePassword/ChangePassword';
 import ChangePasswordSuccess from './pages/ChangePassword/Success/Success';
 import ActivateAccount from './pages/ActivateAccount/ActivateAccount';
 import Feedback from './pages/Feedback/Feedback';
+import RequestPost from './pages/RequestPost/RequestPost';
 import PrivateRoute from './config/PrivateRoute/PrivateRoute';
+import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
+import Answer from './pages/Answer/Answer';
+import CommunityRequests from './pages/CommunityRequests/CommunityRequests';
+import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 
 const theme = createMuiTheme({
     palette: {
@@ -51,15 +56,22 @@ const App = () => {
     const alert = useSelector(state => state.alert);
 
     useEffect(() => {
+        let unmounted = false;
         setLoading(true);
         let p1 = dispatch(oAuthLogin(getUser()));
         let p2 = dispatch(getPosts(0));
         let p3 = dispatch(getPopularPosts());
-        let p4 = dispatch(getSettings());
+        let p4 = dispatch(getTrendingPosts());
+        let p5 = dispatch(getSettings());
 
-        Promise.all([p1, p2, p3, p4]).then(() => {
-            setLoading(false);  
+        Promise.all([p1, p2, p3, p4, p5]).then(() => {
+            if(!unmounted){
+                setLoading(false);  
+            }
         });
+        return () => {
+            unmounted = true;
+        };
     }, [dispatch]);
 
     const fetchPosts = (page, keyword=selectedTitle, tags=selectedTags) => {
@@ -97,6 +109,11 @@ const App = () => {
                     <PrivateRoute exact path="/settings" component={Settings} />
                     <PrivateRoute path="/settings/changePassword/success" component={ChangePasswordSuccess} />
                     <PrivateRoute path="/settings/changePassword/:email" component={ChangePassword} />
+                    <PrivateRoute exact path="/request" component={RequestPost} />
+                    <PrivateRoute exact path="/answer/:id" component={Answer} />
+                    <PrivateRoute exact path="/privacy-policy" component={PrivacyPolicy} />
+                    <PrivateRoute exact path="/terms-conditions" component={TermsAndConditions} />
+                    <PrivateRoute exact path="/community-requests" component={CommunityRequests} />
                     <Route exact path="/activate" component={ActivateAccount} />
                     <Route path="/feedback/:email" component={Feedback}/>
                     <Route path="/:id/:title" render={(props) => <Post {...props} />} />

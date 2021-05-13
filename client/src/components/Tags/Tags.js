@@ -3,27 +3,10 @@ import { Grid, Chip, Typography } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 
 import useStyles from './styles';
+import tags from '../../config/tags';
 
 const Tags = (props) => {
     const classes = useStyles();
-
-    const tags = [
-        'Swift',
-        'SwiftUI',
-        'XCode',
-        'Django',
-        'Python',
-        'Node.js',
-        'Express',
-        'Android',
-        'Java',
-        'MongoDB',
-        'Angular', 
-        'jQuery', 
-        'Polymer', 
-        'React.js', 
-        'Vue.js'
-    ];
 
     const handleClick = (tag) => () => {
         if (props.selectedTags.includes(tag)){
@@ -41,7 +24,7 @@ const Tags = (props) => {
 
     return(
         <div className={classes.container}>
-            <Typography variant="h4" className={classes.title}>Tags</Typography>
+            <Typography variant="body2" className={classes.title}>Filter by Tags</Typography>
             <Grid container direction="row" justify="center" className={classes.tagsContainer}>
                 {tags.map((tag) => 
                     <Chip 
@@ -49,11 +32,11 @@ const Tags = (props) => {
                         className={classes.tag} 
                         label={tag} 
                         clickable 
+                        size="small"
                         color={getColor(tag)} 
                         onDelete={handleClick(tag)} 
                         onClick={handleClick(tag)} 
                         deleteIcon={getIcon(tag)}
-                        variant="outlined" 
                     />
                 )}
             </Grid>
@@ -65,7 +48,7 @@ const Tags = (props) => {
     }
 
     function getColor(tag){
-        return props.selectedTags.includes(tag) ? "primary" : "secondary";
+        return props.selectedTags.includes(tag) ? "primary" : "default";
     }
 }
 

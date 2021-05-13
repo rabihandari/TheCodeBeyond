@@ -1,15 +1,21 @@
 import React from 'react';
 import { Container, Typography, Divider, Grid, IconButton, Link } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
 
 
 const HomeHeader = ({ fetchPosts, searchKeyword, selectedTags }) => {
     const classes = useStyles();
+    const history = useHistory();
 
     const handleBack = () => {
         fetchPosts(0, "", []);
+    }
+
+    const goToRequest = () => {
+        history.push('/request');
     }
 
     return(
@@ -26,7 +32,7 @@ const HomeHeader = ({ fetchPosts, searchKeyword, selectedTags }) => {
                         }
                     </Grid>
                 </Grid>
-                <Typography variant="caption" className={classes.requestPost}>Not getting your result? You can always <Link className={classes.requestLink}>request a post</Link> from all authors</Typography>
+                <Typography variant="caption" className={classes.requestPost}>Not getting your result? You can always <Link onClick={goToRequest} className={classes.requestLink}>request a post</Link> from all authors</Typography>
                 <Divider className={classes.divider}/>
             </Container>
         </div>

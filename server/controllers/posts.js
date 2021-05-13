@@ -1,5 +1,6 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
+import Request from '../models/requests.js';
 import mongoose from 'mongoose';
 import fs from 'fs';
 
@@ -96,6 +97,36 @@ export const getPopularPosts = async (req, res) => {
     }
 }
 
+
+export const getTrendingPosts = async (req, res) => {
+    const userId = req.userId;
+
+    try {
+        const posts = await Post.find({}, 'title name body createdAt imageFile tags creator').sort({ createdAt: -1 }).sort({ likes: -1 }).limit(20);
+
+        const data = [];
+        for await(let post of posts){
+            let user = await User.findById(post.creator, 'profilePicture');
+
+            // Check if post is saved
+            let saved = false;
+            if(userId){
+                const currentUser = await User.findOne({ _id: userId}, 'savedPosts');
+                if(!currentUser){
+                    throw new Error ("User not found!");
+                }
+                saved = currentUser.savedPosts.includes(post._id);
+                
+            }
+            
+            data.push({ ...post._doc, profilePicture: user.profilePicture, saved: saved });
+        }
+        
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 
 export const createPost = async (req, res) => {
     const url = req.protocol + '://' + req.get('host');
@@ -213,6 +244,21 @@ export const getPost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     const postId = req.params.id;
+
+    // Remove from request if it was an answer...
+    try {
+        const post = await Post.findById(postId, 'answerTo');
+        if(post.answerTo){
+            const postRequest = await Request.findById(post.answerTo);
+            if(postRequest){
+                postRequest.answers = postRequest.answers.filter(answer => answer !== postId);
+                await postRequest.save();
+            }
+        }
+        
+    } catch (error) {
+        return res.status(500).json({ message: error });
+    }
 
     Post.findByIdAndDelete(postId).then((post) => {
         res.status(201).json({ post: post });

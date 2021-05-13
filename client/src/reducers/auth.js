@@ -11,8 +11,9 @@ export const auth = (state = { authData: null }, action) => {
             return { ...state, authData: action.payload };
             
         case actionTypes.LOGOUT:
+            // Clear local storage
             localStorage.clear();
-
+            
             return { ...state, authData: null };
     
         default:

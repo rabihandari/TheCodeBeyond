@@ -148,7 +148,7 @@ const Post = (props) => {
                     />
                 }
 
-                <Grid item xs={10} md={8}>
+                <Grid item xs={12} md={8}>
                     
                     {!isLoading && 
                         <PopularPosts />

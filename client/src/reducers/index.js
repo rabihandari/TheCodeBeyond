@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { posts, popularPosts, pages } from './posts';
+import { posts, popularPosts, pages, trendingPosts } from './posts';
 import { loadingIndeterminate } from './loadingIndeterminate';
 import { alert } from './alert';
 import { auth } from './auth';
@@ -12,6 +12,7 @@ export default combineReducers({
     loadingIndeterminate,
     alert,
     popularPosts,
+    trendingPosts,
     auth,
     settings,
 });

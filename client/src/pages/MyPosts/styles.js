@@ -30,6 +30,9 @@ export const StyledTabs = withStyles({
   export const useStyles = makeStyles((theme) => ({
     container: {
         padding: '60px 0',
+        [theme.breakpoints.down('md')]: {
+          padding: '20px 0',
+        }
     },
     commingSoon: {
       fontFamily: 'MetropolisBold',

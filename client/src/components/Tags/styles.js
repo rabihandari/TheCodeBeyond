@@ -5,15 +5,15 @@ export default makeStyles((theme) => ({
         padding: '40px 0px',
     },
     tagsContainer: {
-        padding: '20px 80px',
+        padding: '20px 40px',
     },
     title: {
-        fontFamily: 'LibreBaskerville',
+        fontFamily: 'MetropolisBold',
         fontWeight: '700',
-        padding: '20px',
-        textAlign: 'center',
+        padding: '0px 30px',
     },
     tag: {
-        margin: '10px 10px',
+        margin: '5px 5px',
+        fontSize: '12px'
     },
 }));

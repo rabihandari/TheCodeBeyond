@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getPosts, createPost, getPopularPosts, getTitles, getPost, getPublishedPosts, getPublishedResponses, likePost, savePost, getSavedPosts, reportPost, reportAuthor, blockAuthor, deletePost, editPost } from '../controllers/posts.js';
+import { getPosts, createPost, getPopularPosts, getTrendingPosts, getTitles, getPost, getPublishedPosts, getPublishedResponses, likePost, savePost, getSavedPosts, reportPost, reportAuthor, blockAuthor, deletePost, editPost } from '../controllers/posts.js';
 import commentRoutes from './comments.js';
 import auth from '../middlewares/auth.js';
 import getUser from '../middlewares/getUser.js';
@@ -14,6 +14,7 @@ router.post('/page:page', getUser, getPosts);
 router.post('/createPost', auth, confirmed, postStorage.single('imageFile'), createPost);
 router.post('/editPost', auth, postStorage.single('imageFile'), editPost);
 router.get('/popular', getPopularPosts);
+router.get('/trending', getUser, getTrendingPosts);
 router.get('/titles', getTitles);
 router.get('/publishedPosts', auth, getPublishedPosts);
 router.get('/publishedResponses', auth, getPublishedResponses);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
 
@@ -8,6 +9,8 @@ const PublishedPosts = ( props ) => {
     const classes = useStyles();
 
     const posts = props.posts.map(post => <Post key={post.createdAt + post.title} post={post} />);
+
+   
 
     return(
         <Grid container direction="column" className={classes.container}>
@@ -27,9 +30,14 @@ export default PublishedPosts;
 
 const Post = ({ post }) => {
     const classes = useStyles();
+    const history = useHistory();
+
+    const goToPost = () => {
+        history.push(`/${post._id}/${post.title}`)
+    }
 
     return(
-        <Grid item>
+        <Grid item onClick={goToPost} style={{ cursor: 'pointer' }}>
             <Typography variant="body1" className={classes.title}>{post.title}</Typography>
             <Typography variant="body2" className={classes.description}>{post.description}</Typography>
             <Typography variant="caption" className={classes.createdAt}>Published {moment(post.createdAt).fromNow()}</Typography>

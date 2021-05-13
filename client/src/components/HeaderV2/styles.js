@@ -41,11 +41,12 @@ export default makeStyles((theme) => ({
         marginLeft: '10px',
         minInlineSize: 'max-content',
     },
-    addPostButton: {
+    requestPostButton: {
         fontSize: '12px',
         lineHeight: '25px',
         marginLeft: '20px',
         whiteSpace: 'nowrap',
+        borderRadius: '50px',
         textAlign: 'center',
         fontFamily: 'MetropolisRegular',
         textTransform: 'none',

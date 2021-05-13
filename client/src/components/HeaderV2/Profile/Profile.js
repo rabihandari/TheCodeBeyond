@@ -28,6 +28,9 @@ const Profile = ({ name, email, imageUrl }) => {
             case "Create Post":
                 history.push('/createPost');
                 break;
+            case "Request Post":
+                history.push('/request');
+                break;
             case "View Posts":
                 history.push('/my-posts');
                 break;
@@ -86,6 +89,7 @@ const Profile = ({ name, email, imageUrl }) => {
                             <Divider />
                             <div className={classes.dropDownList}>
                                 <MenuItem className={classes.menuItem} onClick={handleClose('Create Post')}>Create a post</MenuItem>
+                                <MenuItem className={classes.menuItem} onClick={handleClose('Request Post')}>Request a post</MenuItem>
                                 <MenuItem className={classes.menuItem} onClick={handleClose('View Posts')}>My posts</MenuItem>
                                 <MenuItem className={classes.menuItem} onClick={handleClose('Settings')}>Settings</MenuItem>
                                 <MenuItem className={classes.menuItem} onClick={handleClose('Logout')}>Logout</MenuItem>

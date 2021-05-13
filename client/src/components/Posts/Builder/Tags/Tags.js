@@ -3,24 +3,12 @@ import { Chip, Grid, Grow } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 import useStyles from './styles';
+import tags from '../../../../config/tags';
 
 const Tags = ({postData, setPostData}) => {
     const classes = useStyles();
     const [listOpened, setListOpened] = useState(false);
-    const [tagList, setTagList] = useState([
-        'Swift',
-        'SwiftUI',
-        'XCode',
-        'Django',
-        'Python',
-        'Node',
-        'Express',
-        'Android',
-        'Java',
-        'MongoDB', 
-        'React.js', 
-        'Vue.js'
-    ]);
+    const [tagList, setTagList] = useState(tags.filter(tag => !(postData.tags.includes(tag))));
 
     const handleSelect = (tagToAdd) => () => {
         setPostData({...postData, tags: [...postData.tags, tagToAdd]});

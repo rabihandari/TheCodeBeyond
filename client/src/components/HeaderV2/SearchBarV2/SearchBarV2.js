@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Paper, InputBase, IconButton, Divider, Grow } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,6 +9,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 
 const SearchBar = (props) => {
     const classes = useStyles();
+    const history = useHistory();
     const [keyword, setKeyword] = useState('');
 
     const handleChange = (e) => {
@@ -20,6 +22,7 @@ const SearchBar = (props) => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter'){
+            history.push('/');
             props.fetchPosts(0, event.target.value, undefined);
         }
         setKeyword(event.target.value);

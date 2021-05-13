@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import useStyles from "./styles";
 import { oAuthLogin, signin } from '../../actions/auth';
 import { getSettings } from '../../actions/user';
+import { getTrendingPosts } from '../../actions/posts';
 import { signUpOAuth } from '../../api';
 import * as actionTypes from '../../actions/actionTypes';
 import LoginValidation from './validator';
@@ -48,8 +49,9 @@ const Login = () => {
             signUpOAuth(oAuthData).then((res) => {
                 let p1 = dispatch(oAuthLogin({result: { ...result, profilePicture: res.data.user.profilePicture || result.imageUrl, bio: res.data.user.bio}}));
                 let p2 = dispatch(getSettings());
+                let p3 = dispatch(getTrendingPosts());
                 
-                Promise.all([p1, p2]).then(() => {
+                Promise.all([p1, p2, p3]).then(() => {
                     dispatch({ type: actionTypes.LOADING_END });
                     history.push('/');
                 });
@@ -88,6 +90,7 @@ const Login = () => {
         let p2 = dispatch(getSettings());
 
         Promise.all([p1, p2]).then(() => {
+            dispatch(getTrendingPosts())
             setLoading(false);
         });
     };

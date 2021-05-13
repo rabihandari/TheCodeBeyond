@@ -24,8 +24,14 @@ const PopularPost = ({post}) => {
                 <Grid container direction="column">
                     <Grid item>
                         <Grid container alignItems="center">
-                            <Avatar variant="rounded" className={classes.profilePicture} src={post.profilePicture} alt={post.name}>{post.name.charAt(0)}</Avatar>
-                            <Typography variant="caption" className={classes.postCreator}>{post.name} in {post.tags.join(",")}</Typography>
+                            <Grid item md={1}>
+                                <Avatar variant="rounded" className={classes.profilePicture} src={post.profilePicture} alt={post.name}>{post.name.charAt(0)}</Avatar>
+
+                            </Grid>
+                            <Grid item md={11}>
+                                <Typography variant="caption" className={classes.postCreator}>{post.name} in {post.tags.join(", ")}</Typography>
+
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>

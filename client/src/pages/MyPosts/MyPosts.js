@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 import { StyledTab, StyledTabs, useStyles } from './styles';
 import PublishedPosts from '../../components/PublishedPosts/PublishedPosts';
 import PublishedResponses from '../../components/PublishedResponses/PublishedResponses';
-import { getPublishedPosts, getPublishedResponses } from '../../api';
+import PublishedRequests from '../../components/PublishedRequests/PublishedRequests';
+import { getPublishedPosts, getPublishedResponses, getUserRequests } from '../../api';
 import * as actionTypes from '../../actions/actionTypes';
 
 const MyPosts = () => {
@@ -16,6 +17,7 @@ const MyPosts = () => {
     const [value, setValue] = useState(0);
     const [publishedPosts, setPublishedPosts] = useState([]);
     const [publishedResponses, setPublishedResponses] = useState([]);
+    const [userRequests, setUserRequests] = useState([]);
     const [isLoading, setLoading] = useState(false);
 
     const handleChange = (event, newValue) => {
@@ -24,6 +26,10 @@ const MyPosts = () => {
 
     const goToAddPost = () => {
         history.push('/createPost');
+    }
+
+    const goToSettings = () => {
+        history.push('/settings');
     }
 
     useEffect(() => {
@@ -48,7 +54,16 @@ const MyPosts = () => {
             });
         });
 
-        Promise.all([promise1, promise2]).then(() => {
+        const promise3 = new Promise((resolve, reject) => {
+            getUserRequests().then(res => {
+                setUserRequests(res.data.posts);
+                resolve();
+            }).catch(error => {
+                reject(error);
+            });
+        });
+
+        Promise.all([promise1, promise2, promise3]).then(() => {
             dispatch({ type: actionTypes.LOADING_END });
             setLoading(false);
         }).catch(errors => {
@@ -70,7 +85,7 @@ const MyPosts = () => {
                             <Button className={classes.button} variant="outlined" color="primary" onClick={goToAddPost}>Create a post</Button>
                         </Grid>
                         <Grid item>
-                            <Button className={classes.button} variant="outlined" color="secondary">Settings</Button>
+                            <Button className={classes.button} variant="outlined" color="secondary" onClick={goToSettings}>Settings</Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -79,6 +94,7 @@ const MyPosts = () => {
                 <StyledTab label="Published" />
                 <StyledTab label="Drafts" />
                 <StyledTab label="Responses" />
+                <StyledTab label="Requests" />
             </StyledTabs>
             {value === 0 && 
                 <PublishedPosts posts={publishedPosts} isLoading={isLoading}/>
@@ -93,6 +109,10 @@ const MyPosts = () => {
             
             {value === 2 && 
                 <PublishedResponses responses={publishedResponses} isLoading={isLoading}/>
+            }
+            
+            {value === 3 && 
+                <PublishedRequests requests={userRequests} isLoading={isLoading}/>
             }
         </Container>
     );

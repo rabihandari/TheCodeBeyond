@@ -6,7 +6,12 @@ export const oAuthLogin = (authData) => async (dispatch) => {
 }
 
 export const logout = () => async (dispatch) => {
+  
+  dispatch({ type: actionTypes.LOADING_START });
+  await api.signOut();
+
   dispatch({ type: actionTypes.LOGOUT });
+  dispatch({ type: actionTypes.LOADING_END });
 }
 
 export const signin = (formData, setErrors, router) => async (dispatch) => {

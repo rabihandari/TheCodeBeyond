@@ -24,7 +24,7 @@ const SocialMedia = () => {
                     <Twitter/>
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Pinterest">
+            <Tooltip title="Linked In">
                 <IconButton aria-label="Linked In" color="primary" className={classes.socialMediaButton} component="a" href="https://www.linkedin.com/in/rabih-andari-368a71201/" target="_blank">
                     <LinkedIn/>
                 </IconButton>

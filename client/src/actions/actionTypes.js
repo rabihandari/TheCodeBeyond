@@ -5,6 +5,9 @@ export const EDIT = 'EDIT';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 export const FETCH_POPULAR = 'FETCH_POPULAR';
+export const FETCH_TRENDING = 'FETCH_TRENDING';
+export const SAVE_TRENDING = 'SAVE_TRENDING';
+export const UNSAVE_TRENDING = 'UNSAVE_TRENDING';
 
 // Counting Pages
 export const COUNT_PAGE  = 'COUNT_PAGE';

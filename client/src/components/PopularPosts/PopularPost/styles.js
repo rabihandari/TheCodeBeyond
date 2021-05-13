@@ -26,7 +26,7 @@ export default makeStyles((theme) => ({
         maxWidth: '95%',
         lineHeight: '1.3125',
         overflow: 'hidden',
-        lineClamp: '2',
+        lineClamp: '1',
         textOverflow: 'ellipsis',
         boxOrient: 'vertical',
         [theme.breakpoints.down('md')]: {

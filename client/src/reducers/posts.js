@@ -36,3 +36,20 @@ export const popularPosts = (popularPosts = [], action) => {
             return popularPosts;
     }
 };
+
+export const trendingPosts = (trendingPosts = [], action) => {
+    switch (action.type) {
+        case actionTypes.FETCH_TRENDING:
+            return action.payload;
+        case actionTypes.DELETE:
+            return trendingPosts.filter(post => post._id !== action.payload._id);
+        case actionTypes.SAVE_TRENDING:
+            return trendingPosts.map(post => (post._id === action.payload._id ? { ...post, saved: true } : post));
+        case actionTypes.UNSAVE_TRENDING:
+            return trendingPosts.map(post => (post._id === action.payload._id ? { ...post, saved: false } : post));
+        case actionTypes.LOGOUT:
+            return trendingPosts.map(post => ({ ...post, saved: false }));
+        default:
+            return trendingPosts;
+    }
+};

@@ -67,9 +67,9 @@ export const registerOAuth = async (req, res) => {
             // Sign JWT
             jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
                 jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
-                    res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
-                    res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
-                    res.cookie('authType', 'google', { expired: false });
+                    res.cookie('token', token, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                    res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                    res.cookie('authType', 'google', { expires: new Date(2147483647000) });
                     res.status(201).json({ message: 'User exists!', user: user });
                 });
             });
@@ -92,9 +92,9 @@ export const registerOAuth = async (req, res) => {
                         // Sign JWT
                         jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
                             jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
-                                res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
-                                res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
-                                res.cookie('authType', 'google', { expired: false });
+                                res.cookie('token', token, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                                res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                                res.cookie('authType', 'google', { expires: new Date(2147483647000) });
                                 res.status(201).json({ message: 'User Created!', user: user });
                             });
                         });
@@ -141,9 +141,9 @@ export const login = async (req, res) => {
                     // Sign JWT
                     jwt.sign(payload, SECRET_OR_KEY, { expiresIn: '1m' }, (err, token) => {
                         jwt.sign(payload, SECRET_OR_KEY2, { expiresIn: '1y' }, (err, token2) => {
-                            res.cookie('token', token, { httpOnly: true, secure: true, expired: false });
-                            res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expired: false });
-                            res.cookie('authType', 'email', { expired: false });
+                            res.cookie('token', token, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                            res.cookie('refreshToken', token2, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
+                            res.cookie('authType', 'email', { expires: new Date(2147483647000) });
                             res.status(200).json({ result: user});
                         });
                     });
@@ -158,6 +158,14 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Something went wrong!"})
     }
 }
+
+
+export const logout = async (req, res) => {
+    res.cookie('token', '', { httpOnly: true, secure: true, expires: new Date(0) });
+    res.cookie('refreshToken', '', { httpOnly: true, secure: true, expires: new Date(0) });
+    res.cookie('authType', '', { expires: new Date(0) });
+    res.status(200).json({ success: true });
+} 
 
 export const activate = async (req, res) => {
     const token = req.params.token;

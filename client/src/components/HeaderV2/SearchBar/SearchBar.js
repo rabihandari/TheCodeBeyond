@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Grid, InputBase } from '@material-ui/core';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
+import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
 import { fetchTitles } from '../../../api/index';
@@ -12,6 +13,7 @@ const filterOptions = createFilterOptions({
 
 const SearchBar = (props) => {
     const classes = useStyles();
+    const history = useHistory();
     const searchInput = useRef(null);
     const [keyword, setKeyword] = useState('');
     const [titles, setTitles] = useState([]);
@@ -19,13 +21,14 @@ const SearchBar = (props) => {
 
     const handleChange = (e, newValue) => {
         if (newValue === null) return;
-        console.log("Clicked 1");
+        history.push('/');
         props.fetchPosts(0, newValue, undefined);
         setKeyword(keyword);
     }
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter'){
+            history.push('/');
             props.fetchPosts(0, event.target.value, undefined);
         }
         setKeyword(event.target.value);

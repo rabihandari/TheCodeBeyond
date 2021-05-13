@@ -24,6 +24,7 @@ export const createPost = (newPost) => API.post(`/posts/createPost`, newPost);
 export const editPost = (newPost) => API.post(`/posts/editPost`, newPost);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const fetchPopularPosts = () => API.get(`/posts/popular`);
+export const fetchTrendingrPosts = () => API.get(`/posts/trending`);
 export const fetchTitles = () => API.get(`/posts/titles`);
 export const fetchPost = (id) => API.get(`/posts/${id}`)
 export const savePost = (postData) => API.post('/posts/savePost', postData);
@@ -33,6 +34,7 @@ export const reportAuthor = (authorData) => API.post('/posts/reportAuthor', auth
 export const blockAuthor = (authorData) => API.post('/posts/blockAuthor', authorData);
 
 export const signIn = (formData) =>  API.post(`/users/login`, formData);
+export const signOut = () =>  API.post(`/users/logout`);
 export const signUp = (formData) =>  API.post(`/users/register`, formData);
 export const signUpOAuth = (oAuthData) =>  API.post(`/users/register-oauth`, oAuthData);
 export const resendActivation = (email) =>  API.get(`/users/resendActivation/${email}`);
@@ -41,6 +43,8 @@ export const resetPassword = (passwordData) =>  API.post(`/users/resetPassword`,
 
 export const getPublishedPosts = () => API.get('/posts/publishedPosts');
 export const getPublishedResponses = () => API.get('/posts/publishedResponses');
+export const getUserRequests = () => API.get('/userRequests');
+export const getRequestPosts = (ids) => API.post('/requestPosts', ids);
 
 export const likePost = (postId) => API.post('/posts/likePost', postId);
 export const addComment = (commentData) => API.post('/posts/comments/addComment', commentData);
@@ -65,3 +69,8 @@ export const reactivateAccount = () => API.post('/users/settings/reactivateAccou
 export const deleteAccount = () => API.post('/users/settings/deleteAccount'); 
 
 export const sendFeedback = (formData) => API.post('/sendFeedback', formData);
+export const getRequests = () => API.get('/getRequests');
+export const getRequest = (id) => API.get(`/getRequest/${id}`);
+export const addRequest = (requestData) => API.post('/addRequest', requestData);
+export const addAnswer = (answerData) => API.post('/addAnswer', answerData);
+export const fetchRequests = (page, filter={}) => API.post(`/allRequests/${page}`, filter);

@@ -35,8 +35,8 @@ const HeaderV2 = (props) => {
         history.push('/register');
     }
 
-    const goToAddPost = () => {
-        history.push('/createPost');
+    const goToRequestPost = () => {
+        history.push('/request');
     }
 
     const goToSavedPosts = () => {
@@ -62,7 +62,7 @@ const HeaderV2 = (props) => {
                             <div className={classes.rightContainer}>
                                 <Profile name={user.authData.result.name} email={user.authData.result.email} imageUrl={user.authData.result.profilePicture} />
                                 {matches &&
-                                    <Button className={classes.addPostButton} variant="outlined" color="secondary" size="small" onClick={goToAddPost}>Add Post</Button>
+                                    <Button className={classes.requestPostButton} variant="outlined" color="secondary" size="small" onClick={goToRequestPost}>Request Post</Button>
                                 }
                                 <IconButton size="small" onClick={goToSavedPosts} className={classes.savedButton}>
                                     <Tooltip title="Saved">

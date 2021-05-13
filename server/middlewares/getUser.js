@@ -1,28 +1,28 @@
 import jwt from "jsonwebtoken";
 
-import { SECRET_OR_KEY } from '../config/config.js';
+import { SECRET_OR_KEY, SECRET_OR_KEY2 } from '../config/config.js';
 
 const getUser = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
-    const isCustomAuth = token.length < 500;
+  const token = req.cookies.token;
+  const refreshToken = req.cookies.refreshToken;
+  const authType = req.cookies.authType;
 
-    let decodedData;
-
-    if (token && isCustomAuth) {      
-      decodedData = jwt.verify(token, SECRET_OR_KEY);
-
-      req.userId = decodedData?.id;
-    } else {
-      decodedData = jwt.decode(token);
-
-      req.userId = decodedData?.sub + 'abc';
-    }    
-
+  if(!token || !refreshToken || !authType){
     next();
-  } catch (error) {
-      next();
+    return;
   }
+
+  try {
+
+    // Decode token...
+    let tokenData = jwt.decode(token);
+    req.userId = tokenData.id;   
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+  
+  next();
 };
 
 export default getUser;
