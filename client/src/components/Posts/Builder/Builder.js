@@ -66,7 +66,10 @@ const Builder = ({ editing }) => {
             }).catch(error => {
                 if(error.response.status === 406){
                     setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
-                } 
+                }else{
+                    setAlert({ open: true, message: error?.response?.data?.message, severity: 'error' })
+                }
+                dispatch({ type: actionTypes.LOADING_END });
             });
         }else{
             dispatch(createPost(formData)).then(() => {
@@ -75,7 +78,10 @@ const Builder = ({ editing }) => {
             }).catch(error => {
                 if(error.response.status === 406){
                     setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
-                } 
+                }else{
+                    setAlert({ open: true, message: error?.response?.data?.message, severity: 'error' })
+                }
+                dispatch({ type: actionTypes.LOADING_END });
             });
         }
 

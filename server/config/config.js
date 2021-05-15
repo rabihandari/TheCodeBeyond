@@ -2,8 +2,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const BACKEND_HOST = process.env.BACKEND_HOST;
-export const FRONTEND_HOST = process.env.FRONTEND_HOST;
+// Dynamic env
+export const BACKEND_HOST = process.env.NODE_ENV == "production" ? process.env.BACKEND_HOST : "http://localhost:5000";
+export const FRONTEND_HOST = process.env.NODE_ENV == "production" ? process.env.FRONTEND_HOST : "http://localhost:3000";
+
+// Static env
 export const DATABASE_URL = process.env.DATABASE_URL;
 export const SECRET_OR_KEY = process.env.SECRET_OR_KEY;
 export const SECRET_OR_KEY2 = process.env.SECRET_OR_KEY2;

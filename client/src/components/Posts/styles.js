@@ -6,7 +6,7 @@ export default makeStyles((theme) => ({
         alignItems: 'top',
         padding: '50px 0px',
         [theme.breakpoints.down('sm')]: {
-            padding: '0px 0px',
+            padding: '20px 20px',
         },
     },
     noResultTitle: {
@@ -19,6 +19,12 @@ export default makeStyles((theme) => ({
         marginTop: '20px',
         textAlign: 'center',
         color: 'gray',
+    },
+    noResultImage: {
+        width: '80%',
+        height: 'auto',
+        display: 'block',
+        margin: 'auto'
     },
     goBack: {
         marginTop: '40px',

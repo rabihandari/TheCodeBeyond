@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Snackbar } from '@material-ui/core';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -33,6 +33,7 @@ import PrivateRoute from './config/PrivateRoute/PrivateRoute';
 import PrivacyPolicy from './pages/PrivacyPolicy/PrivacyPolicy';
 import Answer from './pages/Answer/Answer';
 import CommunityRequests from './pages/CommunityRequests/CommunityRequests';
+import NotFound from './pages/404/404';
 import TermsAndConditions from './pages/TermsAndConditions/TermsAndConditions';
 
 const theme = createMuiTheme({
@@ -117,6 +118,8 @@ const App = () => {
                     <Route exact path="/activate" component={ActivateAccount} />
                     <Route path="/feedback/:email" component={Feedback}/>
                     <Route path="/:id/:title" render={(props) => <Post {...props} />} />
+                    <Route path='/404' component={NotFound} />
+                    <Redirect from='*' to='/404' />
                 </Switch>
                 {!isLoading &&
                     <Snackbar open={alert.open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>

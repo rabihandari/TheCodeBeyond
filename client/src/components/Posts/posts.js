@@ -45,7 +45,7 @@ const Posts = (props) => {
             {(!isLoading && posts.length === 0) && 
                 <Grid container className={classes.mainContainer} direction="column" alignItems="center">
                     <Grid item>
-                        <img src={noResultImage} alt="No Result"/>
+                        <img src={noResultImage} alt="No Result" className={classes.noResultImage}/>
                     </Grid>
                     <Grid item>
                         <Typography variant="h4" className={classes.noResultTitle}>No Result Found</Typography>

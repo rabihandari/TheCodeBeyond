@@ -28,9 +28,9 @@ const auth = async (req, res, next) => {
       const [newToken, newRefreshToken] = await createTokens(token, refreshToken, decodedData.id);
 
       // Set headers
-      res.cookie('token', newToken, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
-      res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, expires: new Date(2147483647000) });
-      res.cookie('authType', authType, { expires: new Date(2147483647000) });
+      res.cookie('token', newToken, { httpOnly: true, secure: true, expires: new Date(2147483647000), sameSite: 'none' });
+      res.cookie('refreshToken', newRefreshToken, { httpOnly: true,  expires: new Date(2147483647000), sameSite: 'none' });
+      res.cookie('authType', authType, { expires: new Date(2147483647000), secure: true, sameSite: 'none' });
       req.userId = decodedData.id;
 
     } catch (error) {

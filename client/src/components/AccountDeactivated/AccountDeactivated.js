@@ -34,7 +34,7 @@ const Posts = (props) => {
         <Grid container alignItems="stretch" justify="center" className={classes.mainContainer}>
             <Grid container className={classes.mainContainer} direction="column" alignItems="center">
                 <Grid item>
-                    <img src={DeactivatedImage} alt="No Result" height="300px"/>
+                    <img src={DeactivatedImage} alt="No Result" height="300px"  className={classes.deactivatedImage}/>
                 </Grid>
                 <Grid item>
                     <Typography variant="h5" className={classes.noResultTitle}>Account Disabled/Deactivated</Typography>
