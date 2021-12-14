@@ -1,6 +1,9 @@
 # Node Mudules
 node_modules
 
+# React Build
+build
+
 # Log Files
 *.log
 
@@ -9,6 +12,3 @@ node_modules
 
 # eslint cache
 .eslintcache
-
-# env File
-.env
