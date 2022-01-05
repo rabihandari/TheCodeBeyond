@@ -2,6 +2,7 @@ import User from '../models/user.js';
 import Post from '../models/post.js';
 import fs from 'fs';
 import path from 'path';
+import cloudinary from 'cloudinary'
 import PasswordValidate from '../validation/passwordReset.js';
 
 import bcrypt from 'bcrypt';
@@ -70,9 +71,7 @@ export const changeBio = async (req, res) => {
 }
 
 export const changeProfilePicture = async (req, res) => {
-    const url = req.protocol + '://' + req.get('host');
     let userId = req.userId;
-
 
     try {
         const user = await User.findById(userId);
@@ -80,20 +79,31 @@ export const changeProfilePicture = async (req, res) => {
 
         if(!req.file) throw new Error("Please upload an image");
 
-        // Update Picture
+        // Delete old picture
         if(user.profilePicture){
             let oldImage = user.profilePicture.split('/').pop();
+
+            // Delete old image from cloudinary and locally...
+            cloudinary.v2.uploader.destroy(oldImage.split('.')[0]);
             if(fs.existsSync(path.resolve(`${process.cwd()}/uploads/profile/${oldImage}`))){
                 fs.unlinkSync(path.resolve(`${process.cwd()}/uploads/profile/${oldImage}`));
             }
         }
-        
-        user.profilePicture = url + '/uploads/profile/' + req.file.filename
+
+        // Add picture to cloudinary...
+        cloudinary.v2.uploader.upload(process.cwd() + '/uploads/profile/' + req.file.filename, async (error, result) => {
+            if (error) {
+                throw new Error("Could not upload image to cloudinary");
+            }
+
+            user.profilePicture = result.url
+            fs.unlinkSync(`${process.cwd()}/uploads/profile/${req.file.filename}`);
+
+            await user.save();
+            res.status(201).json({ data: user.profilePicture, message: "Profile picture successfully updated" });
+        })
         
 
-        await user.save();
-
-        res.status(201).json({ data: user.profilePicture, message: "Profile picture successfully updated" });
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
