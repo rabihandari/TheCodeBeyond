@@ -13,6 +13,6 @@ export const getSettings = () => async (dispatch) => {
       
       dispatch({ type: actionTypes.SETTINGS, payload: resposnse?.data });
     } catch (error) {
-        console.log(error.message);
+        return Promise.reject(error);
     }
   };

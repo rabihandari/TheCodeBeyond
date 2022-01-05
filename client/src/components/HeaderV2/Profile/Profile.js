@@ -74,29 +74,29 @@ const Profile = ({ name, email, imageUrl }) => {
                 {...TransitionProps}
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                 >
-                <Paper>
-                    <ClickAwayListener onClickAway={handleClose()}>
-                        <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                            <Grid container direction="row" alignItems="center" spacing={2} className={classes.dropDownHeader}>
-                                <Grid item>
-                                    <Avatar onClick={handleToggle} className={classes.headerPicture} src={imageUrl} alt={name}>{name.charAt(0)}</Avatar>
+                    <Paper>
+                        <ClickAwayListener onClickAway={handleClose()}>
+                            <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                                <Grid container direction="row" alignItems="center" spacing={2} className={classes.dropDownHeader}>
+                                    <Grid item>
+                                        <Avatar onClick={handleToggle} className={classes.headerPicture} src={imageUrl} alt={name}>{name.charAt(0)}</Avatar>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="body2" >{name}</Typography>
+                                        <Typography variant="caption" style={{ fontFamily: 'MetropolisRegular' }}>{email}</Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <Typography variant="body2" >{name}</Typography>
-                                    <Typography variant="caption" style={{ fontFamily: 'MetropolisRegular' }}>{email}</Typography>
-                                </Grid>
-                            </Grid>
-                            <Divider />
-                            <div className={classes.dropDownList}>
-                                <MenuItem className={classes.menuItem} onClick={handleClose('Create Post')}>Create a post</MenuItem>
-                                <MenuItem className={classes.menuItem} onClick={handleClose('Request Post')}>Request a post</MenuItem>
-                                <MenuItem className={classes.menuItem} onClick={handleClose('View Posts')}>My posts</MenuItem>
-                                <MenuItem className={classes.menuItem} onClick={handleClose('Settings')}>Settings</MenuItem>
-                                <MenuItem className={classes.menuItem} onClick={handleClose('Logout')}>Logout</MenuItem>
-                            </div>
-                        </MenuList>
-                    </ClickAwayListener>
-                </Paper>
+                                <Divider />
+                                <div className={classes.dropDownList}>
+                                    <MenuItem className={classes.menuItem} onClick={handleClose('Create Post')}>Create a post</MenuItem>
+                                    <MenuItem className={classes.menuItem} onClick={handleClose('Request Post')}>Request a post</MenuItem>
+                                    <MenuItem className={classes.menuItem} onClick={handleClose('View Posts')}>My posts</MenuItem>
+                                    <MenuItem className={classes.menuItem} onClick={handleClose('Settings')}>Settings</MenuItem>
+                                    <MenuItem className={classes.menuItem} onClick={handleClose('Logout')}>Logout</MenuItem>
+                                </div>
+                            </MenuList>
+                        </ClickAwayListener>
+                    </Paper>
                 </Grow>
             )}
             </Popper>

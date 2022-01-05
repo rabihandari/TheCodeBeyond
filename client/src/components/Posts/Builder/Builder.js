@@ -39,7 +39,8 @@ const Builder = ({ editing }) => {
     const renderers = {
         code:({language,value})=>{
             return <SyntaxHighlighter style={dracula} language={language} children={value || "" } />
-        }
+        },
+        paragraph: props => <p style={{ fontSize: '20px', lineHeight: '32px' }}>{props.children}</p>,
     }
   
     const handleSubmit = (event) => {
@@ -64,7 +65,7 @@ const Builder = ({ editing }) => {
                 setAlert({ open: true, message: 'Your post has been successfully updated!', severity: 'success' })
                 setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
             }).catch(error => {
-                if(error.response.status === 406){
+                if(error?.response?.status === 406){
                     setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
                 }else{
                     setAlert({ open: true, message: error?.response?.data?.message, severity: 'error' })
@@ -76,7 +77,7 @@ const Builder = ({ editing }) => {
                 setAlert({ open: true, message: 'Your post has been successfully uploaded!', severity: 'success' })
                 setPostData({ title: '', description: '', body: '', imageFile: '', tags: ['Angular', 'jQuery', 'Polymer']});
             }).catch(error => {
-                if(error.response.status === 406){
+                if(error?.response?.status === 406){
                     setAlert({ open: true, message: 'Your account is not activated yet', severity: 'error' })
                 }else{
                     setAlert({ open: true, message: error?.response?.data?.message, severity: 'error' })

@@ -3,6 +3,7 @@ import User from '../models/user.js';
 import Request from '../models/requests.js';
 import mongoose from 'mongoose';
 import cloudinary from 'cloudinary'
+import ValidateImage from '../validation/media.js'
 import fs from 'fs';
 
 export const getPosts = async (req, res) => {
@@ -130,7 +131,6 @@ export const getTrendingPosts = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    
     const post = req.body;
 
     const newPost = new Post({ 
@@ -143,6 +143,11 @@ export const createPost = async (req, res) => {
     try {
         // Append Picture
         if(req.file){
+            const { errors, isValid } = ValidateImage(req.file)
+            if (!isValid) {
+                throw new Error(errors[Object.keys(errors)[0]])
+            }
+
             // Add file to cloudinary...
             await cloudinary.v2.uploader.upload(process.cwd() + '/uploads/posts/' + req.file.filename, async (error, result) => {
                 if (error) {
@@ -188,6 +193,11 @@ export const editPost = async (req, res) => {
 
         // Update Picture
         if(req.file){
+            const { errors, isValid } = ValidateImage(req.file)
+            if (!isValid) {
+                throw new Error(errors[Object.keys(errors)[0]])
+            }
+
             let oldImage = oldPost.imageFile.split('/').pop().split('.')[0];
             
             // Delete image from cloudinary...

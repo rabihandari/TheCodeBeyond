@@ -10,7 +10,7 @@ export const getPosts = (page, query = {}) => async (dispatch) => {
         dispatch({ type: actionTypes.COUNT_PAGE, payload: data.pages });
         
     } catch (error) {
-        console.log(error);
+        return Promise.reject(error);
     }
     dispatch({ type: actionTypes.LOADING_END });
 }
@@ -22,8 +22,7 @@ export const createPost = (post) => async (dispatch) => {
 
         dispatch({ type: actionTypes.CREATE, payload: data });
     } catch (error) {
-        console.log(error);
-        return Promise.reject();
+        return Promise.reject(error);
     }
     dispatch({ type: actionTypes.LOADING_END });
 }
@@ -35,7 +34,7 @@ export const editPost = (post) => async (dispatch) => {
 
         dispatch({ type: actionTypes.EDIT, payload: data });
     } catch (error) {
-        console.log(error);
+        return Promise.reject(error);
     }
     dispatch({ type: actionTypes.LOADING_END });
 }
@@ -46,7 +45,7 @@ export const getPopularPosts = () => async (dispatch) => {
 
         dispatch({ type: actionTypes.FETCH_POPULAR, payload: data });
     } catch (error) {
-        console.log(error);
+        return Promise.reject(error);
     }
 }
 
@@ -56,7 +55,7 @@ export const getTrendingPosts = () => async (dispatch) => {
 
         dispatch({ type: actionTypes.FETCH_TRENDING, payload: data });
     } catch (error) {
-        console.log(error);
+        return Promise.reject(error);
     }
 }
 

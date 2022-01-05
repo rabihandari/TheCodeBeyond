@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
     },
     dropDownHeader: {
         margin: '0px',
-        padding: '15px',
+        padding: '5px 5px',
     },
     headerPicture: {
         height: '34px',

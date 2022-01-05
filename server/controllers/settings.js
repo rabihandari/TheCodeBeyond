@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import cloudinary from 'cloudinary'
 import PasswordValidate from '../validation/passwordReset.js';
+import ValidateImage from '../validation/media.js';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -79,7 +80,13 @@ export const changeProfilePicture = async (req, res) => {
 
         if(!req.file) throw new Error("Please upload an image");
 
-        // Delete old picture
+        // Validate Image...
+        const { errors, isValid } = ValidateImage(req.file)
+        if (!isValid) {
+            throw new Error(errors[Object.keys(errors)[0]])
+        }
+
+        // Delete old picture...
         if(user.profilePicture){
             let oldImage = user.profilePicture.split('/').pop();
 
