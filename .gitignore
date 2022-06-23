@@ -9,6 +9,7 @@ build
 
 # macOS Files
 ._.DS_Store
+.DS_Store
 
 # eslint cache
 .eslintcache
