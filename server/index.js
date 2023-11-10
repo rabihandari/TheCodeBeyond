@@ -20,10 +20,10 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 
 // Configure routes
-app.use('/uploads', express.static('uploads'));
-app.use('/posts', postRoutes);
-app.use('/users', userRoutes);
-app.use('/', otherRoutes);
+app.use('/api/uploads', express.static('uploads'));
+app.use('/api/posts', postRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api', otherRoutes);
 
 // Connect to the database
 const CONNECTION_URL =  process.env.NODE_ENV == "production" ? DATABASE_URL : 'mongodb://localhost:27017/thecodebeyond';

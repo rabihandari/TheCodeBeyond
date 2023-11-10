@@ -1,18 +1,22 @@
 version: '3'
 services:
-  frontend:
-    image: thecodebeyondbackend.azurecr.io/frontend:1.5
-    ports:
-      - 3000:3000
-  backend:
-    image: thecodebeyondbackend.azurecr.io/backend:1.6
-    ports:
-      - 5000:5000
-    environment:
-      LOCAL_DATABASE_URL: mongodb://thecodebeyond:EatMyRaze_123@mongodb
-      SECRET_OR_KEY: KG6\DCM2XY#*DSnu-P-ga6As\_5FQ/32P&y8Thy9aFV]RS^_[
+  thecodebeyond_client:
+    # image: cloud.canister.io:5000/orderzz/thecodebeyond-client:1.0
+    build: ./client
+    volumes:
+        - ./client/proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+        - /etc/letsencrypt/live/thecodebeyond.com/fullchain.pem:/certs/fullchain.pem
+        - /etc/letsencrypt/live/thecodebeyond.com/privkey.pem:/certs/privkey.pem
+    depends_on:
+        - thecodebeyond_server
+  thecodebeyond_server:
+    # image: cloud.canister.io:5000/orderzz/thecodebeyond-server:1.0
+    build: ./server
+    env_file:
+        - ./server/.env
   mongodb:
     image: mongo
+    restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: thecodebeyond
       MONGO_INITDB_ROOT_PASSWORD: EatMyRaze_123
@@ -20,12 +24,15 @@ services:
       - mongo-data:/data/db
   mongo-express:
     image: mongo-express
+    restart: always
     ports:
      - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: thecodebeyond
       ME_CONFIG_MONGODB_ADMINPASSWORD: EatMyRaze_123
       ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+        - mongodb
 
 volumes:
   mongo-data:

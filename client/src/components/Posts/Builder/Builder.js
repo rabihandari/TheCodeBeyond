@@ -41,6 +41,7 @@ const Builder = ({ editing }) => {
             return <SyntaxHighlighter style={dracula} language={language} children={value || "" } />
         },
         paragraph: props => <p style={{ fontSize: '20px', lineHeight: '32px' }}>{props.children}</p>,
+        listItem: props => <li style={{ fontSize: '20px', lineHeight: '32px', marginTop: '16px' }}>{props.children}</li>
     }
   
     const handleSubmit = (event) => {

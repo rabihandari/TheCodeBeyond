@@ -100,7 +100,7 @@ const Login = () => {
                                 <Checkbox checked={termsChecked} onChange={() => setTermsChecked(!termsChecked)} name="Terms" color="primary" size="small" />
                             }
                             label={
-                                <Typography variant='h4' className={classes.termsBox}>I agree to the <Link href="#" color="primary">Terms of service</Link> and <Link href="#" color="primary">privacy policy</Link></Typography>
+                                <Typography variant='h4' className={classes.termsBox}>I agree to the <Link href="/terms-conditions" color="primary">Terms of service</Link> and <Link href="/privacy-policy" color="primary">privacy policy</Link></Typography>
                             }
                         />
                     </Grid>

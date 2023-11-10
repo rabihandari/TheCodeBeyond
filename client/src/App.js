@@ -112,8 +112,8 @@ const App = () => {
                     <PrivateRoute path="/settings/changePassword/:email" component={ChangePassword} />
                     <PrivateRoute exact path="/request" component={RequestPost} />
                     <PrivateRoute exact path="/answer/:id" component={Answer} />
-                    <PrivateRoute exact path="/privacy-policy" component={PrivacyPolicy} />
-                    <PrivateRoute exact path="/terms-conditions" component={TermsAndConditions} />
+                    <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+                    <Route exact path="/terms-conditions" component={TermsAndConditions} />
                     <PrivateRoute exact path="/community-requests" component={CommunityRequests} />
                     <Route exact path="/activate" component={ActivateAccount} />
                     <Route path="/feedback/:email" component={Feedback}/>

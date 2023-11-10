@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Dynamic env
-export const BACKEND_HOST = process.env.NODE_ENV == "production" ? process.env.BACKEND_HOST : "http://localhost:5000";
+export const BACKEND_HOST = process.env.NODE_ENV == "production" ? process.env.BACKEND_HOST : "http://localhost:5000/api";
 export const FRONTEND_HOST = process.env.NODE_ENV == "production" ? process.env.FRONTEND_HOST : "http://localhost:3000";
 
 // Static env

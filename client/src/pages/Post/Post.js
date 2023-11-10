@@ -29,6 +29,7 @@ const renderers = {
     },
     paragraph: props => <p style={{ fontSize: '20px', lineHeight: '32px' }}>{props.children}</p>,
     image: props => <img src={props.src} alt={props.alt} style={{ display: 'block', margin: 'auto' }} />,
+    listItem: props => <li style={{ fontSize: '20px', lineHeight: '32px', marginTop: '16px' }}>{props.children}</li>
 }
 
 function Alert(props) {

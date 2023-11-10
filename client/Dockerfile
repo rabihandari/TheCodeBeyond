@@ -1,13 +1,8 @@
-FROM node
+FROM nginx:1.15.2-alpine
 
-WORKDIR /home/app
+COPY ./build /var/www
+RUN rm /etc/nginx/conf.d/*
 
-RUN npm config set strict-ssl false
+COPY ./proxy/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY package*.json /home/app
-RUN npm install
-
-COPY . /home/app
-
-CMD ["npm", "start"]
-
+RUN mkdir /certs

@@ -10,4 +10,4 @@ RUN mkdir -p /home/app
 
 COPY . /home/app
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "production"]
